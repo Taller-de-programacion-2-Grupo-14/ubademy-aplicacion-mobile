@@ -1,1 +1,0 @@
-# ubademy-aplicacion-mobile
