@@ -15,6 +15,8 @@ import {
   IconButton,
   HStack,
   Divider,
+  Center,
+  Image
 } from 'native-base';
 
 function SignIn({ navigation }) {
