@@ -21,6 +21,13 @@ function SignIn({ navigation }) {
   return (
     <NativeBaseProvider>
       <Box safeArea flex={1} p="2" py="8" w="90%" mx="auto">
+        <Center>
+          <Image
+            source={require('./images/logo.png')}
+            alt="Logo"
+            size="xl"
+          />
+        </Center>
         <Heading size="lg" fontWeight="600" color="coolGray.800">
           Bienvenido
         </Heading>
@@ -84,6 +91,13 @@ function SignUp({ navigation }) {
   return (
     <NativeBaseProvider>
       <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8">
+        <Center>
+          <Image
+            source={require('./images/logo.png')}
+            alt="Logo"
+            size="xl"
+          />
+        </Center>
         <Heading size="lg" color="coolGray.800" fontWeight="600">
           Welcome
         </Heading>
