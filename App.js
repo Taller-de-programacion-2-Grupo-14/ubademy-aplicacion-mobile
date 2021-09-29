@@ -22,7 +22,7 @@ import {
 function SignIn({ navigation }) {
   return (
     <NativeBaseProvider>
-      <Box safeArea flex={1} p="2" py="8" w="90%" mx="auto">
+      <Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center'}}>
         <Center>
           <Image
             source={require('./images/logo.png')}
@@ -63,7 +63,7 @@ function SignIn({ navigation }) {
               _text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
               alignSelf="flex-end"
               mt="1">
-              Olvido su contraseña?
+              ¿Olvido su contraseña?
             </Link>
           </FormControl>
           <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}  >
@@ -71,7 +71,7 @@ function SignIn({ navigation }) {
           </Button>
           <HStack mt="6" justifyContent="center">
             <Text fontSize="sm" color="muted.700" fontWeight={400}>
-              Usuario nuevo?{' '}
+              ¿Usuario nuevo?{' '}
             </Text>
             <Link onPress={() => navigation.navigate('SignUp')}
               _text={{
@@ -92,7 +92,7 @@ function SignIn({ navigation }) {
 function SignUp({ navigation }) {
   return (
     <NativeBaseProvider>
-      <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8">
+      <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center'}}>
         <Center>
           <Image
             source={require('./images/logo.png')}
@@ -101,10 +101,10 @@ function SignUp({ navigation }) {
           />
         </Center>
         <Heading size="lg" color="coolGray.800" fontWeight="600">
-          Welcome
+          Bienvenido
         </Heading>
         <Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs">
-          Sign up to continue!
+          Registrate para continuar!
         </Heading>
 
         <VStack space={3} mt="5">
@@ -125,12 +125,12 @@ function SignUp({ navigation }) {
           <FormControl>
             <FormControl.Label
               _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-              Confirm Password
+              Confirmar Password
             </FormControl.Label>
             <Input type="password" />
           </FormControl>
           <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}>
-            Sign up
+            Registrate
           </Button>
         </VStack>
       </Box>
