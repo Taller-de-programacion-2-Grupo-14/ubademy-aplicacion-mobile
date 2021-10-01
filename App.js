@@ -18,8 +18,37 @@ import {
   Center,
   Image
 } from 'native-base';
+import { createServer } from "miragejs";
+import FirstPage from './components/FirstPage/FirstPage';
+
+if (window.server) {
+  server.shutdown()
+}
+
+window.server = createServer({
+  routes() {
+    this.get("/api/cursos", () => {
+      return {
+        cursos: [
+          { id: 1, name: "Data Science", year: 2010 },
+          { id: 2, name: "Docker", year: 2014 },
+          { id: 3, name: "Matematica", year: 2017 },
+        ],
+      }
+    })
+  },
+})
+
 
 function SignIn({ navigation }) {
+  let [cursos, setCursos] = React.useState([])
+
+  React.useEffect(() => {
+    fetch("/api/cursos")
+      .then((res) => res.json())
+      .then((json) => setCursos(json.cursos))
+  }, [])
+
   return (
     <NativeBaseProvider>
       <Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center'}}>
@@ -69,6 +98,11 @@ function SignIn({ navigation }) {
           <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}  >
             Iniciar sesion
           </Button>
+            {cursos.map((cursos) => (
+              <Text key={cursos.id}>
+                {cursos.name} ({cursos.year})
+              </Text>
+            ))}
           <HStack mt="6" justifyContent="center">
             <Text fontSize="sm" color="muted.700" fontWeight={400}>
               ¿Usuario nuevo?{' '}
@@ -90,6 +124,7 @@ function SignIn({ navigation }) {
 }
 
 function SignUp({ navigation }) {
+  console.log("holaaaaaaaaaaa")
   return (
     <NativeBaseProvider>
       <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center'}}>
@@ -129,7 +164,7 @@ function SignUp({ navigation }) {
             </FormControl.Label>
             <Input type="password" />
           </FormControl>
-          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}>
+          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}>                                                                                   
             Registrate
           </Button>
         </VStack>
@@ -144,6 +179,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
+        {/* <Stack.Screen name="FirstPage" component={FirstPage} /> */}
         <Stack.Screen name="Home" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
       </Stack.Navigator>
