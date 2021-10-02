@@ -123,9 +123,21 @@ function SignIn({ navigation }) {
   );
 }
 
-function SignUp({ navigation }) {
-  console.log("holaaaaaaaaaaa")
-  return (
+
+
+class SignUp extends React.Component({ navigation }) {
+  constructor (){
+    super();
+    this.state={
+      email:'',
+      password:'',
+    };
+  }
+  submit(){
+    console.warn(this.state)
+  }
+  render(){
+    return (
     <NativeBaseProvider>
       <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center'}}>
         <Center>
@@ -145,7 +157,7 @@ function SignUp({ navigation }) {
         <VStack space={3} mt="5">
           <FormControl>
             <FormControl.Label
-              _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+              _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }} onChangeText={(text) => { this.setState({ email: text})}}>
               Email
             </FormControl.Label>
             <Input />
@@ -164,14 +176,14 @@ function SignUp({ navigation }) {
             </FormControl.Label>
             <Input type="password" />
           </FormControl>
-          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}>                                                                                   
+          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => {this.submit()}}>                                                                                   
             Registrate
           </Button>
         </VStack>
       </Box>
     </NativeBaseProvider>
   );
-}
+}}
 
 const Stack = createNativeStackNavigator();
 
