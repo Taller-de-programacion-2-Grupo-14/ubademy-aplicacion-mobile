@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { login } from '../src/services/login';
 import {
   NativeBaseProvider,
   Box,
@@ -18,17 +19,22 @@ import {
 } from 'native-base';
 
 function LoginScreen({ navigation }) {
-  let [cursos, setCursos] = React.useState([])
+  const [user, setUser] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  onSubmit = () => {
+    login(user, password)
+      .then((response) => response.json())
+      .then((json) => {
+        navigation.navigate("HomeScreen")
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-  React.useEffect(() => {
-    fetch("/api/cursos")
-      .then((res) => res.json())
-      .then((json) => setCursos(json.cursos))
-  }, [])
-
+  }
   return (
     <NativeBaseProvider>
-      <Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center'}}>
+      <Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
         <Center>
           <Image
             source={require('../images/logo.png')}
@@ -53,7 +59,7 @@ function LoginScreen({ navigation }) {
               }}>
               Email
             </FormControl.Label>
-            <Input />
+            <Input onChangeText={(user) => setUser(user)} />
           </FormControl>
           <FormControl>
             <FormControl.Label
@@ -64,7 +70,7 @@ function LoginScreen({ navigation }) {
               }}>
               Password
             </FormControl.Label>
-            <Input type="password" />
+            <Input type="password" onChangeText={(password) => setPassword(password)} />
             <Link
               _text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
               alignSelf="flex-end"
@@ -72,14 +78,9 @@ function LoginScreen({ navigation }) {
               ¿Olvido su contraseña?
             </Link>
           </FormControl>
-          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}  >
+          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
             Iniciar sesion
           </Button>
-            {cursos.map((cursos) => (
-              <Text key={cursos.id}>
-                {cursos.name} ({cursos.year})
-              </Text>
-            ))}
           <HStack mt="6" justifyContent="center">
             <Text fontSize="sm" color="muted.700" fontWeight={400}>
               ¿Usuario nuevo?{' '}

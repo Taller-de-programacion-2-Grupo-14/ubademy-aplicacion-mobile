@@ -20,9 +20,9 @@ import {
 import { login } from '../src/services/login';
 
 function RegisterScreen({ navigation }) {
-  const [list, setList] = React.useState([]);
   const [user, setUser] = React.useState("");
   const [password, setPassword] = React.useState("");
+
 
   handleClick = () => {
     login(user, password)
