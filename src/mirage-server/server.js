@@ -1,11 +1,8 @@
 import { createServer } from 'miragejs';
-function makeServer() {
+export function makeServer({ environment = 'test' } = {}) {
 
-    if (window.server) {
-        server.shutdown()
-    }
-
-    window.server = createServer({
+    let server = createServer({
+        environment,
         routes() {
             this.get("/api/cursos", () => {
                 return {
@@ -16,7 +13,7 @@ function makeServer() {
                     ],
                 }
             })
-            this.post("/api/users/login", (usuario, password) => {
+            this.post("http://10.0.2.2:8080/users/login", (usuario, password) => {
                 return {
 
                     "message": "user other1 is logged correctly",
@@ -32,4 +29,3 @@ function makeServer() {
 
     return server;
 }
-export default makeServer
