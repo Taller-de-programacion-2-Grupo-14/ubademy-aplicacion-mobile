@@ -23,6 +23,11 @@ export function makeServer({ environment = 'test' } = {}) {
 
                 }
             })
+            this.get("http://10.0.2.2:8080/users", () => {
+                return {
+                    "username": "other1"
+                }
+            })
         },
     })
 

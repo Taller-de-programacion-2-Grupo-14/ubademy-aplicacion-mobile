@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     NativeBaseProvider,
     Box,
@@ -29,7 +29,7 @@ export function Example() {
             trigger={(triggerProps) => {
                 return (
                     <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                        <HamburgerIcon />
+                        <HamburgerIcon color='white' />
                     </Pressable>
                 )
             }}
@@ -49,17 +49,25 @@ export function Example() {
 
 export default function App() {
     const [selected, setSelected] = React.useState(1);
+    const [userName, setUserName] = React.useState("lalala");
+
+    useEffect(() => {
+        fetch('http://10.0.2.2:8080/users')
+            .then(data => data.json())
+            .then(json => setUserName(json.username))
+    })
+
     return (
 
         <NativeBaseProvider>
-            <StatusBar backgroundColor="#3700B3" barStyle="light-content" />
+            <StatusBar backgroundColor="white" barStyle="light-content" />
 
-            <Box safeAreaTop backgroundColor="#6200ee" />
+            <Box safeAreaTop backgroundColor="indigo.500" />
 
-            <HStack bg='#6200ee' px="1" py="3" justifyContent='space-between' alignItems='center'>
+            <HStack bg='indigo.500' px="1" py="3" justifyContent='space-between' alignItems='center'>
                 <HStack space="4" alignItems='center'>
                     <Example />
-                    <Text color="white" fontSize="20" fontWeight='bold'>Home</Text>
+                    <Text color="white" fontSize="20" >Home</Text>
                 </HStack>
                 <HStack space="2">
                     <IconButton icon={<Icon as={<MaterialIcons name='favorite' />} size='sm' color="white" />} />
@@ -71,9 +79,13 @@ export default function App() {
             <Box flex={1} bg="white" safeAreaTop>
                 <Center flex={1}></Center>
                 <Heading size="lg" fontWeight="600" color="coolGray.800">
+                    {userName}
+                </Heading>
+
+                <Heading size="lg" fontWeight="600" color="coolGray.800">
                     Bienvenido, ya estas loggeado
                 </Heading>
-                <HStack bg="indigo.600" alignItems="center" safeAreaBottom shadow={6}>
+                <HStack bg="indigo.500" alignItems="center" safeAreaBottom shadow={6}>
                     <Pressable
                         cursor="pointer"
                         opacity={selected === 0 ? 1 : 0.5}
