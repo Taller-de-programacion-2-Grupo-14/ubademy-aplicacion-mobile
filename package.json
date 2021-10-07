@@ -31,5 +31,6 @@
     "@babel/core": "^7.9.0",
     "miragejs": "^0.1.42"
   },
-  "private": true
+  "private": true,
+  "proxy": "http://10.0.2.2:8080"
 }
