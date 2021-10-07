@@ -1,5 +1,6 @@
 import React from 'react';
 import { login } from '../src/services/login';
+import { AsyncStorage } from 'react-native';
 import {
   NativeBaseProvider,
   Box,
@@ -25,7 +26,15 @@ function LoginScreen({ navigation }) {
     login(user, password)
       .then((response) => response.json())
       .then((json) => {
-        navigation.navigate("HomeScreen")
+        console.log(json);
+        if (json.status === 200) {
+          AsyncStorage.setItem('token', json.token);
+          console.log(json.token);
+          navigation.navigate("HomeScreen")
+        } else {
+          console.log('email o contrasenia invalidos');
+        }
+
       })
       .catch((error) => {
         console.error(error);
