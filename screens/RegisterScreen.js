@@ -25,13 +25,13 @@ function RegisterScreen({ navigation }) {
 
 
   handleClick = () => {
-    login(user, password)
+    registrarUsuario(user, password)
       .then((response) => response.json())
       .then((json) => {
         return json.status;
       })
     //if ok
-    //call get info
+    //llamar a login
 
   }
 
@@ -53,13 +53,6 @@ function RegisterScreen({ navigation }) {
         </Heading>
         <VStack space={3} mt="5">
           <FormControl>
-
-            {list.map((list) => (
-              <Text key={list.id}>
-                {list.name} ({list.year})
-              </Text>
-            ))}
-
             <FormControl.Label
               _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
               Email
