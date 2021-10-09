@@ -1,6 +1,5 @@
 import React from 'react'
 import { register } from '../src/services/register';
-import { AsyncStorage } from 'react-native';
 import { getList } from '../src/services/list';
 import {
   NativeBaseProvider,
@@ -33,7 +32,6 @@ function RegisterScreen({ navigation }) {
       .then((json) => {
         console.log(json);
         if (json.status === 200) {
-          AsyncStorage.setItem('token', json.token);
           console.log(json.token);
           navigation.navigate("LoginScreen")
         } else {

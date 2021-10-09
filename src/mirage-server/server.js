@@ -13,7 +13,7 @@ export function makeServer({ environment = 'test' } = {}) {
             })
             this.post("http://10.0.2.2:8080/registrar", (mail, nombre, apellido, password, perfil, intereses, ubicacion) => {
                 return {
-                    "status": "200"
+                    "status": 200
                 }
             })
             this.put("http://10.0.2.2:8080/modificar", (mail, nombre, apellido, perfil, intereses) => {
