@@ -35,6 +35,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.26.1",
     "miragejs": "^0.1.42"
   },
   "private": true,
