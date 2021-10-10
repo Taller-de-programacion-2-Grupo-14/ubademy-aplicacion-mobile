@@ -11,14 +11,14 @@ export function makeServer({ environment = 'test' } = {}) {
                     "status": 200
                 }
             })
-            this.post("http://10.0.2.2:8080/registrar", (mail, nombre, apellido, password, perfil, intereses, ubicacion) => {
+            this.post("http://10.0.2.2:8080/registrar", (mail, password, name, perfil, location, interes) => {
                 return {
-                    "status": "200"
+                    "status": 200
                 }
             })
-            this.put("http://10.0.2.2:8080/modificar", (mail, nombre, apellido, perfil, intereses) => {
+            this.put("http://10.0.2.2:8080/modificar", (mail, nombre, location, interes) => {
                 return {
-                    "status": "200"
+                    "status": 200
                 }
             })
             this.get("http://10.0.2.2:8080/obtenerUsuario:username", () => {

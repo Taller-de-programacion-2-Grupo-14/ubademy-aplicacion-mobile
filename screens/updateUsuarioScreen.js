@@ -46,17 +46,33 @@ function updateUsuarioScreen({ navigation }) {
           />
         </Center>
         <Heading size="lg" color="coolGray.800" fontWeight="600">
-          Bienvenido
+          Editar usuario
         </Heading>
         <VStack space={3} mt="5">
           <FormControl>
             <FormControl.Label
               _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-              Confirmar Password
+              Nombre
             </FormControl.Label>
-            <Input type="password" onChangeText={(password) => setPassword(password)} />
+            <Input onChangeText={(name) => setName(name)} />
           </FormControl>
-          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.handleClick()}>
+
+          <FormControl>
+            <FormControl.Label
+              _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+              Ubicacion
+            </FormControl.Label>
+            <Input onChangeText={(location) => setLocation(location)} />
+          </FormControl>
+
+          <FormControl>
+            <FormControl.Label
+              _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+              Tipo de curso de mayor interes
+            </FormControl.Label>
+            <Input onChangeText={(interes) => setInteres(interes)} />
+          </FormControl>
+          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
             Registrate
           </Button>
         </VStack>
