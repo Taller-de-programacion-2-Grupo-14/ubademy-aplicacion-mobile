@@ -1,4 +1,5 @@
 import React from 'react'
+import { getList } from '../src/services/list';
 import {
   NativeBaseProvider,
   Box,
@@ -14,24 +15,20 @@ import {
   HStack,
   Divider,
   Center,
-  Image,
-  Modal
+  Image
 } from 'native-base';
-import { editarUsuario } from '../src/services/editarUsuario';
+import { login } from '../src/services/login';
 
 function updateUsuarioScreen({ navigation }) {
-  const [name, setName] = React.useState("");
-  const [location, setLocation] = React.useState("");
-  const [interes, setInteres] = React.useState("");
-  const [showModal, setShowModal] = React.useState(false)
+  const [user, setUser] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  onSubmit = () => {
-    editarUsuario(name, location, interes)
+
+  handleClick = () => {
+    registrarUsuario(user, password)
       .then((response) => response.json())
       .then((json) => {
-        if (json.status === 200) {
-          setShowModal(true);
-        }
+        return json.status;
       })
     //if ok
     //llamar a login
@@ -40,57 +37,27 @@ function updateUsuarioScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
-        <Modal.Content maxWidth="350">
-          <Modal.Body>
-            <VStack space={3}>
-              <HStack alignItems="center" justifyContent="space-between">
-                <Text fontWeight="medium">Datos actualizados</Text>
-              </HStack>
-            </VStack>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              flex="1"
-              onPress={() => {
-                navigation.navigate("HomeScreen")
-              }}
-            >
-              Continue
-            </Button>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
       <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+        <Center>
+          <Image
+            source={require('../images/logo.png')}
+            alt="Logo"
+            size="xl"
+          />
+        </Center>
         <Heading size="lg" color="coolGray.800" fontWeight="600">
-          Editar usuario
+          Bienvenido
         </Heading>
         <VStack space={3} mt="5">
           <FormControl>
             <FormControl.Label
               _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-              Nombre
+              Confirmar Password
             </FormControl.Label>
-            <Input onChangeText={(name) => setName(name)} />
+            <Input type="password" onChangeText={(password) => setPassword(password)} />
           </FormControl>
-
-          <FormControl>
-            <FormControl.Label
-              _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-              Ubicacion
-            </FormControl.Label>
-            <Input onChangeText={(location) => setLocation(location)} />
-          </FormControl>
-
-          <FormControl>
-            <FormControl.Label
-              _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-              Tipo de curso de mayor interes
-            </FormControl.Label>
-            <Input onChangeText={(interes) => setInteres(interes)} />
-          </FormControl>
-          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-            Confirmar
+          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.handleClick()}>
+            Registrate
           </Button>
         </VStack>
       </Box>
