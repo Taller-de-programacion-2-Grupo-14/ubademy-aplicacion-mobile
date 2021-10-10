@@ -4,7 +4,10 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
-    "start": "react-native start"
+    "start": "react-native start",
+    "lint:js": "eslint '**/*.js' --ignore-pattern node\\_modules/",
+    "lint:js:fix": "eslint '**/*.js' --ignore-pattern node\\_modules/ --fix",
+    "lint": "npm run lint:js"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
@@ -18,19 +21,20 @@
     "native-base": "^3.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-native": "~0.63.4",
+    "react-native": "^0.66.0",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
     "react-native-svg": "12.1.1",
     "react-native-unimodules": "0.14.10",
-    "react-native-web": "~0.13.12",
+    "react-native-web": "^0.17.5",
     "styled-components": "^5.3.1",
     "styled-system": "^5.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "eslint": "^8.0.0",
     "miragejs": "^0.1.42"
   },
   "private": true,
