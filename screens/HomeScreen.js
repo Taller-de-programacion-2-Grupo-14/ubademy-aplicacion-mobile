@@ -52,7 +52,7 @@ export default function App() {
     const [userName, setUserName] = React.useState("lalala");
 
     useEffect(() => {
-        fetch('http://10.0.2.2:8080/users')
+        fetch('http://10.0.2.2:8080/users/login')
             .then(data => data.json())
             .then(json => setUserName(json.username))
     })
