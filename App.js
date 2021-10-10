@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen'
+import HomeScreen from './screens/HomeScreen';
+import UpdateUsuarioScreen from './screens/UpdateUsuarioScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -15,6 +16,7 @@ function App() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="UpdateUsuarioScreen" component={UpdateUsuarioScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

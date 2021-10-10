@@ -47,14 +47,14 @@ export function Example() {
     )
 }
 
-export default function App() {
+export default function HomeScreen({ navigation }) {
     const [selected, setSelected] = React.useState(1);
     const [userName, setUserName] = React.useState("lalala");
 
     useEffect(() => {
-        fetch('http://10.0.2.2:8080/users/login')
-            .then(data => data.json())
-            .then(json => setUserName(json.username))
+        //  fetch('http://10.0.2.2:8080/users/login')
+        //      .then(data => data.json())
+        //      .then(json => setUserName(json.username))
     })
 
     return (
@@ -167,6 +167,7 @@ export default function App() {
                                 }
                                 color="white"
                                 size="sm"
+                                onPress={() => navigation.navigate('UpdateUsuarioScreen')}
                             />
                             <Text color="white" fontSize="12">
                                 Perfil
