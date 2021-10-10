@@ -1,13 +1,22 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
         "es2021": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "parserOptions": {
-        "ecmaVersion": 13
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 13,
+        "sourceType": "module"
     },
+    "plugins": [
+        "react"
+    ],
     "rules": {
         "indent": [
             "error",
