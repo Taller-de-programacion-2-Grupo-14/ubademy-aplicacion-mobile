@@ -16,7 +16,7 @@ export function makeServer({ environment = 'test' } = {}) {
                     "status": 200
                 }
             })
-            this.put("http://10.0.2.2:8080/modificar", (mail, nombre, location, interes) => {
+            this.put("http://10.0.2.2:8080/modificar", (nombre, location, interes) => {
                 return {
                     "status": 200
                 }

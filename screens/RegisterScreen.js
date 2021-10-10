@@ -18,8 +18,11 @@ import {
   Divider,
   Center,
   ScrollView,
-  Image
+  Image,
+  Modal
 } from 'native-base';
+
+
 
 function RegisterScreen({ navigation }) {
   const [mail, setMail] = React.useState("");
@@ -28,6 +31,7 @@ function RegisterScreen({ navigation }) {
   const [perfil, setPerfil] = React.useState("");
   const [location, setLocation] = React.useState("");
   const [interes, setInteres] = React.useState("");
+  const [showModal, setShowModal] = React.useState(false)
   onSubmit = () => {
     register(mail, password, name, perfil, location, interes)
       .then((response) => response.json())
@@ -41,7 +45,8 @@ function RegisterScreen({ navigation }) {
               if (json.status === 200) {
                 AsyncStorage.setItem('token', json.token);
                 console.log(json.token);
-                navigation.navigate("HomeScreen")
+                //navigation.navigate("HomeScreen")
+                setShowModal(true);
               } else {
                 console.log('email o contrasenia invalidos');
               }
@@ -64,6 +69,27 @@ function RegisterScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.Body>
+            <VStack space={3}>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text fontWeight="medium">¡Registro exitoso!</Text>
+              </HStack>
+            </VStack>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              flex="1"
+              onPress={() => {
+                navigation.navigate("HomeScreen")
+              }}
+            >
+              Continue
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
       <ScrollView
         _contentContainerStyle={{
           px: "20px",
