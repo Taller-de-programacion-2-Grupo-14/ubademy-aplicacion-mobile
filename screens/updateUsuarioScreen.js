@@ -19,7 +19,7 @@ import {
 } from 'native-base';
 import { editarUsuario } from '../src/services/editarUsuario';
 
-function updateUsuarioScreen({ navigation }) {
+function UpdateUsuarioScreen({ navigation }) {
   const [name, setName] = React.useState("");
   const [location, setLocation] = React.useState("");
   const [interes, setInteres] = React.useState("");
@@ -98,4 +98,4 @@ function updateUsuarioScreen({ navigation }) {
   );
 }
 
-export default updateUsuarioScreen
+export default UpdateUsuarioScreen
