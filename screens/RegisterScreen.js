@@ -15,30 +15,34 @@ import {
 	Image
 } from 'native-base';
 
+
+
 function RegisterScreen({ navigation }) {
-	const [mail, setMail] = React.useState('');
-	const [password, setPassword] = React.useState('');
-	const [name, setName] = React.useState('');
-	const [perfil, setPerfil] = React.useState('');
-	const [location, setLocation] = React.useState('');
-	const [interes, setInteres] = React.useState('');
-	onSubmit = () => {
-		register(mail, password, name, perfil, location, interes)
-			.then((response) => response.json())
-			.then((json) => {
-				console.log(json);
-				if (json.status === 200) {
-					login(mail, password)
-						.then((response) => response.json())
-						.then((json) => {
-							console.log(json);
-							if (json.status === 200) {
-								AsyncStorage.setItem('token', json.token);
-								console.log(json.token);
-								navigation.navigate('HomeScreen');
-							} else {
-								console.log('email o contrasenia invalidos');
-							}
+  const [mail, setMail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [perfil, setPerfil] = React.useState("");
+  const [location, setLocation] = React.useState("");
+  const [interes, setInteres] = React.useState("");
+  const [showModal, setShowModal] = React.useState(false)
+  onSubmit = () => {
+    register(mail, password, name, perfil, location, interes)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        if (json.status === 200) {
+          login(mail, password)
+            .then((response) => response.json())
+            .then((json) => {
+              console.log(json);
+              if (json.status === 200) {
+                AsyncStorage.setItem('token', json.token);
+                console.log(json.token);
+                //navigation.navigate("HomeScreen")
+                setShowModal(true);
+              } else {
+                console.log('email o contrasenia invalidos');
+              }
 
 						})
 						.catch((error) => {
@@ -56,23 +60,44 @@ function RegisterScreen({ navigation }) {
 
 	};
 
-	return (
-		<NativeBaseProvider>
-			<ScrollView
-				_contentContainerStyle={{
-					px: '20px',
-					mb: '4',
-				}}
-			>
-				<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-					<Center>
-						<Image
-							source={require('../images/logo.png')}
-							alt="Logo"
-							size="xl"
-						/>
-					</Center>
-					<Heading size="lg" color="coolGray.800" fontWeight="600">
+  return (
+    <NativeBaseProvider>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.Body>
+            <VStack space={3}>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text fontWeight="medium">¡Registro exitoso!</Text>
+              </HStack>
+            </VStack>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              flex="1"
+              onPress={() => {
+                navigation.navigate("HomeScreen")
+              }}
+            >
+              Continue
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      <ScrollView
+        _contentContainerStyle={{
+          px: "20px",
+          mb: "4",
+        }}
+      >
+        <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+          <Center>
+            <Image
+              source={require('../images/logo.png')}
+              alt="Logo"
+              size="xl"
+            />
+          </Center>
+          <Heading size="lg" color="coolGray.800" fontWeight="600">
             Bienvenido
 					</Heading>
 					<Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs">
