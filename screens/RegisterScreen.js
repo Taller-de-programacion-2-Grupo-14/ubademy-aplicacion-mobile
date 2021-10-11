@@ -85,7 +85,7 @@ function RegisterScreen({ navigation }) {
                 navigation.navigate("HomeScreen")
               }}
             >
-              Continue
+              Continuar
             </Button>
           </Modal.Footer>
         </Modal.Content>

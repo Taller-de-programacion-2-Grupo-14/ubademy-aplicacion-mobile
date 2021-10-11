@@ -40,7 +40,7 @@ function LoginScreen({ navigation }) {
         console.error(error);
       });
 
-  }	
+  }
 	return (
 		<NativeBaseProvider>
 			<Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
@@ -80,7 +80,7 @@ function LoginScreen({ navigation }) {
               Password
 						</FormControl.Label>
 						<Input type="password" onChangeText={(password) => setPassword(password)} />
-						<Link
+						<Link onPress={() => navigation.navigate('PasswordOlvidadoScreen')}
 							_text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
 							alignSelf="flex-end"
 							mt="1">
