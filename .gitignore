@@ -22,6 +22,7 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 .vscode/
+package-lock.json
 
 # Android/IntelliJ
 #
