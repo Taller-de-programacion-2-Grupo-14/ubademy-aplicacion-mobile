@@ -4,15 +4,22 @@ import { login } from '../src/services/login';
 import { AsyncStorage } from 'react-native';
 import {
 	NativeBaseProvider,
-	Box,
-	Heading,
-	VStack,
-	FormControl,
-	Input,
-	Button,
-	Center,
-	ScrollView,
-	Image
+  Box,
+  Text,
+  Heading,
+  VStack,
+  FormControl,
+  Input,
+  Link,
+  Button,
+  Icon,
+  IconButton,
+  HStack,
+  Divider,
+  Center,
+  ScrollView,
+  Image,
+  Modal
 } from 'native-base';
 
 
