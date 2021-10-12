@@ -1,5 +1,5 @@
 import React from 'react';
-import { password } from '../src/services/password';
+import { recuperoPassword } from '../src/services/recuperoPassword';
 import { AsyncStorage } from 'react-native';
 import {
 	NativeBaseProvider,
@@ -19,17 +19,18 @@ import {
   Image
 } from 'native-base';
 
-function PasswordOlvidadoScreen({ navigation }) {
-	const [mail, setMail] = React.useState("");
+function RecuperoPasswordScreen({ navigation }) {
+	const [token, setToken] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
   onSubmit = () => {
-    password(mail)
+    recuperoPassword(token, newPassword)
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
         if (json.status === 200) {
-          navigation.navigate("RecuperoPasswordScreen")
+          navigation.navigate("HomeScreen")
         } else {
-          console.log('Email no registrado');
+          console.log('Token o nuevo password invalido');
         }
 
       })
@@ -49,7 +50,7 @@ function PasswordOlvidadoScreen({ navigation }) {
 					/>
 				</Center>
 				<Heading size="lg" fontWeight="600" color="coolGray.800">
-          Ingrese el email con el que se registró
+          Recupero de contraseña
 				</Heading>
 
 				<VStack space={3} mt="5">
@@ -60,9 +61,21 @@ function PasswordOlvidadoScreen({ navigation }) {
 								fontSize: 'xs',
 								fontWeight: 500,
 							}}>
-              Email
+              Ingrese el token que se le ha enviado por mail
 						</FormControl.Label>
-						<Input onChangeText={(mail) => setMail(mail)} />
+						<Input onChangeText={(mail) => setToken(token)} />
+					</FormControl>
+
+					<FormControl>
+						<FormControl.Label
+							_text={{
+								color: 'coolGray.800',
+								fontSize: 'xs',
+								fontWeight: 500,
+							}}>
+							Ingrese el nuevo password
+						</FormControl.Label>
+						<Input onChangeText={(mail) => setNewPassword(newPassword)} />
 					</FormControl>
 
 					<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
@@ -74,4 +87,4 @@ function PasswordOlvidadoScreen({ navigation }) {
 	);
 }
 
-export default PasswordOlvidadoScreen;
+export default RecuperoPasswordScreen;
