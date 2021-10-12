@@ -12,18 +12,17 @@ import RecuperoPasswordScreen from './screens/RecuperoPasswordScreen'
 const Stack = createNativeStackNavigator();
 
 function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginScreen">
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="UpdateUsuarioScreen" component={UpdateUsuarioScreen} />
-        <Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} />
-        <Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer>
+			<Stack.Navigator initialRouteName="LoginScreen">
+				<Stack.Screen name="LoginScreen" component={LoginScreen} />
+				<Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+				<Stack.Screen name="HomeScreen" component={HomeScreen} />
+				<Stack.Screen name="UpdateUsuarioScreen" component={UpdateUsuarioScreen} />
+				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} />
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
 }
 
 export default App;

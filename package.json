@@ -19,6 +19,7 @@
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.8.1",
     "native-base": "^3.2.0",
+    "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "^0.66.0",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "eslint": "^8.0.0",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.26.1",
     "miragejs": "^0.1.42"
   },
