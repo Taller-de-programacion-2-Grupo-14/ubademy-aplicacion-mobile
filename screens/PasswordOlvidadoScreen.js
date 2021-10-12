@@ -3,41 +3,41 @@ import { password } from '../src/services/password';
 import { AsyncStorage } from 'react-native';
 import {
 	NativeBaseProvider,
-  Box,
-  Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
-  Icon,
-  IconButton,
-  HStack,
-  Divider,
-  Center,
-  Image
+	Box,
+	Text,
+	Heading,
+	VStack,
+	FormControl,
+	Input,
+	Link,
+	Button,
+	Icon,
+	IconButton,
+	HStack,
+	Divider,
+	Center,
+	Image
 } from 'native-base';
 
 function PasswordOlvidadoScreen({ navigation }) {
-	const [mail, setMail] = React.useState("");
-  onSubmit = () => {
-    password(mail)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        if (json.status === 200) {
-          navigation.navigate("LoginScreen")
-        } else {
-          console.log('Email no registrado');
-        }
+	const [mail, setMail] = React.useState('');
+	onSubmit = () => {
+		password(mail)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				if (json.status === 200) {
+					navigation.navigate('LoginScreen');
+				} else {
+					console.log('Email no registrado');
+				}
 
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 
-  }
+	};
 	return (
 		<NativeBaseProvider>
 			<Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
