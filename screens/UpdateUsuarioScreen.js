@@ -20,22 +20,21 @@ import {
 import { editarUsuario } from '../src/services/editarUsuario';
 
 function UpdateUsuarioScreen({ navigation }) {
-  const [name, setName] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
   const [location, setLocation] = React.useState("");
-  const [interes, setInteres] = React.useState("");
+  const [intrests, setIntrests] = React.useState("");
   const [showModal, setShowModal] = React.useState(false)
 
   onSubmit = () => {
-    editarUsuario(name, location, interes)
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.status === 200) {
-          setShowModal(true);
-        }
-      })
-    //if ok
-    //llamar a login
-
+    //setShowModal(true);
+    // editarUsuario(firstName, lastName, location, intrests)
+    //   .then((response) => response.json())
+    //   .then((json) => {
+    //     if (json.status === 200) {
+    //       setShowModal(true);
+    //     }
+    //   })
   }
 
   return (
@@ -71,7 +70,7 @@ function UpdateUsuarioScreen({ navigation }) {
               _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
               Nombre
             </FormControl.Label>
-            <Input onChangeText={(name) => setName(name)} />
+            <Input onChangeText={(firstName) => setFirstName(firstName)} />
           </FormControl>
 
           <FormControl>
@@ -87,9 +86,9 @@ function UpdateUsuarioScreen({ navigation }) {
               _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
               Tipo de curso de mayor interes
             </FormControl.Label>
-            <Input onChangeText={(interes) => setInteres(interes)} />
+            <Input onChangeText={(intrests) => setIntrests(intrests)} />
           </FormControl>
-          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+          <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => navigation.navigate("HomeScreen")} >
             Confirmar
           </Button>
         </VStack>

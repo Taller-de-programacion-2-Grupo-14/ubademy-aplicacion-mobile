@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react';
 import {
-  NativeBaseProvider,
-  Box,
-  Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
-  Icon,
-  HStack,
-  Center,
-  Pressable,
-  Menu,
-  HamburgerIcon,
+    NativeBaseProvider,
+    Box,
+    Text,
+    Heading,
+    VStack,
+    FormControl,
+    Input,
+    Link,
+    Button,
+    Icon,
+    HStack,
+    Center,
+    Pressable,
+    Menu,
+    HamburgerIcon,
 } from 'native-base';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { IconButton, StatusBar } from "native-base";
-
+import { obtenerUsuario } from '../src/services/obtenerUsuario';
 
 
 export function Example() {
@@ -49,12 +49,15 @@ export function Example() {
 
 export default function HomeScreen({ navigation }) {
     const [selected, setSelected] = React.useState(1);
-    const [userName, setUserName] = React.useState("lalala");
+    const [firstName, setFirstName] = React.useState("");
 
     useEffect(() => {
-        //  fetch('http://10.0.2.2:8080/users/login')
-        //      .then(data => data.json())
-        //      .then(json => setUserName(json.username))
+        obtenerUsuario()
+            .then(data => data.json())
+            .then(json => {
+                console.log(json);
+                setFirstName(json.first_name)
+            })
     })
 
     return (
@@ -76,15 +79,11 @@ export default function HomeScreen({ navigation }) {
                     <IconButton icon={<Icon as={<MaterialIcons name='more-vert' />} size='sm' color="white" />} />
                 </HStack>
             </HStack>
+            <Heading size="lg" fontWeight="600" color="coolGray.800">
+                Bienvenido {firstName}
+            </Heading>
             <Box flex={1} bg="white" safeAreaTop>
                 <Center flex={1}></Center>
-                <Heading size="lg" fontWeight="600" color="coolGray.800">
-                    {userName}
-                </Heading>
-
-                <Heading size="lg" fontWeight="600" color="coolGray.800">
-                    Bienvenido, ya estas loggeado
-                </Heading>
                 <HStack bg="#109bd6" alignItems="center" safeAreaBottom shadow={6}>
                     <Pressable
                         cursor="pointer"
