@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import {
-    NativeBaseProvider,
-    Box,
-    Text,
-    Heading,
-    VStack,
-    FormControl,
-    Input,
-    Link,
-    Button,
-    Icon,
-    HStack,
-    Center,
-    Pressable,
-    Menu,
-    HamburgerIcon,
+  NativeBaseProvider,
+  Box,
+  Text,
+  Heading,
+  VStack,
+  FormControl,
+  Input,
+  Link,
+  Button,
+  Icon,
+  HStack,
+  Center,
+  Pressable,
+  Menu,
+  HamburgerIcon,
 } from 'native-base';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { IconButton, StatusBar } from "native-base";
@@ -62,9 +62,9 @@ export default function HomeScreen({ navigation }) {
         <NativeBaseProvider>
             <StatusBar backgroundColor="white" barStyle="light-content" />
 
-            <Box safeAreaTop backgroundColor="indigo.500" />
+            <Box safeAreaTop backgroundColor="#109bd6" />
 
-            <HStack bg='indigo.500' px="1" py="3" justifyContent='space-between' alignItems='center'>
+            <HStack bg='#109bd6' px="1" py="3" justifyContent='space-between' alignItems='center'>
                 <HStack space="4" alignItems='center'>
                     <Example />
                     <Text color="white" fontSize="20" >Home</Text>
@@ -85,7 +85,7 @@ export default function HomeScreen({ navigation }) {
                 <Heading size="lg" fontWeight="600" color="coolGray.800">
                     Bienvenido, ya estas loggeado
                 </Heading>
-                <HStack bg="indigo.500" alignItems="center" safeAreaBottom shadow={6}>
+                <HStack bg="#109bd6" alignItems="center" safeAreaBottom shadow={6}>
                     <Pressable
                         cursor="pointer"
                         opacity={selected === 0 ? 1 : 0.5}

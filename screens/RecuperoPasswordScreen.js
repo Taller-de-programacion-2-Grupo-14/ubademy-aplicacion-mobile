@@ -1,5 +1,5 @@
 import React from 'react';
-import { login } from '../src/services/login';
+import { recuperoPassword } from '../src/services/recuperoPassword';
 import { AsyncStorage } from 'react-native';
 import {
 	NativeBaseProvider,
@@ -19,20 +19,18 @@ import {
   Image
 } from 'native-base';
 
-function LoginScreen({ navigation }) {
-	const [user, setUser] = React.useState("");
-  const [password, setPassword] = React.useState("");
+function RecuperoPasswordScreen({ navigation }) {
+	const [token, setToken] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
   onSubmit = () => {
-    login(user, password)
+    recuperoPassword(token, newPassword)
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
         if (json.status === 200) {
-          AsyncStorage.setItem('token', json.token);
-          console.log(json.token);
           navigation.navigate("HomeScreen")
         } else {
-          console.log('email o contrasenia invalidos');
+          console.log('Token o nuevo password invalido');
         }
 
       })
@@ -52,10 +50,7 @@ function LoginScreen({ navigation }) {
 					/>
 				</Center>
 				<Heading size="lg" fontWeight="600" color="coolGray.800">
-          Bienvenido
-				</Heading>
-				<Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs">
-          Iniciar sesion
+          Recupero de contraseña
 				</Heading>
 
 				<VStack space={3} mt="5">
@@ -66,10 +61,11 @@ function LoginScreen({ navigation }) {
 								fontSize: 'xs',
 								fontWeight: 500,
 							}}>
-              Email
+              Ingrese el token que se le ha enviado por mail
 						</FormControl.Label>
-						<Input onChangeText={(user) => setUser(user)} />
+						<Input onChangeText={(mail) => setToken(token)} />
 					</FormControl>
+
 					<FormControl>
 						<FormControl.Label
 							_text={{
@@ -77,37 +73,18 @@ function LoginScreen({ navigation }) {
 								fontSize: 'xs',
 								fontWeight: 500,
 							}}>
-              Password
+							Ingrese el nuevo password
 						</FormControl.Label>
-						<Input type="password" onChangeText={(password) => setPassword(password)} />
-						<Link onPress={() => navigation.navigate('PasswordOlvidadoScreen')}
-							_text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
-							alignSelf="flex-end"
-							mt="1">
-              ¿Olvido su contraseña?
-						</Link>
+						<Input onChangeText={(mail) => setNewPassword(newPassword)} />
 					</FormControl>
+
 					<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-            Iniciar sesion
+            Continuar
 					</Button>
-					<HStack mt="6" justifyContent="center">
-						<Text fontSize="sm" color="muted.700" fontWeight={400}>
-              ¿Usuario nuevo?{' '}
-						</Text>
-						<Link onPress={() => navigation.navigate('RegisterScreen')}
-							_text={{
-								color: 'indigo.500',
-								fontWeight: 'medium',
-								fontSize: 'sm',
-							}}
-						>
-              Registrate
-						</Link>
-					</HStack>
 				</VStack>
 			</Box>
 		</NativeBaseProvider>
 	);
 }
 
-export default LoginScreen;
+export default RecuperoPasswordScreen;
