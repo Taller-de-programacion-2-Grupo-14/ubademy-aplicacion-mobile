@@ -28,9 +28,22 @@ function RecuperoPasswordScreen({ navigation }) {
       .then((json) => {
         console.log(json);
         if (json.status === 200) {
-          navigation.navigate("HomeScreen")
+					console.log('Contrasenia modificada correctamente');
+					navigation.navigate("HomeScreen")
         } else {
-          console.log('Token o nuevo password invalido');
+					if (json.status === 400){
+						console.log('Nuevo password invalido');
+					} else {
+						if (json.status === 401){
+							console.log('Token invalido');
+						} else {
+							if (json.status === 403){
+								console.log('No token provisto');
+							} else {
+								console.log('Error desconocido');
+							}
+						}
+					}
         }
 
       })
@@ -63,7 +76,7 @@ function RecuperoPasswordScreen({ navigation }) {
 							}}>
               Ingrese el token que se le ha enviado por mail
 						</FormControl.Label>
-						<Input onChangeText={(mail) => setToken(token)} />
+						<Input onChangeText={(token) => setToken(token)} />
 					</FormControl>
 
 					<FormControl>
@@ -75,7 +88,7 @@ function RecuperoPasswordScreen({ navigation }) {
 							}}>
 							Ingrese el nuevo password
 						</FormControl.Label>
-						<Input onChangeText={(mail) => setNewPassword(newPassword)} />
+						<Input onChangeText={(newPassword) => setNewPassword(newPassword)} />
 					</FormControl>
 
 					<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >

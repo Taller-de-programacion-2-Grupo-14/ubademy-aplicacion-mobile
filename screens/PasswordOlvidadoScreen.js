@@ -27,7 +27,7 @@ function PasswordOlvidadoScreen({ navigation }) {
 			.then((json) => {
 				console.log(json);
 				if (json.status === 200) {
-					navigation.navigate('LoginScreen');
+					navigation.navigate('RecuperoPasswordScreen');
 				} else {
 					console.log('Email no registrado');
 				}
