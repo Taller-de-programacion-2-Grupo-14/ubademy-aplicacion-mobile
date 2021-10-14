@@ -57,19 +57,19 @@ function UpdateUsuarioScreen({ navigation }) {
   );
 
   this.onSubmit = () => {
-      editarUsuario(firstName, lastName, location, intrests, email)
-        .then((response) => response.json())
-        .then((json) => {
-          console.log("editar usuario ");
-          console.log(json);
-          if (json.status === 200) {
-            setShowModal(true);
-            setModalMessage("Datos actualizados");
-          } else {
-            setShowModal(true);
-            setModalMessage("Ha ocurrido un error");
-          }
-        })
+    editarUsuario(firstName, lastName, location, intrests, email)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log("editar usuario ");
+        console.log(json);
+        if (json.status === 200) {
+          setShowModal(true);
+          setModalMessage("Datos actualizados");
+        } else {
+          setShowModal(true);
+          setModalMessage("Ha ocurrido un error");
+        }
+      })
   }
 
   return (
