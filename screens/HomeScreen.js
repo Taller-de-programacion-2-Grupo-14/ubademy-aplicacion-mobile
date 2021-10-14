@@ -22,8 +22,15 @@ import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { IconButton, StatusBar } from "native-base";
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import { useFocusEffect } from '@react-navigation/native';
+import showAlert from "./PopUp";
+import * as SecureStore from "expo-secure-store";
 
-export function Example({ navigation }) {
+export function hardLogout(navigation) {
+    navigation.navigate('LoginScreen');
+    SecureStore.deleteItemAsync('secure_token').then(() => console.log("token deleted"));
+}
+
+export function Example({navigation}) {
     return (
 
         <Menu
@@ -31,13 +38,20 @@ export function Example({ navigation }) {
             trigger={(triggerProps) => {
                 return (
                     <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                        <HamburgerIcon color='white' />
+                        <HamburgerIcon color='white'/>
                     </Pressable>
                 )
             }}
         >
-            <Menu.Item>Eliminar cuenta</Menu.Item>
-            <Menu.Item>Salir</Menu.Item>
+
+            <Menu.Item onPress={() => {
+                showAlert(() => hardLogout(navigation));
+            }}>
+                <Text> Eliminar cuenta</Text>
+
+            </Menu.Item>
+
+            <Menu.Item onPress={()=>hardLogout(navigation)}>Salir</Menu.Item>
         </Menu>
 
     )
