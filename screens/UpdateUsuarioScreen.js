@@ -56,8 +56,7 @@ function UpdateUsuarioScreen({ navigation }) {
     }, [])
   );
 
-  onSubmit = () => {
-    this.setState({ loading: true }, () => {
+  this.onSubmit = () => {
       editarUsuario(firstName, lastName, location, intrests, email)
         .then((response) => response.json())
         .then((json) => {
@@ -71,7 +70,6 @@ function UpdateUsuarioScreen({ navigation }) {
             setModalMessage("Ha ocurrido un error");
           }
         })
-    });
   }
 
   return (
