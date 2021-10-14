@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { register } from '../src/services/register';
 import { login } from '../src/services/login';
 import { AsyncStorage } from 'react-native';
@@ -12,6 +12,9 @@ import {
   Input,
   Link,
   Button,
+  Select,
+  CheckIcon,
+  WarningOutlineIcon,
   Icon,
   IconButton,
   HStack,
@@ -31,9 +34,9 @@ function RegisterScreen({ navigation }) {
   const [lastName, setLastName] = React.useState("");
   const [perfil, setPerfil] = React.useState("");
   const [location, setLocation] = React.useState("");
-  const [interes, setInteres] = React.useState("");
-  const [showModal, setShowModal] = React.useState(false)
-  onSubmit = () => {
+  const [interests, setInterests] = React.useState([]);
+  const [showModal, setShowModal] = React.useState(false);
+  handleSubmit = () => {
     register(mail, password, name, lastName, perfil, location)
       .then((response) => response.json())
       .then((json) => {
@@ -111,7 +114,7 @@ function RegisterScreen({ navigation }) {
             Registrate para continuar!
           </Heading>
           <VStack space={3} mt="5">
-            <FormControl>
+            <FormControl isRequired>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Email
@@ -119,7 +122,7 @@ function RegisterScreen({ navigation }) {
               <Input onChangeText={(mail) => setMail(mail)} />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Password
@@ -127,46 +130,98 @@ function RegisterScreen({ navigation }) {
               <Input type="password" onChangeText={(password) => setPassword(password)} />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Nombre
               </FormControl.Label>
               <Input onChangeText={(name) => setName(name)} />
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Apellido
               </FormControl.Label>
-              <Input onChangeText={(lastName) => setName(lastName)} />
+              <Input onChangeText={(lastName) => setLastName(lastName)} />
             </FormControl>
 
 
-            <FormControl>
+            {/* <FormControl>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Perfil
               </FormControl.Label>
               <Input onChangeText={(perfil) => setPerfil(perfil)} />
+            </FormControl> */}
+            <FormControl isRequired>
+              <FormControl.Label>Perfil</FormControl.Label>
+              <Select
+                minWidth="200"
+                accessibilityLabel="Elija uno.."
+                placeholder="Elija uno.."
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size={5} />,
+                }}
+                mt="1"
+              >
+                <Select.Item label="Estudiante" value="Student" />
+                <Select.Item label="Creador" value="Creator" />
+                <Select.Item label="Colaborador" value="Collaborator" />
+              </Select>
+              <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+                Seleccionar uno
+              </FormControl.ErrorMessage>
             </FormControl>
-
-            <FormControl>
+            <FormControl isRequired>
+              <FormControl.Label>Intereses</FormControl.Label>
+              <VStack space={2}>
+                <HStack alignItems="baseline">
+                  <Heading fontSize="lg">Intereses</Heading>
+                </HStack>
+                <VStack>
+                  <Box>
+                    <Text>Seleccionados: ({interests.length})</Text>
+                  </Box>
+                </VStack>
+                <Checkbox.Group
+                  colorScheme="green"
+                  defaultValue={interests}
+                  accessibilityLabel="pick an item"
+                  onChange={(interests) => {
+                    setInterests(interests || [])
+                  }}
+                >
+                  <Checkbox value="Matematica" my="1">
+                    Matematica
+                  </Checkbox>
+                  <Checkbox value="Programacion" my="1">
+                    Programacion
+                  </Checkbox>
+                  <Checkbox value="Cocina" my="1">
+                    Cocina
+                  </Checkbox>
+                  <Checkbox value="Jadrineria" my="1">
+                    Jadrineria
+                  </Checkbox>
+                </Checkbox.Group>
+              </VStack>
+            </FormControl>
+            <FormControl isRequired>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Ubicacion
               </FormControl.Label>
               <Input onChangeText={(location) => setLocation(location)} />
             </FormControl>
-
-            <FormControl>
+            {/* <FormControl>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Tipo de curso de mayor interes
               </FormControl.Label>
               <Input onChangeText={(interes) => setInteres(interes)} />
-            </FormControl>
-            <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+            </FormControl> */}
+            <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.handleSubmit()} >
               Registrate
             </Button>
           </VStack>
