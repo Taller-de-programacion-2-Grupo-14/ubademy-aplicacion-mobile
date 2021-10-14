@@ -16,11 +16,14 @@ import {
 	HStack,
 	Divider,
 	Center,
-	Image
+	Image,
+	Modal
 } from 'native-base';
 
 function PasswordOlvidadoScreen({ navigation }) {
 	const [mail, setMail] = React.useState('');
+	const [showModal, setShowModal] = React.useState(false);
+	const [modalMessage, setModalMessage] = React.useState('');
 	onSubmit = () => {
 		password(mail)
 			.then((response) => response.json())
@@ -29,7 +32,8 @@ function PasswordOlvidadoScreen({ navigation }) {
 				if (json.status === 200) {
 					navigation.navigate('RecuperoPasswordScreen');
 				} else {
-					console.log('Email no registrado');
+					setShowModal(true);
+					setModalMessage('Email no registrado');
 				}
 
 			})
@@ -40,6 +44,27 @@ function PasswordOlvidadoScreen({ navigation }) {
 	};
 	return (
 		<NativeBaseProvider>
+
+			<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+				<Modal.Content maxWidth="350">
+					<Modal.Body>
+						<VStack space={3}>
+							<HStack alignItems="center" justifyContent="space-between">
+								<Text fontWeight="medium">{modalMessage}</Text>
+							</HStack>
+						</VStack>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button colorScheme="red"
+							flex="1"
+							onPress={() => {setShowModal(false);}}
+						>
+							Continuar
+						</Button>
+					</Modal.Footer>
+				</Modal.Content>
+			</Modal>
+
 			<Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
 				<Center>
 					<Image

@@ -16,12 +16,17 @@ import {
 	HStack,
 	Divider,
 	Center,
-	Image
+	Image,
+	Modal
 } from 'native-base';
 
 function RecuperoPasswordScreen({ navigation }) {
 	const [token, setToken] = React.useState('');
 	const [newPassword, setNewPassword] = React.useState('');
+	const [showModal, setShowModal] = React.useState(false);
+	const [modalMessage, setModalMessage] = React.useState('');
+	const [showModalError, setShowModalError] = React.useState(false);
+	const [modalMessageError, setModalMessageError] = React.useState('');
 	onSubmit = () => {
 		recuperoPassword(token, newPassword)
 			.then((response) => response.json())
@@ -29,31 +34,66 @@ function RecuperoPasswordScreen({ navigation }) {
 				console.log(json);
 				if (json.status === 200) {
 					console.log('Contrasenia modificada correctamente');
-					navigation.navigate('LoginScreen');
+					setShowModal(true);
+					setModalMessage('Password actualizado');
 				} else {
-					if (json.status === 400){
-						console.log('Nuevo password invalido');
+					setShowModalError(true);
+					if (json.status === "failed"){
+						setModalMessage('El password debe tener al menos 8 caracteres');
 					} else {
-						if (json.status === 401){
-							console.log('Token invalido');
-						} else {
-							if (json.status === 403){
-								console.log('No token provisto');
-							} else {
-								console.log('Error desconocido');
-							}
-						}
+						setModalMessage('Token invalido');
 					}
 				}
-
 			})
-			.catch((error) => {
-				console.error(error);
-			});
-
+	.catch((error) => {
+		console.error(error);
+	});
 	};
 	return (
 		<NativeBaseProvider>
+
+			<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+				<Modal.Content maxWidth="350">
+					<Modal.Body>
+						<VStack space={3}>
+							<HStack alignItems="center" justifyContent="space-between">
+								<Text fontWeight="medium">{modalMessage}</Text>
+							</HStack>
+						</VStack>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button colorScheme="indigo"
+							flex="1"
+							onPress={() => {
+								navigation.navigate('LoginScreen');
+							}}
+						>
+							Continuar
+						</Button>
+					</Modal.Footer>
+				</Modal.Content>
+			</Modal>
+
+			<Modal isOpen={showModalError} onClose={() => setShowModalError(false)} size="lg">
+				<Modal.Content maxWidth="350">
+					<Modal.Body>
+						<VStack space={3}>
+							<HStack alignItems="center" justifyContent="space-between">
+								<Text fontWeight="medium">{modalMessage}</Text>
+							</HStack>
+						</VStack>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button colorScheme="red"
+							flex="1"
+							onPress={() => {setShowModalError(false);}}
+						>
+							Continuar
+						</Button>
+					</Modal.Footer>
+				</Modal.Content>
+			</Modal>
+
 			<Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
 				<Center>
 					<Image
