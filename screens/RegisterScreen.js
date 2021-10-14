@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { register } from '../src/services/register';
 import { login } from '../src/services/login';
-import { AsyncStorage } from 'react-native';
 import {
   NativeBaseProvider,
   Box,
@@ -82,7 +81,7 @@ function RegisterScreen({ navigation }) {
             </VStack>
           </Modal.Body>
           <Modal.Footer>
-            <Button
+            <Button colorScheme="indigo"
               flex="1"
               onPress={() => {
                 navigation.navigate("HomeScreen")
