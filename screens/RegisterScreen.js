@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { register } from '../src/services/register';
 import { login } from '../src/services/login';
+import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
 import {
 	NativeBaseProvider,
@@ -10,16 +11,12 @@ import {
 	VStack,
 	FormControl,
 	Input,
-	Link,
 	Button,
 	Select,
 	CheckIcon,
 	WarningOutlineIcon,
 	Checkbox,
-	Icon,
-	IconButton,
 	HStack,
-	Divider,
 	Center,
 	ScrollView,
 	Image,
@@ -28,10 +25,10 @@ import {
 
 
 
-function RegisterScreen({ navigation }) {
+export default function RegisterScreen({ navigation }) {
 	const [mail, setMail] = React.useState('');
 	const [password, setPassword] = React.useState('');
-	const [password2, setPassword2] = React.useState('');
+	//const [passwordR, setPasswordR] = React.useState('');
 	const [name, setName] = React.useState('');
 	const [lastName, setLastName] = React.useState('');
 	const [perfil, setPerfil] = React.useState('');
@@ -44,7 +41,7 @@ function RegisterScreen({ navigation }) {
 	this.handleSubmit = () => {
 		register(mail, password, name, lastName, perfil, location, interests)
 			.then((response) => {
-				json = response.json();
+				const json = response.json();
 				console.log(json);
 				if (response.status === 200) {
 					login(mail, password)
@@ -146,7 +143,7 @@ function RegisterScreen({ navigation }) {
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
                 Repita la contraseña
 							</FormControl.Label>
-							<Input type="password" onChangeText={(password2) => setPassword2(password2)} />
+							<Input type="password" onChangeText={(password) => setPassword(password)} />
 						</FormControl>
 
 						<FormControl isRequired>
@@ -233,4 +230,8 @@ function RegisterScreen({ navigation }) {
 	);
 }
 
-export default RegisterScreen;
+RegisterScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+};

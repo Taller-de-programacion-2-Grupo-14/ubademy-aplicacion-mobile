@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { registerRootComponent } from 'expo';
-import { makeServer } from './src/mirage-server/server';
+//import { makeServer } from './src/mirage-server/server';
 import App from './App';
 
 //para desactivar el mirage, comentar estas lineas
