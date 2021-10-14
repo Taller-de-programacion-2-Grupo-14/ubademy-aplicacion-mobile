@@ -20,6 +20,7 @@ function App() {
 				<Stack.Screen name="HomeScreen" component={HomeScreen} />
 				<Stack.Screen name="UpdateUsuarioScreen" component={UpdateUsuarioScreen} />
 				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} />
+				<Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
