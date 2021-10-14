@@ -3,34 +3,34 @@ import { recuperoPassword } from '../src/services/recuperoPassword';
 import { AsyncStorage } from 'react-native';
 import {
 	NativeBaseProvider,
-  Box,
-  Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
-  Icon,
-  IconButton,
-  HStack,
-  Divider,
-  Center,
-  Image
+	Box,
+	Text,
+	Heading,
+	VStack,
+	FormControl,
+	Input,
+	Link,
+	Button,
+	Icon,
+	IconButton,
+	HStack,
+	Divider,
+	Center,
+	Image
 } from 'native-base';
 
 function RecuperoPasswordScreen({ navigation }) {
-	const [token, setToken] = React.useState("");
-  const [newPassword, setNewPassword] = React.useState("");
-  onSubmit = () => {
-    recuperoPassword(token, newPassword)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        if (json.status === 200) {
+	const [token, setToken] = React.useState('');
+	const [newPassword, setNewPassword] = React.useState('');
+	onSubmit = () => {
+		recuperoPassword(token, newPassword)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				if (json.status === 200) {
 					console.log('Contrasenia modificada correctamente');
-					navigation.navigate("LoginScreen")
-        } else {
+					navigation.navigate('LoginScreen');
+				} else {
 					if (json.status === 400){
 						console.log('Nuevo password invalido');
 					} else {
@@ -44,14 +44,14 @@ function RecuperoPasswordScreen({ navigation }) {
 							}
 						}
 					}
-        }
+				}
 
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 
-  }
+	};
 	return (
 		<NativeBaseProvider>
 			<Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
