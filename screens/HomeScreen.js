@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import {
     NativeBaseProvider,
     Box,
@@ -15,13 +16,14 @@ import {
     Pressable,
     Menu,
     HamburgerIcon,
+    Spinner
 } from 'native-base';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { IconButton, StatusBar } from "native-base";
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
+import { useFocusEffect } from '@react-navigation/native';
 
-
-export function Example() {
+export function Example({ navigation }) {
     return (
 
         <Menu
@@ -34,14 +36,8 @@ export function Example() {
                 )
             }}
         >
-            <Menu.Item>Arial</Menu.Item>
-            <Menu.Item>Nunito Sans</Menu.Item>
-            <Menu.Item>Roboto</Menu.Item>
-            <Menu.Item>Poppins</Menu.Item>
-            <Menu.Item>SF Pro</Menu.Item>
-            <Menu.Item>Helvetica</Menu.Item>
-            <Menu.Item isDisabled>Sofia</Menu.Item>
-            <Menu.Item>Cookie</Menu.Item>
+            <Menu.Item>Eliminar cuenta</Menu.Item>
+            <Menu.Item>Salir</Menu.Item>
         </Menu>
 
     )
@@ -50,15 +46,24 @@ export function Example() {
 export default function HomeScreen({ navigation }) {
     const [selected, setSelected] = React.useState(1);
     const [firstName, setFirstName] = React.useState("");
+    const [loading, setLoading] = React.useState(true);
 
-    useEffect(() => {
-        obtenerUsuario()
-            .then(data => data.json())
-            .then(json => {
-                console.log(json);
-                setFirstName(json.first_name)
-            })
-    })
+    useFocusEffect(
+        React.useCallback(() => {
+            // Do something when the screen is focused
+            setLoading(false);
+            obtenerUsuario()
+                .then(data => data.json())
+                .then(json => {
+                    console.log(json);
+                    setFirstName(json.first_name)
+                })
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+        }, [])
+    );
 
     return (
 
@@ -67,7 +72,7 @@ export default function HomeScreen({ navigation }) {
 
             <Box safeAreaTop backgroundColor="#109bd6" />
 
-            <HStack bg='#109bd6' px="1" py="3" justifyContent='space-between' alignItems='center'>
+            <HStack bg="indigo.500" px="1" py="3" justifyContent='space-between' alignItems='center'>
                 <HStack space="4" alignItems='center'>
                     <Example />
                     <Text color="white" fontSize="20" >Home</Text>
@@ -79,12 +84,20 @@ export default function HomeScreen({ navigation }) {
                     <IconButton icon={<Icon as={<MaterialIcons name='more-vert' />} size='sm' color="white" />} />
                 </HStack>
             </HStack>
-            <Heading size="lg" fontWeight="600" color="coolGray.800">
-                Bienvenido {firstName}
-            </Heading>
+            {
+                loading ?
+                    <View style={spinnerStyles.spinnerStyle}>
+                        <Spinner color="indigo.500" size="lg" />
+                    </View> :
+                    <Box safeArea flex={7} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
+                        <Heading size="lg" fontWeight="600" color="coolGray.800" >
+                            Bienvenido {firstName}
+                        </Heading>
+                    </Box>
+            }
             <Box flex={1} bg="white" safeAreaTop>
                 <Center flex={1}></Center>
-                <HStack bg="#109bd6" alignItems="center" safeAreaBottom shadow={6}>
+                <HStack bg="indigo.500" alignItems="center" safeAreaBottom shadow={6}>
                     <Pressable
                         cursor="pointer"
                         opacity={selected === 0 ? 1 : 0.5}
@@ -178,3 +191,11 @@ export default function HomeScreen({ navigation }) {
         </NativeBaseProvider>
     );
 }
+
+const spinnerStyles = StyleSheet.create({
+    spinnerStyle: {
+        flex: 7,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
