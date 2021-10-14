@@ -38,28 +38,15 @@ function RegisterScreen({ navigation }) {
   const [location, setLocation] = React.useState("");
   const [interests, setInterests] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
-  const validate = () => {
-    if (name === undefined) {
-      setErrors({
-        ...errors,
-        name: 'Name is required',
-      });
-      return false;
-    } else if (name.length < 3) {
-      setErrors({
-        ...errors,
-        name: 'Name is too short',
-      });
-      return false;
-    }
-    return true;
-  };
+  const [message, setMessage] = React.useState("");
+  const [error, setError] = React.useState(false);
+
   this.handleSubmit = () => {
     register(mail, password, name, lastName, perfil, location, interests)
-      .then((response) => response.json())
-      .then((json) => {
+      .then((response) => {
+        json = response.json()
         console.log(json);
-        if (json.status === 200) {
+        if (response.status === 200) {
           login(mail, password)
             .then((response) => response.json())
             .then((json) => {
@@ -67,8 +54,12 @@ function RegisterScreen({ navigation }) {
               if (json.status === 200) {
                 SecureStore.setItemAsync('secure_token', json.token);
                 console.log(json.token);
+                setMessage('Registro Exitoso!');
                 setShowModal(true);
               } else {
+                setMessage('email o contrasenia invalidos');
+                setError(true);
+                setShowModal(true);
                 console.log('email o contrasenia invalidos');
               }
 
@@ -77,8 +68,11 @@ function RegisterScreen({ navigation }) {
               console.error(error);
             });
           //navigation.navigate("LoginScreen")
-        } else {
-          console.log('registro fallido');
+        } else if(response.status == 400) {
+          setMessage('Error al registrarse');
+          setError(true);
+          setShowModal(true);
+          console.log('Bad Request');
         }
 
       })
@@ -95,7 +89,7 @@ function RegisterScreen({ navigation }) {
           <Modal.Body>
             <VStack space={3}>
               <HStack alignItems="center" justifyContent="space-between">
-                <Text fontWeight="medium">¡Registro exitoso!</Text>
+                <Text fontWeight="medium">{message}</Text>
               </HStack>
             </VStack>
           </Modal.Body>
@@ -103,7 +97,7 @@ function RegisterScreen({ navigation }) {
             <Button colorScheme="indigo"
               flex="1"
               onPress={() => {
-                navigation.navigate("HomeScreen")
+                error? setShowModal(false): navigation.navigate("HomeScreen")
               }}
             >
               Continuar
