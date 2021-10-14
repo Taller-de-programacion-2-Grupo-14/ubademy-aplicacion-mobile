@@ -29,7 +29,7 @@ function RecuperoPasswordScreen({ navigation }) {
         console.log(json);
         if (json.status === 200) {
 					console.log('Contrasenia modificada correctamente');
-					navigation.navigate("HomeScreen")
+					navigation.navigate("LoginScreen")
         } else {
 					if (json.status === 400){
 						console.log('Nuevo password invalido');
