@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { register } from '../src/services/register';
 import { login } from '../src/services/login';
+import * as SecureStore from 'expo-secure-store';
 import {
   NativeBaseProvider,
   Box,
@@ -14,6 +15,7 @@ import {
   Select,
   CheckIcon,
   WarningOutlineIcon,
+  Checkbox,
   Icon,
   IconButton,
   HStack,
@@ -29,14 +31,31 @@ import {
 function RegisterScreen({ navigation }) {
   const [mail, setMail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [password2, setPassword2] = React.useState("");
   const [name, setName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [perfil, setPerfil] = React.useState("");
   const [location, setLocation] = React.useState("");
   const [interests, setInterests] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
-  handleSubmit = () => {
-    register(mail, password, name, lastName, perfil, location)
+  const validate = () => {
+    if (name === undefined) {
+      setErrors({
+        ...errors,
+        name: 'Name is required',
+      });
+      return false;
+    } else if (name.length < 3) {
+      setErrors({
+        ...errors,
+        name: 'Name is too short',
+      });
+      return false;
+    }
+    return true;
+  };
+  this.handleSubmit = () => {
+    register(mail, password, name, lastName, perfil, location, interests)
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
@@ -124,9 +143,16 @@ function RegisterScreen({ navigation }) {
             <FormControl isRequired>
               <FormControl.Label
                 _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                Password
+                Contraseña
               </FormControl.Label>
               <Input type="password" onChangeText={(password) => setPassword(password)} />
+            </FormControl>
+            <FormControl isRequired>
+              <FormControl.Label
+                _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+                Repita la contraseña
+              </FormControl.Label>
+              <Input type="password" onChangeText={(password2) => setPassword2(password2)} />
             </FormControl>
 
             <FormControl isRequired>
@@ -143,26 +169,19 @@ function RegisterScreen({ navigation }) {
               </FormControl.Label>
               <Input onChangeText={(lastName) => setLastName(lastName)} />
             </FormControl>
-
-
-            {/* <FormControl>
-              <FormControl.Label
-                _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                Perfil
-              </FormControl.Label>
-              <Input onChangeText={(perfil) => setPerfil(perfil)} />
-            </FormControl> */}
             <FormControl isRequired>
               <FormControl.Label>Perfil</FormControl.Label>
               <Select
+                selectedValue={perfil}
                 minWidth="200"
-                accessibilityLabel="Elija uno.."
-                placeholder="Elija uno.."
+                accessibilityLabel="Elegir Perfil"
+                placeholder="Elegir Perfil"
                 _selectedItem={{
                   bg: "teal.600",
-                  endIcon: <CheckIcon size={5} />,
+                  endIcon: <CheckIcon size="5" />,
                 }}
-                mt="1"
+                mt={1}
+                onValueChange={(perfil) => setPerfil(perfil)}
               >
                 <Select.Item label="Estudiante" value="Student" />
                 <Select.Item label="Creador" value="Creator" />
@@ -175,9 +194,6 @@ function RegisterScreen({ navigation }) {
             <FormControl isRequired>
               <FormControl.Label>Intereses</FormControl.Label>
               <VStack space={2}>
-                <HStack alignItems="baseline">
-                  <Heading fontSize="lg">Intereses</Heading>
-                </HStack>
                 <VStack>
                   <Box>
                     <Text>Seleccionados: ({interests.length})</Text>
@@ -200,8 +216,8 @@ function RegisterScreen({ navigation }) {
                   <Checkbox value="Cocina" my="1">
                     Cocina
                   </Checkbox>
-                  <Checkbox value="Jadrineria" my="1">
-                    Jadrineria
+                  <Checkbox value="Jardineria" my="1">
+                    Jardineria
                   </Checkbox>
                 </Checkbox.Group>
               </VStack>
@@ -213,13 +229,6 @@ function RegisterScreen({ navigation }) {
               </FormControl.Label>
               <Input onChangeText={(location) => setLocation(location)} />
             </FormControl>
-            {/* <FormControl>
-              <FormControl.Label
-                _text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                Tipo de curso de mayor interes
-              </FormControl.Label>
-              <Input onChangeText={(interes) => setInteres(interes)} />
-            </FormControl> */}
             <Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.handleSubmit()} >
               Registrate
             </Button>
