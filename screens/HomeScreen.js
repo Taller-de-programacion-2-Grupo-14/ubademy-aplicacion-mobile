@@ -30,7 +30,7 @@ export function hardLogout(navigation) {
 	SecureStore.deleteItemAsync('secure_token').then(() => console.log('token deleted'));
 }
 
-export function Example({navigation}) {
+export function HamburgerMenu({navigation}) {
 	return (
 
 		<Menu
@@ -88,7 +88,7 @@ export default function HomeScreen({ navigation }) {
 
 			<HStack bg="indigo.500" px="1" py="3" justifyContent='space-between' alignItems='center'>
 				<HStack space="4" alignItems='center'>
-					<Example />
+                    {HamburgerMenu({navigation})}
 					<Text color="white" fontSize="20" >Home</Text>
 				</HStack>
 				<HStack space="2">
