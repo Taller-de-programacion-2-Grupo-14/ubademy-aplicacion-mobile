@@ -24,7 +24,7 @@ function LoginScreen({ navigation }) {
   const [user, setUser] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showModal, setShowModal] = React.useState(false)
-  onSubmit = () => {
+  this.onSubmit = () => {
     login(user, password)
       .then((response) => response.json())
       .then((json) => {
@@ -46,6 +46,25 @@ function LoginScreen({ navigation }) {
   }
   return (
     <NativeBaseProvider>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.Body>
+            <VStack space={3}>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text fontWeight="medium">Usuario o contraseña invalidos</Text>
+              </HStack>
+            </VStack>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button colorScheme="indigo"
+              flex="1"
+              onPress={() => {setShowModal(false)}}
+            >
+              Continuar
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
       <Box safeArea flex={1} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
         <Center>
           <Image

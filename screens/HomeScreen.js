@@ -99,7 +99,6 @@ export default function HomeScreen({ navigation }) {
                 <Center flex={1}></Center>
                 <HStack bg="indigo.500" alignItems="center" safeAreaBottom shadow={6}>
                     <Pressable
-                        cursor="pointer"
                         opacity={selected === 0 ? 1 : 0.5}
                         py="3"
                         flex={1}
@@ -121,7 +120,6 @@ export default function HomeScreen({ navigation }) {
                         </Center>
                     </Pressable>
                     <Pressable
-                        cursor="pointer"
                         opacity={selected === 1 ? 1 : 0.5}
                         py="2"
                         flex={1}
@@ -140,7 +138,6 @@ export default function HomeScreen({ navigation }) {
                         </Center>
                     </Pressable>
                     <Pressable
-                        cursor="pointer"
                         opacity={selected === 2 ? 1 : 0.6}
                         py="2"
                         flex={1}
@@ -163,7 +160,6 @@ export default function HomeScreen({ navigation }) {
                         </Center>
                     </Pressable>
                     <Pressable
-                        cursor="pointer"
                         opacity={selected === 3 ? 1 : 0.5}
                         py="2"
                         flex={1}
