@@ -1,6 +1,7 @@
 import React from 'react';
 import { login } from '../src/services/login';
 import * as SecureStore from 'expo-secure-store';
+import PropTypes from 'prop-types';
 import {
 	NativeBaseProvider,
 	Box,
@@ -11,16 +12,13 @@ import {
 	Input,
 	Link,
 	Button,
-	Icon,
-	IconButton,
 	HStack,
-	Divider,
 	Center,
 	Image,
 	Modal
 } from 'native-base';
 
-function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation }) {
 	const [user, setUser] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
@@ -132,4 +130,9 @@ function LoginScreen({ navigation }) {
 	);
 }
 
-export default LoginScreen;
+LoginScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+};
+

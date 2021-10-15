@@ -1,6 +1,6 @@
 import React from 'react';
 import { recuperoPassword } from '../src/services/recuperoPassword';
-import { AsyncStorage } from 'react-native';
+import PropTypes from 'prop-types';
 import {
 	NativeBaseProvider,
 	Box,
@@ -9,25 +9,20 @@ import {
 	VStack,
 	FormControl,
 	Input,
-	Link,
 	Button,
-	Icon,
-	IconButton,
 	HStack,
-	Divider,
 	Center,
 	Image,
 	Modal
 } from 'native-base';
 
-function RecuperoPasswordScreen({ navigation }) {
+export default function RecuperoPasswordScreen({ navigation }) {
 	const [token, setToken] = React.useState('');
 	const [newPassword, setNewPassword] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalMessage, setModalMessage] = React.useState('');
 	const [showModalError, setShowModalError] = React.useState(false);
-	const [modalMessageError, setModalMessageError] = React.useState('');
-	onSubmit = () => {
+	this.onSubmit = () => {
 		recuperoPassword(token, newPassword)
 			.then((response) => response.json())
 			.then((json) => {
@@ -38,16 +33,16 @@ function RecuperoPasswordScreen({ navigation }) {
 					setModalMessage('Password actualizado');
 				} else {
 					setShowModalError(true);
-					if (json.status === "failed"){
+					if (json.status === 'failed'){
 						setModalMessage('El password debe tener al menos 8 caracteres');
 					} else {
 						setModalMessage('Token invalido');
 					}
 				}
 			})
-	.catch((error) => {
-		console.error(error);
-	});
+			.catch((error) => {
+				console.error(error);
+			});
 	};
 	return (
 		<NativeBaseProvider>
@@ -140,4 +135,8 @@ function RecuperoPasswordScreen({ navigation }) {
 	);
 }
 
-export default RecuperoPasswordScreen;
+RecuperoPasswordScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+};

@@ -1,6 +1,6 @@
 import React from 'react';
 import { password } from '../src/services/password';
-import { AsyncStorage } from 'react-native';
+import PropTypes from 'prop-types';
 import {
 	NativeBaseProvider,
 	Box,
@@ -9,22 +9,18 @@ import {
 	VStack,
 	FormControl,
 	Input,
-	Link,
 	Button,
-	Icon,
-	IconButton,
 	HStack,
-	Divider,
 	Center,
 	Image,
 	Modal
 } from 'native-base';
 
-function PasswordOlvidadoScreen({ navigation }) {
+export default function PasswordOlvidadoScreen({ navigation }) {
 	const [mail, setMail] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalMessage, setModalMessage] = React.useState('');
-	onSubmit = () => {
+	this.onSubmit = () => {
 		password(mail)
 			.then((response) => response.json())
 			.then((json) => {
@@ -99,4 +95,8 @@ function PasswordOlvidadoScreen({ navigation }) {
 	);
 }
 
-export default PasswordOlvidadoScreen;
+PasswordOlvidadoScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+};

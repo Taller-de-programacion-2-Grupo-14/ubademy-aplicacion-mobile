@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import {
 	NativeBaseProvider,
 	Box,
@@ -8,14 +9,8 @@ import {
 	VStack,
 	FormControl,
 	Input,
-	Link,
 	Button,
-	Icon,
-	IconButton,
 	HStack,
-	Divider,
-	Center,
-	Image,
 	Modal,
 	ScrollView,
 	Spinner
@@ -25,7 +20,7 @@ import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-function UpdateUsuarioScreen({ navigation }) {
+export default function UpdateUsuarioScreen({ navigation }) {
 	const [firstName, setFirstName] = React.useState('');
 	const [lastName, setLastName] = React.useState('');
 	const [location, setLocation] = React.useState('');
@@ -170,4 +165,8 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default UpdateUsuarioScreen;
+UpdateUsuarioScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+};

@@ -1,15 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import {
 	NativeBaseProvider,
 	Box,
 	Text,
 	Heading,
-	VStack,
-	FormControl,
-	Input,
-	Link,
-	Button,
 	Icon,
 	HStack,
 	Center,
@@ -88,7 +84,7 @@ export default function HomeScreen({ navigation }) {
 
 			<HStack bg="indigo.500" px="1" py="3" justifyContent='space-between' alignItems='center'>
 				<HStack space="4" alignItems='center'>
-                    {HamburgerMenu({navigation})}
+					{HamburgerMenu({navigation})}
 					<Text color="white" fontSize="20" >Home</Text>
 				</HStack>
 				<HStack space="2">
@@ -209,3 +205,15 @@ const spinnerStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 });
+
+HomeScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+};
+
+HamburgerMenu.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+};
