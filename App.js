@@ -4,8 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
 import Home from './screens/Home';
-import PasswordOlvidadoScreen from './screens/PasswordOlvidadoScreen'
-import RecuperoPasswordScreen from './screens/RecuperoPasswordScreen'
+import PasswordOlvidadoScreen from './screens/PasswordOlvidadoScreen';
+import RecuperoPasswordScreen from './screens/RecuperoPasswordScreen';
 
 
 const Stack = createNativeStackNavigator();
