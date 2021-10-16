@@ -88,7 +88,7 @@ function UpdateUsuarioScreen({ navigation }) {
             <Button colorScheme="indigo"
               flex="1"
               onPress={() => {
-                navigation.navigate("HomeScreen")
+                navigation.goBack()
               }}
             >
               Continuar
