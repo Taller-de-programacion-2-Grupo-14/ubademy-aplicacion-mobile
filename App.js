@@ -18,6 +18,7 @@ function App() {
 				<Stack.Screen name="RegisterScreen" component={RegisterScreen} />
 				<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
 				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} />
+				<Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
