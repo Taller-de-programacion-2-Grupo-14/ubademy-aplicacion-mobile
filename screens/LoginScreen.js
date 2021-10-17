@@ -2,6 +2,7 @@ import React from 'react';
 import { login } from '../src/services/login';
 import * as SecureStore from 'expo-secure-store';
 import PropTypes from 'prop-types';
+
 import {
 	NativeBaseProvider,
 	Box,
@@ -30,7 +31,7 @@ export default function LoginScreen({ navigation }) {
 				if (json.status === 200) {
 					SecureStore.setItemAsync('secure_token', json.token);
 					console.log(json.token);
-					navigation.navigate('HomeScreen');
+					navigation.navigate('Home');
 				} else {
 					setShowModal(true);
 					console.log('email o contrasenia invalidos');
@@ -56,7 +57,7 @@ export default function LoginScreen({ navigation }) {
 					<Modal.Footer>
 						<Button colorScheme="indigo"
 							flex="1"
-							onPress={() => {setShowModal(false);}}
+							onPress={() => { setShowModal(false); }}
 						>
               Continuar
 						</Button>
@@ -135,4 +136,3 @@ LoginScreen.propTypes = {
 		navigate: PropTypes.func.isRequired,
 	}).isRequired,
 };
-
