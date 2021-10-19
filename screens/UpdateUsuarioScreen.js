@@ -40,7 +40,6 @@ function UpdateUsuarioScreen({ navigation }) {
 				.then(data => data.json())
 				.then(json => {
 					setLoading(false);
-					console.log('useeffect de update usuario');
 					console.log(json);
 					setFirstName(json.first_name);
 					setLastName(json.last_name);
@@ -108,7 +107,7 @@ function UpdateUsuarioScreen({ navigation }) {
 					>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Editar usuario
+								Modificar mis datos
 							</Heading>
 
 							<VStack space={3} mt="5">

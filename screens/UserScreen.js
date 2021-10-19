@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import UpdateUsuarioScreen from './UpdateUsuarioScreen';
@@ -13,13 +13,41 @@ import {
 	ScrollView,
 	Spinner,
 } from 'native-base';
+import showAlert from './PopUp';
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
 
 UsuarioHome.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
+
+export function HardLogout({ navigation }) {
+	useFocusEffect(
+		React.useCallback(() => {
+			// Do something when the screen is focused
+			showAlert(() => {
+				SecureStore.deleteItemAsync('secure_token').then(() => console.log('token deleted'));
+				navigation.navigate('LoginScreen');
+			}, navigation);
+			return () => {
+				// Do something when the screen is unfocused
+				// Useful for cleanup functions
+			};
+		}, [])
+	);
+	return null;
+}
+
+export function Logout({ navigation }) {
+	useEffect(() => {
+		SecureStore.deleteItemAsync('secure_token').then(() => console.log('token deleted'));
+		navigation.navigate('LoginScreen');
+	});
+	return null;
+}
+
 
 function UsuarioHome({ navigation }) {
 	const [firstName, setFirstName] = React.useState('');
@@ -125,9 +153,8 @@ export default function UsuarioApp() {
 		<Drawer.Navigator initialRouteName="UsuarioHome">
 			<Drawer.Screen name="Mi perfil" component={UsuarioHome} />
 			<Drawer.Screen name="Modificar datos" component={UpdateUsuarioScreen} />
-			{/*                 <Drawer.Screen name="SignOut" component={SignOut} />
-                <Drawer.Screen name="ChangePassword" component={ChangePassword} />
-                <Drawer.Screen name="Eliminar" component={Eliminar} /> */}
+			<Drawer.Screen name="Salir" component={Logout} />
+			<Drawer.Screen name="Eliminar cuenta" component={HardLogout} />
 		</Drawer.Navigator>
 	);
 }
