@@ -1,14 +1,16 @@
-import {Alert} from 'react-native';
-import * as SecureStore from 'expo-secure-store';
+import { Alert } from 'react-native';
+import { eliminarUsuario } from '../src/services/eliminarUsuario';
 
-const showAlert = (method) =>
+const showAlert = (method, navigation) =>
 	Alert.alert(
 		'',
 		'Estas seguro que queres borrar tu perfil?',
 		[
 			{
 				text: 'Cancelar',
-				style: 'cancel'
+				style: 'cancel',
+				style: 'cancel',
+				onPress: () => navigation.goBack()
 			},
 			{
 				text: 'Borrar',
@@ -24,15 +26,6 @@ const showAlert = (method) =>
 		}
 	);
 
-async function eliminarUsuario() {
-	const token = await SecureStore.getItemAsync('secure_token');
-	return fetch('https://ubademy-14.herokuapp.com/users/delete-user', {
-		method: 'DELETE',
-		headers: {
-			Accept: 'application/json',
-			'x-access-token': token
-		}
-	});
-}
+
 
 export default showAlert;
