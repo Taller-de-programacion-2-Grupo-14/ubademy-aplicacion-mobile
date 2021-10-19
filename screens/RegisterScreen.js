@@ -1,6 +1,8 @@
 import React from 'react';
 import { register } from '../src/services/register';
+import { login } from '../src/services/login';
 import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
 import {
 	NativeBaseProvider,
 	Box,
@@ -22,6 +24,7 @@ import {
 } from 'native-base';
 
 
+
 export default function RegisterScreen({ navigation }) {
 	const [mail, setMail] = React.useState('');
 	const [password, setPassword] = React.useState('');
@@ -41,28 +44,28 @@ export default function RegisterScreen({ navigation }) {
 				const json = response.json();
 				console.log(json);
 				if (response.status === 200) {
-					setMessage('Registro Exitoso!');
-					setShowModal(true);
-					// login(mail, password)
-					// 	.then((response) => response.json())
-					// 	.then((json) => {
-					// 		console.log(json);
-					// 		if (json.status === 200) {
-					// 			SecureStore.setItemAsync('secure_token', json.token);
-					// 			console.log(json.token);
-					// 		} else {
-					// 			setMessage('email o contrasenia invalidos');
-					// 			setError(true);
-					// 			setShowModal(true);
-					// 			console.log('email o contrasenia invalidos');
-					// 		}
+					login(mail, password)
+						.then((response) => response.json())
+						.then((json) => {
+							console.log(json);
+							if (json.status === 200) {
+								SecureStore.setItemAsync('secure_token', json.token);
+								console.log(json.token);
+								setMessage('Registro Exitoso!');
+								setShowModal(true);
+							} else {
+								setMessage('email o contrasenia invalidos');
+								setError(true);
+								setShowModal(true);
+								console.log('email o contrasenia invalidos');
+							}
 
-					// 	})
-					// 	.catch((error) => {
-					// 		console.error(error);
-					// 	});
-
-				} else if (response.status == 400) {
+						})
+						.catch((error) => {
+							console.error(error);
+						});
+					//navigation.navigate("LoginScreen")
+				} else if(response.status == 400) {
 					setMessage('Error al registrarse');
 					setError(true);
 					setShowModal(true);
@@ -91,10 +94,10 @@ export default function RegisterScreen({ navigation }) {
 						<Button colorScheme="indigo"
 							flex="1"
 							onPress={() => {
-								error ? setShowModal(false) : navigation.goBack();
+								error? setShowModal(false): navigation.navigate('HomeScreen');
 							}}
 						>
-							Continuar
+              Continuar
 						</Button>
 					</Modal.Footer>
 				</Modal.Content>
@@ -114,16 +117,16 @@ export default function RegisterScreen({ navigation }) {
 						/>
 					</Center>
 					<Heading size="lg" color="coolGray.800" fontWeight="600">
-						Bienvenido
+            Bienvenido
 					</Heading>
 					<Heading mt="1" color="coolGray.600" fontWeight="medium" size="xs">
-						Registrate para continuar!
+            Registrate para continuar!
 					</Heading>
 					<VStack space={3} mt="5">
 						<FormControl isRequired>
 							<FormControl.Label
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-								Email
+                Email
 							</FormControl.Label>
 							<Input onChangeText={(mail) => setMail(mail)} />
 						</FormControl>
@@ -131,14 +134,14 @@ export default function RegisterScreen({ navigation }) {
 						<FormControl isRequired>
 							<FormControl.Label
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-								Contraseña
+                Contraseña
 							</FormControl.Label>
 							<Input type="password" onChangeText={(password) => setPassword(password)} />
 						</FormControl>
 						<FormControl isRequired>
 							<FormControl.Label
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-								Repita la contraseña
+                Repita la contraseña
 							</FormControl.Label>
 							<Input type="password" onChangeText={(password) => setPassword(password)} />
 						</FormControl>
@@ -146,14 +149,14 @@ export default function RegisterScreen({ navigation }) {
 						<FormControl isRequired>
 							<FormControl.Label
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-								Nombre
+                Nombre
 							</FormControl.Label>
 							<Input onChangeText={(name) => setName(name)} />
 						</FormControl>
 						<FormControl isRequired>
 							<FormControl.Label
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-								Apellido
+                Apellido
 							</FormControl.Label>
 							<Input onChangeText={(lastName) => setLastName(lastName)} />
 						</FormControl>
@@ -176,7 +179,7 @@ export default function RegisterScreen({ navigation }) {
 								<Select.Item label="Colaborador" value="Collaborator" />
 							</Select>
 							<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-								Seleccionar uno
+                Seleccionar uno
 							</FormControl.ErrorMessage>
 						</FormControl>
 						<FormControl isRequired>
@@ -196,16 +199,16 @@ export default function RegisterScreen({ navigation }) {
 									}}
 								>
 									<Checkbox value="Matematica" my="1">
-										Matematica
+                    Matematica
 									</Checkbox>
 									<Checkbox value="Programacion" my="1">
-										Programacion
+                    Programacion
 									</Checkbox>
 									<Checkbox value="Cocina" my="1">
-										Cocina
+                    Cocina
 									</Checkbox>
 									<Checkbox value="Jardineria" my="1">
-										Jardineria
+                    Jardineria
 									</Checkbox>
 								</Checkbox.Group>
 							</VStack>
@@ -213,12 +216,12 @@ export default function RegisterScreen({ navigation }) {
 						<FormControl isRequired>
 							<FormControl.Label
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-								Ubicacion
+                Ubicacion
 							</FormControl.Label>
 							<Input onChangeText={(location) => setLocation(location)} />
 						</FormControl>
 						<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.handleSubmit()} >
-							Registrate
+              Registrate
 						</Button>
 					</VStack>
 				</Box>
@@ -230,6 +233,5 @@ export default function RegisterScreen({ navigation }) {
 RegisterScreen.propTypes = {
 	navigation: PropTypes.shape({
 		navigate: PropTypes.func.isRequired,
-		goBack: PropTypes.func.isRequired,
 	}).isRequired,
 };
