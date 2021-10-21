@@ -1,8 +1,6 @@
 import React from 'react';
 import { register } from '../src/services/register';
-import { login } from '../src/services/login';
 import PropTypes from 'prop-types';
-import * as SecureStore from 'expo-secure-store';
 import {
 	NativeBaseProvider,
 	Box,
@@ -234,5 +232,6 @@ export default function RegisterScreen({ navigation }) {
 RegisterScreen.propTypes = {
 	navigation: PropTypes.shape({
 		navigate: PropTypes.func.isRequired,
+		goBack: PropTypes.func,
 	}).isRequired,
 };

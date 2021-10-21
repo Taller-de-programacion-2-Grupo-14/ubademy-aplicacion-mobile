@@ -9,7 +9,6 @@ const showAlert = (method, navigation) =>
 			{
 				text: 'Cancelar',
 				style: 'cancel',
-				style: 'cancel',
 				onPress: () => navigation.goBack()
 			},
 			{
