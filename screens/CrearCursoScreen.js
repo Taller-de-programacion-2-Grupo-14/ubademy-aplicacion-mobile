@@ -1,9 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import CrearCursoScreen from './CrearCursoScreen';
-import InscribirmeScreen from './InscribirmeScreen';
-import SerColaboradorScreen from './SerColaboradorScreen';
 import {
 	NativeBaseProvider,
 	Box,
@@ -11,21 +7,22 @@ import {
 	Heading,
 	VStack,
 	FormControl,
+	Input,
 	Button,
+	HStack,
+	Modal,
 	ScrollView,
-	Spinner,
+	Spinner
 } from 'native-base';
-import { useFocusEffect } from '@react-navigation/native';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
+import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import showAlert from './PopUp';
-import * as SecureStore from 'expo-secure-store';
 
-CursosHome.propTypes = {
+CrearCursoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
-function CursosHome({ navigation }) {
+function CrearCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(
@@ -43,7 +40,6 @@ function CursosHome({ navigation }) {
 		}, [])
 	);
 
-
 	return (
 
 		<NativeBaseProvider>
@@ -60,25 +56,12 @@ function CursosHome({ navigation }) {
 					>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Por ahora nada
+								Crear curso (por ahora nada)
 							</Heading>
 						</Box>
 					</ScrollView>
 			}
-		</NativeBaseProvider >
-	);
-}
-
-const Drawer = createDrawerNavigator();
-
-export default function CursosApp() {
-	return (
-		<Drawer.Navigator initialRouteName="CursosHome">
-			<Drawer.Screen name="Mis cursos" component={CursosHome} />
-			<Drawer.Screen name="Inscribirme a un curso" component={InscribirmeScreen} />
-			<Drawer.Screen name="Crear un curso" component={CrearCursoScreen} />
-			<Drawer.Screen name="Ser colaborador de un curso" component={SerColaboradorScreen} />
-		</Drawer.Navigator>
+		</NativeBaseProvider>
 	);
 }
 
@@ -89,3 +72,5 @@ const spinnerStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 });
+
+export default CrearCursoScreen;
