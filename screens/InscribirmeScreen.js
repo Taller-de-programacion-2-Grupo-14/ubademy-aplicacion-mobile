@@ -3,14 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
-	Text,
 	Heading,
-	VStack,
-	FormControl,
-	Input,
-	Button,
-	HStack,
-	Modal,
 	ScrollView,
 	Spinner
 } from 'native-base';
