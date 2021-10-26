@@ -16,7 +16,6 @@ import {
 	Spinner,
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import PropTypes from 'prop-types';
 import showAlert from './PopUp';
 import * as SecureStore from 'expo-secure-store';
@@ -31,11 +30,7 @@ function CursosHome({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerUsuario()
-				.then(data => data.json())
-				.then(json => {
-					setLoading(false);
-				});
+			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions

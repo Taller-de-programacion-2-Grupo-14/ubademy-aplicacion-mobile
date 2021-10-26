@@ -1,6 +1,6 @@
 export function editarUsuario(firstName, lastName, location, intrests, email) {
 	//cambiar la url por la de heroku cuando el mirage este desactivado
-	return fetch('https://ubademy-14.herokuapp.com/users', {
+	return fetch('http://10.0.2.2:8080/modificar', {
 		method: 'PATCH',
 		headers: {
 			Accept: 'application/json',

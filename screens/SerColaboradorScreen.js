@@ -7,7 +7,6 @@ import {
 	ScrollView,
 	Spinner
 } from 'native-base';
-import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 
@@ -21,11 +20,7 @@ function SerColaboradorScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerUsuario()
-				.then(data => data.json())
-				.then(json => {
-					setLoading(false);
-				});
+			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
