@@ -1,4 +1,5 @@
 import React from 'react';
+import { crearCurso } from '../src/services/crearCurso';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
@@ -20,11 +21,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 
-CrearCursoScreen.propTypes = {
-	navigation: PropTypes.object.isRequired,
-};
-
-function CrearCursoScreen({ navigation }) {
+export default function CrearCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [titulo, setTitulo] = React.useState('');
 	const [descripcion, setDescripcion] = React.useState('');
@@ -34,6 +31,9 @@ function CrearCursoScreen({ navigation }) {
 	const [suscripcion, setSuscripcion] = React.useState('');
 	const [location, setLocation] = React.useState('');
 	const [otros, setOtros] = React.useState([]);
+	const [error, setError] = React.useState(false);
+	const [message, setMessage] = React.useState('');
+	const [showModal, setShowModal] = React.useState(false);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -45,6 +45,23 @@ function CrearCursoScreen({ navigation }) {
 			};
 		}, [])
 	);
+
+	this.onSubmit = () => {
+		crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location, otros)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log('creando curso');
+				console.log(json);
+				if (json.status === 200) {
+					setMessage('Curso creado exitosamente');
+					setShowModal(true);
+				} else {
+					setError(true);
+					setMessage('Error al crear el curso');
+					setShowModal(true);
+				}
+			});
+	};
 
 	return (
 
@@ -60,6 +77,27 @@ function CrearCursoScreen({ navigation }) {
 							mb: '4',
 						}}
 					>
+					<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+						<Modal.Content maxWidth="350">
+							<Modal.Body>
+								<VStack space={3}>
+									<HStack alignItems="center" justifyContent="space-between">
+										<Text fontWeight="medium">{message}</Text>
+									</HStack>
+								</VStack>
+							</Modal.Body>
+							<Modal.Footer>
+								<Button colorScheme="indigo"
+									flex="1"
+									onPress={() => {
+										error ? setShowModal(false) : navigation.goBack();
+									}}
+								>
+									Continuar
+								</Button>
+							</Modal.Footer>
+						</Modal.Content>
+					</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								Complete los siguientes datos para crear un curso
@@ -159,7 +197,7 @@ function CrearCursoScreen({ navigation }) {
 									<Input onChangeText={(otros) => setOtros(otros)} />
 								</FormControl>
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} >
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso
 								</Button>
 							</VStack>
@@ -178,4 +216,9 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default CrearCursoScreen;
+CrearCursoScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+		goBack: PropTypes.func,
+	}).isRequired,
+};

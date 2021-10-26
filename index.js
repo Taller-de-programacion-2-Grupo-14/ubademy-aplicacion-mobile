@@ -5,7 +5,7 @@ import App from './App';
 
 //para desactivar el mirage, comentar estas lineas
 if (process.env.NODE_ENV === 'development') {
-    makeServer({ environment: 'development' });
+  makeServer({ environment: 'development' });
 }
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
