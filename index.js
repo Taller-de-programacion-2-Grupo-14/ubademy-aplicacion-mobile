@@ -3,7 +3,7 @@ import { registerRootComponent } from 'expo';
 import { makeServer } from './src/mirage-server/server';
 import App from './App';
 
-//para desactivar el mirage, comentar estas lineas
+//para desactivar el mirage, comentar estas lineas y el import del makeServer
 if (process.env.NODE_ENV === 'development') {
   makeServer({ environment: 'development' });
 }

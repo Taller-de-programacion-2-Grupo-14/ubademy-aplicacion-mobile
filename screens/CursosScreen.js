@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CrearCursoScreen from './CrearCursoScreen';
@@ -7,18 +7,16 @@ import SerColaboradorScreen from './SerColaboradorScreen';
 import {
 	NativeBaseProvider,
 	Box,
-	Text,
+
 	Heading,
-	VStack,
-	FormControl,
-	Button,
+
+
+
 	ScrollView,
 	Spinner,
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import showAlert from './PopUp';
-import * as SecureStore from 'expo-secure-store';
 
 CursosHome.propTypes = {
 	navigation: PropTypes.object.isRequired,
