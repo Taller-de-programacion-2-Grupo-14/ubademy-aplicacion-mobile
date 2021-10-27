@@ -9,18 +9,12 @@ import {
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import BuscarScreen from './BuscarScreen';
-import ElegirCursoScreen from './ElegirCursoScreen';
-import CondicionesScreen from './CondicionesScreen';
 
-InscribirmeScreen.propTypes = {
+CondicionesScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
-const Stack = createNativeStackNavigator();
-
-function InscribirmeScreen({ navigation }) {
+function CondicionesScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(
@@ -37,11 +31,24 @@ function InscribirmeScreen({ navigation }) {
 	return (
 
 		<NativeBaseProvider>
-			<Stack.Navigator initialRouteName="BuscarScreen">
-				<Stack.Screen name="BuscarScreen" component={BuscarScreen} options={{ headerShown: false }} />
-				<Stack.Screen name="ElegirCursoScreen" component={ElegirCursoScreen} options={{ headerShown: false }} />
-				<Stack.Screen name="CondicionesScreen" component={CondicionesScreen} options={{ headerShown: false }} />
-			</Stack.Navigator>
+			{
+				loading ?
+					<View style={spinnerStyles.spinnerStyle}>
+						<Spinner color="indigo.500" size="lg" />
+					</View> :
+					<ScrollView
+						_contentContainerStyle={{
+							px: '20px',
+							mb: '4',
+						}}
+					>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+							<Heading size="lg" color="coolGray.800" fontWeight="600">
+								Condiciones de un curso (por ahora nada)
+							</Heading>
+						</Box>
+					</ScrollView>
+			}
 		</NativeBaseProvider>
 	);
 }
@@ -54,4 +61,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default InscribirmeScreen;
+export default CondicionesScreen;

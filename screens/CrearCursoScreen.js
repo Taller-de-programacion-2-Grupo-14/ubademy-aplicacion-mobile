@@ -76,123 +76,123 @@ export default function CrearCursoScreen({ navigation }) {
 							mb: '4',
 						}}
 					>
-					<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
-						<Modal.Content maxWidth="350">
-							<Modal.Body>
-								<VStack space={3}>
-									<HStack alignItems="center" justifyContent="space-between">
-										<Text fontWeight="medium">{message}</Text>
-									</HStack>
-								</VStack>
-							</Modal.Body>
-							<Modal.Footer>
-								<Button colorScheme="indigo"
-									flex="1"
-									onPress={() => {
-										error ? setShowModal(false) : navigation.goBack();
-									}}
-								>
-									Continuar
+						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">{message}</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => {
+											error ? setShowModal(false) : navigation.goBack();
+										}}
+									>
+										Continuar
+									</Button>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+							<Heading size="lg" color="coolGray.800" fontWeight="600">
+								Complete los siguientes datos para crear un curso
+							</Heading>
+							<VStack space={3} mt="5">
+								<FormControl isRequired>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Titulo
+									</FormControl.Label>
+									<Input onChangeText={(titulo) => setTitulo(titulo)} />
+								</FormControl>
+
+								<FormControl isRequired>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Descripcion
+									</FormControl.Label>
+									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} />
+								</FormControl>
+
+								<FormControl isRequired>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Hashtags asociados
+									</FormControl.Label>
+									<Input onChangeText={(hashtags) => setHashtags(hashtags)} />
+								</FormControl>
+
+								<FormControl isRequired>
+									<FormControl.Label>Tipo de curso</FormControl.Label>
+									<Select
+										selectedValue={tipo}
+										minWidth="200"
+										accessibilityLabel="Elegir un tipo de curso"
+										placeholder="Elegir un tipo de curso"
+										_selectedItem={{
+											bg: 'teal.600',
+											endIcon: <CheckIcon size="5" />,
+										}}
+										mt={1}
+										onValueChange={(tipo) => setTipo(tipo)}
+									>
+										<Select.Item label="Matemática" value="matematica" />
+										<Select.Item label="Programación" value="programacion" />
+										<Select.Item label="Cocina" value="cocina" />
+									</Select>
+									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+										Seleccionar uno
+									</FormControl.ErrorMessage>
+								</FormControl>
+
+								<FormControl isRequired>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Cantidad de exámenes
+									</FormControl.Label>
+									<Input onChangeText={(examenes) => setExamenes(examenes)} />
+								</FormControl>
+
+								<FormControl isRequired>
+									<FormControl.Label>Tipo de suscripción</FormControl.Label>
+									<Select
+										selectedValue={suscripcion}
+										minWidth="200"
+										accessibilityLabel="Elegir suscripción"
+										placeholder="Elegir suscripción"
+										_selectedItem={{
+											bg: 'teal.600',
+											endIcon: <CheckIcon size="5" />,
+										}}
+										mt={1}
+										onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
+									>
+										<Select.Item label="Básico" value="suscripcion1" />
+										<Select.Item label="Estándar" value="suscripcion2" />
+										<Select.Item label="Premium" value="suscripcion3" />
+									</Select>
+									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+										Seleccionar uno
+									</FormControl.ErrorMessage>
+								</FormControl>
+
+								<FormControl isRequired>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Ubicacion
+									</FormControl.Label>
+									<Input onChangeText={(location) => setLocation(location)} />
+								</FormControl>
+
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+									Crear curso
 								</Button>
-							</Modal.Footer>
-						</Modal.Content>
-					</Modal>
-					<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-						<Heading size="lg" color="coolGray.800" fontWeight="600">
-							Complete los siguientes datos para crear un curso
-						</Heading>
-						<VStack space={3} mt="5">
-							<FormControl isRequired>
-								<FormControl.Label
-									_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-									Titulo
-								</FormControl.Label>
-								<Input onChangeText={(titulo) => setTitulo(titulo)} />
-							</FormControl>
-
-							<FormControl isRequired>
-								<FormControl.Label
-									_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-									Descripcion
-								</FormControl.Label>
-								<Input onChangeText={(descripcion) => setDescripcion(descripcion)} />
-							</FormControl>
-
-							<FormControl isRequired>
-								<FormControl.Label
-									_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-									Hashtags asociados
-								</FormControl.Label>
-								<Input onChangeText={(hashtags) => setHashtags(hashtags)} />
-							</FormControl>
-
-							<FormControl isRequired>
-								<FormControl.Label>Tipo de curso</FormControl.Label>
-								<Select
-									selectedValue={tipo}
-									minWidth="200"
-									accessibilityLabel="Elegir un tipo de curso"
-									placeholder="Elegir un tipo de curso"
-									_selectedItem={{
-										bg: 'teal.600',
-										endIcon: <CheckIcon size="5" />,
-									}}
-									mt={1}
-									onValueChange={(tipo) => setTipo(tipo)}
-								>
-									<Select.Item label="Matemática" value="matematica" />
-									<Select.Item label="Programación" value="programacion" />
-									<Select.Item label="Cocina" value="cocina" />
-								</Select>
-								<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-									Seleccionar uno
-								</FormControl.ErrorMessage>
-							</FormControl>
-
-							<FormControl isRequired>
-								<FormControl.Label
-									_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-									Cantidad de exámenes
-								</FormControl.Label>
-								<Input onChangeText={(examenes) => setExamenes(examenes)} />
-							</FormControl>
-
-							<FormControl isRequired>
-								<FormControl.Label>Tipo de suscripción</FormControl.Label>
-								<Select
-									selectedValue={suscripcion}
-									minWidth="200"
-									accessibilityLabel="Elegir suscripción"
-									placeholder="Elegir suscripción"
-									_selectedItem={{
-										bg: 'teal.600',
-										endIcon: <CheckIcon size="5" />,
-									}}
-									mt={1}
-									onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
-								>
-									<Select.Item label="Básico" value="suscripcion1" />
-									<Select.Item label="Estándar" value="suscripcion2" />
-									<Select.Item label="Premium" value="suscripcion3" />
-								</Select>
-								<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-									Seleccionar uno
-								</FormControl.ErrorMessage>
-							</FormControl>
-
-							<FormControl isRequired>
-								<FormControl.Label
-									_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-									Ubicacion
-								</FormControl.Label>
-								<Input onChangeText={(location) => setLocation(location)} />
-							</FormControl>
-
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-								Crear curso
-							</Button>
-						</VStack>
-					</Box>	
+							</VStack>
+						</Box>
 					</ScrollView>
 			}
 		</NativeBaseProvider>

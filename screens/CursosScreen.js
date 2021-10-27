@@ -7,11 +7,7 @@ import SerColaboradorScreen from './SerColaboradorScreen';
 import {
 	NativeBaseProvider,
 	Box,
-
 	Heading,
-
-
-
 	ScrollView,
 	Spinner,
 } from 'native-base';
