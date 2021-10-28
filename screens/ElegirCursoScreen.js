@@ -1,8 +1,15 @@
 import React from 'react';
+import { elegirCurso } from '../src/services/elegirCurso';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
+	Link,
+	Text,
+	HStack,
+	Center,
+	Spacer,
+	Flex,
 	Heading,
 	ScrollView,
 	Spinner
@@ -16,6 +23,7 @@ ElegirCursoScreen.propTypes = {
 
 function ElegirCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
+	const [cursoElegido, setCursoElegido] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -27,6 +35,16 @@ function ElegirCursoScreen({ navigation }) {
 			};
 		}, [])
 	);
+
+	this.onSubmit = () => {
+		elegirCurso(cursoElegido)
+			.then((response) => response.json())
+			.then((json) => {
+				if (json.status === 200) {
+					navigation.navigate('CondicionesScreen');
+				}
+			});
+	};
 
 	return (
 
@@ -44,8 +62,26 @@ function ElegirCursoScreen({ navigation }) {
 					>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Elegir un curso (por ahora nada)
+								Elegir un curso
 							</Heading>
+							<Link onPress={(cursoElegido) => setCursoElegido(cursoElegido), () => this.onSubmit()}>
+					      <Box bg="#109bd6" p="5" rounded="8" style={{ width: 200, marginVertical: 25}}>
+					        <HStack alignItems="flex-start">
+					          <Text fontSize="xs" color="cyan.50" fontWeight="medium">
+					            Programación
+					          </Text>
+					          <Spacer />
+					        </HStack>
+					        <Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
+					          Curso 1
+					        </Heading>
+					        <Flex>
+					          <Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.400">
+					            Ver condiciones
+					          </Text>
+					        </Flex>
+					      </Box>
+					    </Link>
 						</Box>
 					</ScrollView>
 			}

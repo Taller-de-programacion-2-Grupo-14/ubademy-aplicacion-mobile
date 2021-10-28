@@ -57,6 +57,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.post('http://10.0.2.2:8080/elegirCurso', (cursoElegido) => {
+				return {
+					'status': 200
+				};
+			});
 		},
 	});
 
