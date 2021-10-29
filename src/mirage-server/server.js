@@ -62,6 +62,20 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.get('http://10.0.2.2:8080/obtenerCursos', () => {
+				return [
+					{
+						"course_name": "Taller",
+						"creator_name": "Agustin",
+						"subscription": "Estándar"
+					},
+					{
+						"course_name": "Organizacion de Datos",
+						"creator_name": "Luis",
+						"subscription": "Premium"
+					}
+				]
+			});
 		},
 	});
 
