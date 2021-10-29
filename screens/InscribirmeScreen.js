@@ -1,11 +1,7 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
-	Box,
-	Heading,
-	ScrollView,
-	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -45,13 +41,5 @@ function InscribirmeScreen({ navigation }) {
 		</NativeBaseProvider>
 	);
 }
-
-const spinnerStyles = StyleSheet.create({
-	spinnerStyle: {
-		flex: 7,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-});
 
 export default InscribirmeScreen;

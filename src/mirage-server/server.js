@@ -73,6 +73,11 @@ export function makeServer({ environment = 'test' } = {}) {
 						"course_name": "Organizacion de Datos",
 						"creator_name": "Luis",
 						"subscription": "Premium"
+					},
+					{
+						"course_name": "Sistemas Operativos",
+						"creator_name": "Clua",
+						"subscription": "Premium"
 					}
 				]
 			});

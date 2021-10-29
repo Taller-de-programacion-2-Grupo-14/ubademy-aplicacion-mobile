@@ -13,7 +13,6 @@ import {
 	Spacer,
 	Flex,
 	Heading,
-	ScrollView,
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
@@ -26,18 +25,7 @@ ElegirCursoScreen.propTypes = {
 function ElegirCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursoElegido, setCursoElegido] = React.useState('');
-	const DATA = [
-	  {
-			course_name: "Taller",
-			creator_name: "Agustin",
-			subscription: "Estándar"
-	  },
-	  {
-			course_name: "Organizacion de Datos",
-			creator_name: "Luis",
-			subscription: "Premium"
-	  },
-	];
+	const [cursos, setCursos] = React.useState([]);
 
 	const renderItem = ({ item }) => (
 		<Link onPress={(cursoElegido) => setCursoElegido(cursoElegido), () => this.onSubmit()}>
@@ -63,6 +51,11 @@ function ElegirCursoScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			obtenerCursos()
+				.then((response) => response.json())
+				.then((json) => {
+					setCursos(json)
+				});
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -88,16 +81,16 @@ function ElegirCursoScreen({ navigation }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Elegir un curso
-							</Heading>
-							<FlatList
-				        data={DATA}
-				        renderItem={renderItem}
-								keyExtractor={item => item.course_name}
-      				/>
-						</Box>
+					<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+						<Heading size="lg" color="coolGray.800" fontWeight="600">
+							Elegir un curso
+						</Heading>
+						<FlatList
+							data={cursos}
+							renderItem={renderItem}
+							keyExtractor={item => item.course_name}
+						/>
+					</Box>
 			}
 		</NativeBaseProvider>
 	);
