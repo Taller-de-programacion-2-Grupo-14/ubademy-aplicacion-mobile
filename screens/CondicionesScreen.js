@@ -1,9 +1,15 @@
 import React from 'react';
+import { elegirCurso } from '../src/services/elegirCurso';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
+	Button,
 	Heading,
+	Text,
+	HStack,
+	VStack,
+	Modal,
 	ScrollView,
 	Spinner
 } from 'native-base';
@@ -14,8 +20,12 @@ CondicionesScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
-function CondicionesScreen({ navigation }) {
+function CondicionesScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
+	const [cursoElegido, setCursoElegido] = React.useState('');
+	const [showModal, setShowModal] = React.useState(false);
+	const [message, setMessage] = React.useState('');
+	const [error, setError] = React.useState(false);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -27,6 +37,21 @@ function CondicionesScreen({ navigation }) {
 			};
 		}, [])
 	);
+
+	this.onSubmit = () => {
+		elegirCurso(cursoElegido)
+			.then((response) => response.json())
+			.then((json) => {
+				if (json.status === 200) {
+					setMessage('¡Inscripción exitosa!');
+					setShowModal(true);
+				} else {
+					setError(true);
+					setMessage('Error al inscribirse');
+					setShowModal(true);
+				}
+			});
+	};
 
 	return (
 
@@ -42,10 +67,37 @@ function CondicionesScreen({ navigation }) {
 							mb: '4',
 						}}
 					>
+						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">{message}</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => {
+											error ? setShowModal(false) : navigation.navigate('HomeScreen');
+										}}
+									>
+										Continuar
+									</Button>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Condiciones de un curso (por ahora nada)
+							<Heading size="xl" color="coolGray.800" fontWeight="600" >
+								{ route.params.course_name }
 							</Heading>
+							<Heading size="lg" color="coolGray.800" fontWeight="600">
+								{'\n'}Condiciones de la inscripción
+							</Heading>
+							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={(cursoElegido) => setCursoElegido(cursoElegido), () => this.onSubmit()} >
+		            Confirmar inscripción
+							</Button>
 						</Box>
 					</ScrollView>
 			}

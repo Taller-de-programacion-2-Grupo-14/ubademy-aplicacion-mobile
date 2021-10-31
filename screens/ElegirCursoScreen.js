@@ -1,5 +1,4 @@
 import React from 'react';
-import { elegirCurso } from '../src/services/elegirCurso';
 import { obtenerCursos } from '../src/services/obtenerCursos';
 import { View, StyleSheet } from 'react-native';
 import {
@@ -24,11 +23,10 @@ ElegirCursoScreen.propTypes = {
 
 function ElegirCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
-	const [cursoElegido, setCursoElegido] = React.useState('');
 	const [cursos, setCursos] = React.useState([]);
 
 	const renderItem = ({ item }) => (
-		<Link onPress={(cursoElegido) => setCursoElegido(cursoElegido), () => this.onSubmit()}>
+		<Link onPress={() => navigation.navigate('CondicionesScreen', item) }>
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
@@ -63,16 +61,6 @@ function ElegirCursoScreen({ navigation }) {
 			};
 		}, [])
 	);
-
-	this.onSubmit = () => {
-		elegirCurso(cursoElegido)
-			.then((response) => response.json())
-			.then((json) => {
-				if (json.status === 200) {
-					navigation.navigate('CondicionesScreen');
-				}
-			});
-	};
 
 	return (
 		<NativeBaseProvider>
