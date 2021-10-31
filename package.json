@@ -5,8 +5,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "lint:js": "eslint '**/*.js' --ignore-pattern node\\_modules/",
-    "lint:js:fix": "eslint '**/*.js' --ignore-pattern node\\_modules/ --fix",
+    "lint:js": "eslint \"**/*.js\" --ignore-pattern node\\_modules/",
+    "lint:js:fix": "eslint \"**/*.js\" --ignore-pattern node\\_modules/ --fix",
     "lint": "npm run lint:js"
   },
   "dependencies": {
@@ -16,15 +16,18 @@
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
     "expo": "~42.0.1",
+    "expo-constants": "~11.0.1",
     "expo-secure-store": "~10.2.0",
     "expo-splash-screen": "~0.11.2",
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.8.2",
+    "firebase": "8.2.3",
     "native-base": "^3.2.0",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "0.63.4",
+    "react-native-form-validator": "^0.5.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-paper": "^4.9.2",
     "react-native-reanimated": "~2.2.0",
@@ -35,7 +38,8 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "styled-components": "^5.3.1",
-    "styled-system": "^5.1.5"
+    "styled-system": "^5.1.5",
+    "expo-facebook": "~11.3.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
