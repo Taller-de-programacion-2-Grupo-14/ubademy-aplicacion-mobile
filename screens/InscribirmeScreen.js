@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
 } from 'native-base';

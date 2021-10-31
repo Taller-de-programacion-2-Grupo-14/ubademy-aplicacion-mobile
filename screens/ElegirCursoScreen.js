@@ -44,7 +44,7 @@ function ElegirCursoScreen({ navigation }) {
 				</Flex>
 			</Box>
 		</Link>
-  );
+	);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -52,9 +52,9 @@ function ElegirCursoScreen({ navigation }) {
 			obtenerCursos()
 				.then((response) => response.json())
 				.then((json) => {
+					setLoading(false);
 					setCursos(json)
 				});
-			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions

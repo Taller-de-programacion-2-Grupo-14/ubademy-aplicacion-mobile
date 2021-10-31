@@ -92,6 +92,18 @@ export function makeServer({ environment = 'test' } = {}) {
 					"location": "Obera"
 				};
 			});
+			this.get('http://10.0.2.2:8080/misCursos', () => {
+				return [
+					{
+						"course_name": "Algebra",
+						"tipo": "Matematica"
+					},
+					{
+						"course_name": "Análisis Matemático III",
+						"tipo": "Matematica"
+					}
+				]
+			});
 		},
 	});
 
