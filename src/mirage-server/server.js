@@ -81,6 +81,17 @@ export function makeServer({ environment = 'test' } = {}) {
 					}
 				]
 			});
+			this.get('http://10.0.2.2:8080/obtenerCurso', (cursoElegido) => {
+				return {
+					"course_name": "Mas Python que nunca",
+					"course_description": "Van a codear muchas cosas en python y van a ver que es alto lenguaje",
+					"hashtags": "#Python, #Sarasa",
+					"course_type": "Programacion",
+					"amount_exams": 3,
+					"subscription": "Premium",
+					"location": "Obera"
+				};
+			});
 		},
 	});
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { elegirCurso } from '../src/services/elegirCurso';
+import { obtenerCurso } from '../src/services/obtenerCurso';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
@@ -7,6 +8,7 @@ import {
 	Button,
 	Heading,
 	Text,
+	FormControl,
 	HStack,
 	VStack,
 	Modal,
@@ -26,11 +28,25 @@ function CondicionesScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [descripcion, setDescripcion] = React.useState('');
+	const [hashtags, setHashtags] = React.useState('');
+	const [examenes, setExamenes] = React.useState('');
+	const [tipoDeCurso, setTipoDeCurso] = React.useState('');
+	const [location, setLocation] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setLoading(false);
+			obtenerCurso(route.params.course_name)
+				.then(data => data.json())
+				.then(json => {
+					setLoading(false);
+					setDescripcion(json.course_description);
+					setHashtags(json.hashtags);
+					setExamenes(json.amount_exams);
+					setTipoDeCurso(json.course_type);
+					setLocation(json.location);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -80,7 +96,7 @@ function CondicionesScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModal(false) : navigation.navigate('HomeScreen');
+											error ? setShowModal(false) : navigation.navigate('BuscarScreen');
 										}}
 									>
 										Continuar
@@ -95,6 +111,58 @@ function CondicionesScreen({ navigation, route }) {
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								{'\n'}Condiciones de la inscripción
 							</Heading>
+
+							<VStack space={3} mt="5">
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Creador del curso:
+									</FormControl.Label>
+									<Text fontSize="sm" > { route.params.creator_name } </Text>
+								</FormControl>
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Descripción:
+									</FormControl.Label>
+									<Text fontSize="sm" > {descripcion} </Text>
+								</FormControl>
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Hashtags:
+									</FormControl.Label>
+									<Text fontSize="sm"> {hashtags} </Text>
+								</FormControl>
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Tipo de curso:
+									</FormControl.Label>
+									<Text fontSize="sm" > {tipoDeCurso} </Text>
+								</FormControl>
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Cantidad de exámenes:
+									</FormControl.Label>
+									<Text fontSize="sm" > {examenes} </Text>
+								</FormControl>
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Tipo de suscripción:
+									</FormControl.Label>
+									<Text fontSize="sm" > { route.params.subscription } </Text>
+								</FormControl>
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Ubicación:
+									</FormControl.Label>
+									<Text fontSize="sm" > {location} </Text>
+								</FormControl>
+							</VStack>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={(cursoElegido) => setCursoElegido(cursoElegido), () => this.onSubmit()} >
 		            Confirmar inscripción
 							</Button>
