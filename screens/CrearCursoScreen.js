@@ -89,7 +89,8 @@ export default function CrearCursoScreen({ navigation }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModal(false) : navigation.goBack();
+											setShowModal(false)
+											if (!error) navigation.goBack();
 										}}
 									>
 										Continuar
