@@ -20,6 +20,7 @@ import {
 } from 'native-base';
 import { useValidation } from 'react-native-form-validator';
 import { signInWithFacebook } from '../src/utils/auth';
+import { userfirebaseLogin } from '../src/services/userFirebaseLogin';
 
 export default function LoginScreen({ navigation }) {
 	const [email, setEmail] = React.useState('');
@@ -30,13 +31,33 @@ export default function LoginScreen({ navigation }) {
 			state: { email, password },
 			deviceLocale: 'es'
 		});
-	const facebook = () => {
-		signInWithFacebook().then((response) => {
-			console.log(response);
-
-		});
-
+	const facebookSignIn = () => {
+		signInWithFacebook().then((user) => {
+			//enviar respuesta al nuevo endpoint y mando solo "user"
+			//va a loggear y generar nuevo usuario y devolver 200 si esta bien
+			//500 si salio algo mal
+			//devuelve token y hago get con el token para llevarlo al homescreen.
+			console.log(user.user.displayName);
+			console.log(user.user.email);
+			console.log(user.user.photoURL);
+			userfirebaseLogin(user.user.displayName, user.user.email, user.user.photoURL)
+				.then((response) => response.json())
+				.then((json) => {
+					console.log(json);
+					if (json.status === 200) {
+						SecureStore.setItemAsync('secure_token', json.token);
+						console.log(json.token);
+						navigation.navigate('Home');
+					} else {
+						setShowModal(true);
+						console.log('error al logger con firbase');
+					}
+				})
+				.catch((error) => console.error(error));
+		}).catch((error) => console.error(error));
 	};
+
+
 	this.onSubmit = () => {
 		validate({
 			email: { email: true, required: true },
@@ -143,11 +164,8 @@ export default function LoginScreen({ navigation }) {
 						<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 							Iniciar sesion
 						</Button>
-						<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => facebook()} >
+						<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => facebookSignIn()} >
 							Iniciar sesion con Facebook
-						</Button>
-						<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-							Iniciar sesion con Google
 						</Button>
 						<HStack mt="6" justifyContent="center">
 							<Text fontSize="sm" color="muted.700" fontWeight={400}>

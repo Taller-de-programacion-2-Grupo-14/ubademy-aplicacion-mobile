@@ -13,17 +13,14 @@ export async function signInWithFacebook() {
 		if (type === 'success') {
 			// SENDING THE TOKEN TO FIREBASE TO HANDLE AUTH
 			const credential = firebase.auth.FacebookAuthProvider.credential(token);
-			firebase.auth().signInWithCredential(credential)
-				.then(user => { // All the details about user are in here returned from firebase
-					console.log('Logged in successfully', user);
-					//enviar respuesta al nuevo endpoint y mando solo "user"
-					//va a loggear y generar nuevo usuario y devolver 200 si esta bien
-					//500 si salio algo mal
-					//devuelve token y hago get con el token para llevarlo al homescreen.
-				})
-				.catch((error) => {
-					console.log('Error occurred ', error);
-				});
+			return firebase.auth().signInWithCredential(credential);
+			// .then(user => { // All the details about user are in here returned from firebase
+			// 	console.log('Logged in successfully', user);
+			// 	return user;
+			// })
+			// .catch((error) => {
+			// 	console.log('Error occurred ', error);
+			// });
 		} else {
 			// type === 'cancel'
 			console.log('Error al autenticar con facebook');

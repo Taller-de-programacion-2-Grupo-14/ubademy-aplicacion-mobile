@@ -39,7 +39,8 @@
     "react-native-web": "~0.13.12",
     "styled-components": "^5.3.1",
     "styled-system": "^5.1.5",
-    "expo-facebook": "~11.3.1"
+    "expo-facebook": "~11.3.1",
+    "expo-location": "~12.1.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

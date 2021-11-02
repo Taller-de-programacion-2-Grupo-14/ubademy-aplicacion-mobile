@@ -1,6 +1,7 @@
 import React from 'react';
 import { register } from '../src/services/register';
 import PropTypes from 'prop-types';
+import { useFocusEffect } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -21,6 +22,7 @@ import {
 	Modal
 } from 'native-base';
 import { useValidation } from 'react-native-form-validator';
+import * as Location from 'expo-location';
 
 
 export default function RegisterScreen({ navigation }) {
@@ -30,11 +32,45 @@ export default function RegisterScreen({ navigation }) {
 	const [name, setName] = React.useState('');
 	const [lastName, setLastName] = React.useState('');
 	const [perfil, setPerfil] = React.useState('');
-	const [location, setLocation] = React.useState('');
 	const [interests, setInterests] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [location, setLocation] = React.useState('Waiting..');
+	const [errorMsg, setErrorMsg] = React.useState(null);
+
+
+	useFocusEffect(
+		React.useCallback(() => {
+			// Do something when the screen is focused
+			(async () => {
+				const { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== 'granted') {
+					setErrorMsg('Permission to access location was denied');
+					return;
+				}
+
+				const location = await Location.getCurrentPositionAsync({});
+				const latLong = {
+					longitude: location.coords.longitude,
+					latitude: location.coords.latitude
+				};
+				const stringLocation = Location.reverseGeocodeAsync(latLong);
+				//setLocation(stringLocation[0].city);
+				if (errorMsg) {
+					setLocation(errorMsg);
+				} else {
+					setLocation(JSON.stringify(location));
+				}
+				console.log(stringLocation);
+				console.log(errorMsg);
+			})();
+			return () => {
+				// Do something when the screen is unfocused
+				// Useful for cleanup functions
+			};
+		}, [])
+	);
 
 	const { validate, isFieldInError, getErrorsInField } =
 		useValidation({
@@ -251,7 +287,7 @@ export default function RegisterScreen({ navigation }) {
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 								Ubicacion
 							</FormControl.Label>
-							<Input onChangeText={(location) => setLocation(location)} />
+							<Input onChangeText={(text) => setLocation(text)} />
 							{isFieldInError('location') &&
 								getErrorsInField('location').map(errorMessage => (
 									<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
