@@ -92,7 +92,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					"location": "Obera"
 				};
 			});
-			this.get('http://10.0.2.2:8080/misCursos', () => {
+			this.get('http://10.0.2.2:8080/misCursosCreados', () => {
 				return [
 					{
 						"course_name": "Algebra",
@@ -101,6 +101,18 @@ export function makeServer({ environment = 'test' } = {}) {
 					{
 						"course_name": "Análisis Matemático III",
 						"tipo": "Matematica"
+					}
+				]
+			});
+			this.get('http://10.0.2.2:8080/misCursosInscriptos', () => {
+				return [
+					{
+						"course_name": "Flores",
+						"tipo": "Jardineria"
+					},
+					{
+						"course_name": "Tortas",
+						"tipo": "Cocina"
 					}
 				]
 			});
