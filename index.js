@@ -5,7 +5,7 @@ import App from './App';
 global.host = 'http://10.0.2.2:8080';
 //para desactivar el mirage, comentar estas lineas y el import del makeServer
 if (process.env.NODE_ENV === 'development') {
-  makeServer({ environment: 'development' });
+	makeServer({ environment: 'development' });
 }
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);

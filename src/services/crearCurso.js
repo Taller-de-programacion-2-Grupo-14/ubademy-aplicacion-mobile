@@ -1,6 +1,6 @@
 export function crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location) {
 
-	return fetch('http://10.0.2.2:8080/crearCurso', {
+	return fetch(`${global.host}/crearCurso`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

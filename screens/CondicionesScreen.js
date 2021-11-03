@@ -20,6 +20,7 @@ import PropTypes from 'prop-types';
 
 CondicionesScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
 function CondicionesScreen({ navigation, route }) {

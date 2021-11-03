@@ -45,7 +45,7 @@ function MisCursosScreen({ navigation }) {
 							mt="4"
 							alignItems="center"
 							justifyContent="center"
-							>
+						>
 							<Stack
 								mb="2.5"
 								mt="1.5"

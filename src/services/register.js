@@ -1,6 +1,6 @@
 export function register(mail, password, name, lastName, perfil, location, interests) {
 	//cambiar la url por la de heroku cuando el mirage este desactivado
-	return fetch('http://10.0.2.2:8080/registrar', {
+	return fetch(`${global.host}/registrar`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

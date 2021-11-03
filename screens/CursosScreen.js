@@ -12,16 +12,10 @@ import MiCursoInscriptoScreen from './MiCursoInscriptoScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
-import { useFocusEffect } from '@react-navigation/native';
-import PropTypes from 'prop-types';
-
-CursosScreen.propTypes = {
-	navigation: PropTypes.object.isRequired,
-};
 
 const Stack = createNativeStackNavigator();
 
-export function CursosScreen({ navigation }) {
+export function CursosScreen() {
 	return (
 		<NativeBaseProvider>
 			<Stack.Navigator initialRouteName="MisCursosScreen">

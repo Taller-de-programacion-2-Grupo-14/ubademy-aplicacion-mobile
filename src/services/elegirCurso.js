@@ -1,6 +1,6 @@
 export function elegirCurso(cursoElegido) {
 
-	return fetch('http://10.0.2.2:8080/elegirCurso', {
+	return fetch(`${global.host}/elegirCurso`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

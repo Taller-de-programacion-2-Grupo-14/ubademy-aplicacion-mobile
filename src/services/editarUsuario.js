@@ -1,6 +1,6 @@
 export function editarUsuario(firstName, lastName, location, intrests, email) {
 	//cambiar la url por la de heroku cuando el mirage este desactivado
-	return fetch('http://10.0.2.2:8080/modificar', {
+	return fetch(`${global.host}/modificar`, {
 		method: 'PATCH',
 		headers: {
 			Accept: 'application/json',

@@ -24,35 +24,35 @@ function MisCursosInscriptosScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
 
-  const renderItem = ({ item }) => (
-    <Link onPress={() => navigation.navigate('MiCursoInscriptoScreen', item) }>
-      <Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
-        <HStack alignItems="flex-start">
-          <Text fontSize="xs" color="cyan.50" fontWeight="medium">
-            {item.tipo}
-          </Text>
-          <Spacer />
-        </HStack>
-        <Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
-          {item.course_name}
-        </Heading>
-        <Flex>
-          <Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.400">
+	const renderItem = ({ item }) => (
+		<Link onPress={() => navigation.navigate('MiCursoInscriptoScreen', item) }>
+			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+				<HStack alignItems="flex-start">
+					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
+						{item.tipo}
+					</Text>
+					<Spacer />
+				</HStack>
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
+					{item.course_name}
+				</Heading>
+				<Flex>
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.400">
             Ingresar
-          </Text>
-        </Flex>
-      </Box>
-    </Link>
+					</Text>
+				</Flex>
+			</Box>
+		</Link>
 	);
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
 			misCursosInscriptos()
-        .then((response) => response.json())
-      	.then((json) => {
-      		setLoading(false);
-      		setCursos(json);
+				.then((response) => response.json())
+				.then((json) => {
+					setLoading(false);
+					setCursos(json);
 				});
 			return () => {
 				// Do something when the screen is unfocused

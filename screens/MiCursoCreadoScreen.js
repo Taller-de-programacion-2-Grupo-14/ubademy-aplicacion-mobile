@@ -8,13 +8,14 @@ import {
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
-MiCursoCreadoScreen.propTypes = {
-	navigation: PropTypes.object.isRequired,
-};
+// MiCursoCreadoScreen.propTypes = {
+// 	navigation: PropTypes.object.isRequired,
+// };
 
-function MiCursoCreadoScreen({ navigation }) {
+//function MiCursoCreadoScreen({ navigation }) {
+function MiCursoCreadoScreen() {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(

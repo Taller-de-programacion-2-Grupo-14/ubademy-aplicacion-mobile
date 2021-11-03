@@ -8,13 +8,14 @@ import {
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 
-SerColaboradorScreen.propTypes = {
-	navigation: PropTypes.object.isRequired,
-};
+// SerColaboradorScreen.propTypes = {
+// 	navigation: PropTypes.object.isRequired,
+// };
 
-function SerColaboradorScreen({ navigation }) {
+//function SerColaboradorScreen({ navigation }) {
+function SerColaboradorScreen() {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(
