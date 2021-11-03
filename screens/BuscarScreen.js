@@ -5,15 +5,18 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
+	Select,
 	FormControl,
 	Input,
 	Text,
+	CheckIcon,
 	Button,
 	VStack,
 	HStack,
 	ScrollView,
 	Spinner,
-	Modal
+	Modal,
+	WarningOutlineIcon
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -85,11 +88,30 @@ function BuscarScreen({ navigation }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Buscar un curso
+								Buscar por categoria
 							</Heading>
 							<VStack space={3} mt="5">
-								<FormControl>
-									<Input onChangeText={(busqueda) => setBusqueda(busqueda)} />
+								<FormControl isRequired>
+									<FormControl.Label>Tipo de curso</FormControl.Label>
+									<Select
+										selectedValue={busqueda}
+										minWidth="200"
+										accessibilityLabel="Elegir un tipo de curso"
+										placeholder="Elegir un tipo de curso"
+										_selectedItem={{
+											bg: 'teal.600',
+											endIcon: <CheckIcon size="5" />,
+										}}
+										mt={1}
+										onValueChange={(busqueda) => setBusqueda(busqueda)}
+									>
+										<Select.Item label="Matemática" value="matematica" />
+										<Select.Item label="Programación" value="programacion" />
+										<Select.Item label="Cocina" value="cocina" />
+									</Select>
+									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+										Seleccionar uno
+									</FormControl.ErrorMessage>
 								</FormControl>
 							</VStack>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
