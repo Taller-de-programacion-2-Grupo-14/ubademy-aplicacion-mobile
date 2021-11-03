@@ -8,7 +8,6 @@ import {
 	Text,
 	FlatList,
 	HStack,
-	Center,
 	Spacer,
 	Flex,
 	Heading,
@@ -53,7 +52,7 @@ function ElegirCursoScreen({ navigation }) {
 				.then((response) => response.json())
 				.then((json) => {
 					setLoading(false);
-					setCursos(json)
+					setCursos(json);
 				});
 			return () => {
 				// Do something when the screen is unfocused

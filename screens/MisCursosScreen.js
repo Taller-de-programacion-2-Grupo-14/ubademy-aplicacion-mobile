@@ -2,12 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
-	Box,
 	VStack,
 	Center,
 	Stack,
 	Button,
-	Heading,
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
@@ -40,41 +38,41 @@ function MisCursosScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<Center flex={1} px="3">
-            <VStack
-              w="100%"
-              space={2.5}
-              px="2"
-              mt="4"
-              alignItems="center"
-              justifyContent="center"
-              >
-              <Stack
-                mb="2.5"
-                mt="1.5"
-                direction={{
-                  base: "column",
-                  md: "row",
-                }}
-                space={10}
-                mx={{
-                  base: "auto",
-                  md: "0",
-                }}
-              >
-                <Button
-                  size="lg" onPress={() => navigation.navigate('MisCursosCreadosScreen')}
-                >
-                  Cursos creados por mi
-                </Button>
-                <Button
-                  size="lg"
-                  colorScheme="secondary" onPress={() => navigation.navigate('MisCursosInscriptosScreen')}
-                >
-                  Cursos en los que estoy inscripto
-                </Button>
-              </Stack>
-            </VStack>
-          </Center>
+						<VStack
+							w="100%"
+							space={2.5}
+							px="2"
+							mt="4"
+							alignItems="center"
+							justifyContent="center"
+							>
+							<Stack
+								mb="2.5"
+								mt="1.5"
+								direction={{
+									base: 'column',
+									md: 'row',
+								}}
+								space={10}
+								mx={{
+									base: 'auto',
+									md: '0',
+								}}
+							>
+								<Button
+									size="lg" onPress={() => navigation.navigate('MisCursosCreadosScreen')}
+								>
+									Cursos creados por mi
+								</Button>
+								<Button
+									size="lg"
+									colorScheme="secondary" onPress={() => navigation.navigate('MisCursosInscriptosScreen')}
+								>
+									Cursos en los que estoy inscripto
+								</Button>
+							</Stack>
+						</VStack>
+					</Center>
 			}
 		</NativeBaseProvider>
 	);

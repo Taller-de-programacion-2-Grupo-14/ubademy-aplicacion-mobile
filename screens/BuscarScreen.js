@@ -93,7 +93,7 @@ function BuscarScreen({ navigation }) {
 								</FormControl>
 							</VStack>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-		            Buscar
+								Buscar
 							</Button>
 						</Box>
 					</ScrollView>

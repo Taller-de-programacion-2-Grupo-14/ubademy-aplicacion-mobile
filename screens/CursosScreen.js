@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CrearCursoScreen from './CrearCursoScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -23,19 +22,6 @@ CursosScreen.propTypes = {
 const Stack = createNativeStackNavigator();
 
 export function CursosScreen({ navigation }) {
-	const [loading, setLoading] = React.useState(true);
-
-	useFocusEffect(
-		React.useCallback(() => {
-			// Do something when the screen is focused
-			setLoading(false);
-			return () => {
-				// Do something when the screen is unfocused
-				// Useful for cleanup functions
-			};
-		}, [])
-	);
-
 	return (
 		<NativeBaseProvider>
 			<Stack.Navigator initialRouteName="MisCursosScreen">
@@ -61,11 +47,3 @@ export default function CursosApp() {
 		</Drawer.Navigator>
 	);
 }
-
-const spinnerStyles = StyleSheet.create({
-	spinnerStyle: {
-		flex: 7,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-});

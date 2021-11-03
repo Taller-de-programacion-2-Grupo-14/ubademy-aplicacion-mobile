@@ -16,21 +16,7 @@ InscribirmeScreen.propTypes = {
 const Stack = createNativeStackNavigator();
 
 function InscribirmeScreen({ navigation }) {
-	const [loading, setLoading] = React.useState(true);
-
-	useFocusEffect(
-		React.useCallback(() => {
-			// Do something when the screen is focused
-			setLoading(false);
-			return () => {
-				// Do something when the screen is unfocused
-				// Useful for cleanup functions
-			};
-		}, [])
-	);
-
 	return (
-
 		<NativeBaseProvider>
 			<Stack.Navigator initialRouteName="BuscarScreen">
 				<Stack.Screen name="BuscarScreen" component={BuscarScreen} options={{ headerShown: false }} />

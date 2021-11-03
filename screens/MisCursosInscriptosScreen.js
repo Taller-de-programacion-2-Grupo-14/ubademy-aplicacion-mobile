@@ -4,9 +4,8 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
-	ScrollView,
 	Spinner,
-  Text,
+	Text,
 	Flex,
 	FlatList,
 	HStack,
@@ -23,7 +22,7 @@ MisCursosInscriptosScreen.propTypes = {
 
 function MisCursosInscriptosScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
-  const [cursos, setCursos] = React.useState([]);
+	const [cursos, setCursos] = React.useState([]);
 
   const renderItem = ({ item }) => (
     <Link onPress={() => navigation.navigate('MiCursoInscriptoScreen', item) }>
@@ -44,17 +43,17 @@ function MisCursosInscriptosScreen({ navigation }) {
         </Flex>
       </Box>
     </Link>
-);
+	);
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-      misCursosInscriptos()
+			misCursosInscriptos()
         .then((response) => response.json())
       	.then((json) => {
-      	   setLoading(false);
-      		setCursos(json)
-      	});
+      		setLoading(false);
+      		setCursos(json);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -65,22 +64,22 @@ function MisCursosInscriptosScreen({ navigation }) {
 	return (
 
 		<NativeBaseProvider>
-      {
-        loading ?
-          <View style={spinnerStyles.spinnerStyle}>
-            <Spinner color="indigo.500" size="lg" />
-          </View> :
-          <Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-            <Heading size="lg" color="coolGray.800" fontWeight="600">
-              Cursos en los que estoy inscripto
-            </Heading>
-            <FlatList
-              data={cursos}
-              renderItem={renderItem}
-              keyExtractor={item => item.course_name}
-            />
-          </Box>
-      }
+			{
+				loading ?
+					<View style={spinnerStyles.spinnerStyle}>
+						<Spinner color="indigo.500" size="lg" />
+					</View> :
+					<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+						<Heading size="lg" color="coolGray.800" fontWeight="600">
+							Cursos en los que estoy inscripto
+						</Heading>
+						<FlatList
+							data={cursos}
+							renderItem={renderItem}
+							keyExtractor={item => item.course_name}
+						/>
+					</Box>
+			}
 		</NativeBaseProvider>
 	);
 }

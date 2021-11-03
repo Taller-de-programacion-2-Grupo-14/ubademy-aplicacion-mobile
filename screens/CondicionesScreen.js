@@ -164,7 +164,7 @@ function CondicionesScreen({ navigation, route }) {
 								</FormControl>
 							</VStack>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={(cursoElegido) => setCursoElegido(cursoElegido), () => this.onSubmit()} >
-		            Confirmar inscripción
+								Confirmar inscripción
 							</Button>
 						</Box>
 					</ScrollView>
