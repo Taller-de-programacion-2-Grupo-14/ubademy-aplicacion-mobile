@@ -1,5 +1,6 @@
 import React from 'react';
 import { buscarCurso } from '../src/services/buscarCurso';
+import { useIsFocused } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
@@ -7,7 +8,6 @@ import {
 	Heading,
 	Select,
 	FormControl,
-	Input,
 	Text,
 	CheckIcon,
 	Button,
@@ -15,8 +15,7 @@ import {
 	HStack,
 	ScrollView,
 	Spinner,
-	Modal,
-	WarningOutlineIcon
+	Modal
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -29,6 +28,7 @@ function BuscarScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [busqueda, setBusqueda] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
+	const isFocused = useIsFocused();
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -38,7 +38,7 @@ function BuscarScreen({ navigation }) {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	this.onSubmit = () => {
@@ -108,10 +108,8 @@ function BuscarScreen({ navigation }) {
 										<Select.Item label="Matemática" value="matematica" />
 										<Select.Item label="Programación" value="programacion" />
 										<Select.Item label="Cocina" value="cocina" />
+										<Select.Item label="Jardinería" value="jardineria" />
 									</Select>
-									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-										Seleccionar uno
-									</FormControl.ErrorMessage>
 								</FormControl>
 							</VStack>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
