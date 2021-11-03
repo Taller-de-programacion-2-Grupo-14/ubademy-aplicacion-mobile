@@ -2,20 +2,22 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
+	Pressable,
+	Menu,
 	Box,
 	Heading,
 	ScrollView,
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-//import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
-// MiCursoInscriptoScreen.propTypes = {
-// 	navigation: PropTypes.object.isRequired,
-// };
+MiCursoInscriptoScreen.propTypes = {
+	navigation: PropTypes.object.isRequired,
+};
 
-//function MiCursoInscriptoScreen({ navigation }) {
-function MiCursoInscriptoScreen() {
+function MiCursoInscriptoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(
@@ -43,6 +45,21 @@ function MiCursoInscriptoScreen() {
 							mb: '4',
 						}}
 					>
+						<Box style={{top: 20, alignItems: 'flex-end'}}>
+							<Menu
+								w="190"
+								trigger={(triggerProps) => {
+									return (
+										<Pressable accessibilityLabel="More options menu" {...triggerProps} >
+											<Icon name="more-vert" size={35} />
+										</Pressable>
+									);
+								}}
+							>
+								<Menu.Item>Desinscripción del curso</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
+							</Menu>
+						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								El curso en el que estoy inscripto (por ahora nada)

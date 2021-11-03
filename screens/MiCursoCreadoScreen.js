@@ -2,20 +2,22 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
+	Pressable,
+	Menu,
 	Box,
 	Heading,
 	ScrollView,
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-// import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
-// MiCursoCreadoScreen.propTypes = {
-// 	navigation: PropTypes.object.isRequired,
-// };
+MiCursoCreadoScreen.propTypes = {
+	navigation: PropTypes.object.isRequired,
+};
 
-//function MiCursoCreadoScreen({ navigation }) {
-function MiCursoCreadoScreen() {
+function MiCursoCreadoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(
@@ -43,9 +45,28 @@ function MiCursoCreadoScreen() {
 							mb: '4',
 						}}
 					>
+						<Box style={{top: 20, alignItems: 'flex-end'}}>
+							<Menu
+								w="190"
+								trigger={(triggerProps) => {
+									return (
+										<Pressable accessibilityLabel="More options menu" {...triggerProps} >
+											<Icon name="more-vert" size={35} />
+										</Pressable>
+									);
+								}}
+							>
+								<Menu.Item>Edición de curso</Menu.Item>
+								<Menu.Item>Listado de alumnos</Menu.Item>
+								<Menu.Item>Visualizar curso como estudiante</Menu.Item>
+								<Menu.Item>Cancelar curso</Menu.Item>
+								<Menu.Item>Crear examen</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
+							</Menu>
+						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								El curso que cree yo (por ahora nada)
+								El curso que cree yo por ahora nada)
 							</Heading>
 						</Box>
 					</ScrollView>
