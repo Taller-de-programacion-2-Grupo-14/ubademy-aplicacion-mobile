@@ -15,9 +15,10 @@ import PropTypes from 'prop-types';
 
 MiCursoCreadoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
-function MiCursoCreadoScreen({ navigation }) {
+function MiCursoCreadoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(
@@ -66,7 +67,7 @@ function MiCursoCreadoScreen({ navigation }) {
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								El curso que cree yo por ahora nada)
+								{ route.params.course_name }
 							</Heading>
 						</Box>
 					</ScrollView>

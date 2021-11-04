@@ -15,9 +15,10 @@ import PropTypes from 'prop-types';
 
 MiCursoInscriptoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
-function MiCursoInscriptoScreen({ navigation }) {
+function MiCursoInscriptoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 
 	useFocusEffect(
@@ -62,7 +63,7 @@ function MiCursoInscriptoScreen({ navigation }) {
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								El curso en el que estoy inscripto (por ahora nada)
+								{ route.params.course_name }
 							</Heading>
 						</Box>
 					</ScrollView>
