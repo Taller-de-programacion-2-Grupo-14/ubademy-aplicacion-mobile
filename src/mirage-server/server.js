@@ -116,6 +116,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					}
 				];
 			});
+			this.post(`${global.host}/desinscripcionCurso`, () => {
+				return {
+					'status': 200
+				};
+			});
 		},
 	});
 

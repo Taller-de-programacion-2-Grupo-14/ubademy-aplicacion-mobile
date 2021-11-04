@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import {
 	NativeBaseProvider,
 	Pressable,
 	Menu,
 	Box,
+	HStack,
+	VStack,
+	Modal,
+	Text,
+	Button,
 	Heading,
 	ScrollView,
 	Spinner
@@ -12,6 +17,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
+import { desinscripcionCurso } from '../src/services/desinscripcionCurso';
 
 MiCursoInscriptoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -20,6 +26,37 @@ MiCursoInscriptoScreen.propTypes = {
 
 function MiCursoInscriptoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
+	const [showModal, setShowModal] = React.useState(false);
+	const [message, setMessage] = React.useState('');
+	const [error, setError] = React.useState(false);
+
+	const desinscribirse = () =>
+		Alert.alert(
+			'Desinscripción',
+			'¿Está seguro que desea desinscribirse de este curso?',
+			[
+				{
+					text: 'Cancelar',
+					style: 'cancel'
+				},
+				{ text: 'OK', style: 'destructive',
+					onPress: () => {
+						desinscripcionCurso(route.params.course_name)
+							.then((response) => response.json())
+							.then((json) => {
+								if (json.status === 200) {
+									setMessage('Desincripción exitosa');
+									setShowModal(true);
+								} else {
+									setError(true);
+									setMessage('Error al desinscribirse');
+									setShowModal(true);
+								}
+							});
+					}
+				}
+			]
+		);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -46,6 +83,27 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 							mb: '4',
 						}}
 					>
+						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">{message}</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => {
+											error ? setShowModal(false) : navigation.navigate('MisCursosScreen');
+										}}
+									>
+										Continuar
+									</Button>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
 						<Box style={{top: 20, alignItems: 'flex-end'}}>
 							<Menu
 								w="190"
@@ -57,7 +115,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item>Desinscripción del curso</Menu.Item>
+								<Menu.Item onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 							</Menu>
 						</Box>
