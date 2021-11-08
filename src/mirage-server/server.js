@@ -11,17 +11,17 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/registrar`, () => {
+			this.post(`${global.host}/users`, () => {
 				return {
 					'status': 200
 				};
 			});
-			this.put(`${global.host}/modificar`, () => {
+			this.put(`${global.host}/users`, () => {
 				return {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/obtenerUsuario`, () => {
+			this.get(`${global.host}/users`, () => {
 				return {
 					'user_id': 3,
 					'first_name': 'pepe',
@@ -32,17 +32,17 @@ export function makeServer({ environment = 'test' } = {}) {
 					'location': 'transilvania'
 				};
 			});
-			this.put(`${global.host}/eliminar`, () => {
+			this.put(`${global.host}/users/delete-user`, () => {
 				return {
 					'status': 200
 				};
 			});
-			this.put(`${global.host}/password`, () => {
+			this.put(`${global.host}/users/send-email-reset-password`, () => {
 				return {
 					'status': 200
 				};
 			});
-			this.put(`${global.host}/recuperoPassword`, () => {
+			this.put(`${global.host}/users/recreate-password`, () => {
 				return {
 					'status': 200
 				};
