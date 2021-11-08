@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import HomeScreen from './HomeScreen';
 import UserScreen from './UserScreen';
+import CursosScreen from './CursosScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeBaseProvider } from 'native-base';
 
@@ -31,9 +32,17 @@ export default function HomeApp() {
 						),
 					}}
 				/>
+				<Tab.Screen
+					name="Cursos"
+					component={CursosScreen}
+					options={{
+						tabBarLabel: 'Cursos',
+						tabBarIcon: ({ focused }) => (
+							<MaterialCommunityIcons name={focused ? 'book-open-page-variant' : 'book-open-variant'} color='white' size={26} />
+						),
+					}}
+				/>
 			</Tab.Navigator>
 		</NativeBaseProvider>
 	);
 }
-
-
