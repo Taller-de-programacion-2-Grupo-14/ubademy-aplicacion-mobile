@@ -57,7 +57,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item>Edición de curso</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params.course_name);}} >Edición de curso</Menu.Item>
 								<Menu.Item>Listado de alumnos</Menu.Item>
 								<Menu.Item>Visualizar curso como estudiante</Menu.Item>
 								<Menu.Item>Cancelar curso</Menu.Item>
