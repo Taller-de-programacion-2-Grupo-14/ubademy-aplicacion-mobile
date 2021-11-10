@@ -33,7 +33,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	const desinscribirse = () =>
 		Alert.alert(
 			'Desinscripción',
-			'¿Está seguro que desea desinscribirse de este curso?',
+			'Ya no podrá rendir exámenes ni ver el contenido del curso.\n¿Está seguro que desea desinscribirse de este curso?',
 			[
 				{
 					text: 'Cancelar',
@@ -120,7 +120,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="xl" color="coolGray.800" fontWeight="600">
 								{ route.params.course_name }
 							</Heading>
 						</Box>

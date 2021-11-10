@@ -19,6 +19,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import { cancelarCurso } from '../src/services/cancelarCurso';
+import { obtenerCurso } from '../src/services/obtenerCurso';
 
 MiCursoCreadoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -30,6 +31,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [estado, setEstado] = React.useState('');
 
 	const cancelar = () =>
 		Alert.alert(
@@ -62,7 +64,12 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setLoading(false);
+			obtenerCurso(route.params.course_name)
+				.then(data => data.json())
+				.then(json => {
+					setLoading(false);
+					setEstado(json.estado);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -127,8 +134,11 @@ function MiCursoCreadoScreen({ navigation, route }) {
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="xl" color="coolGray.800" fontWeight="600">
 								{ route.params.course_name }
+							</Heading>
+							<Heading size="md" color="coolGray.800" fontWeight="600">
+								{'\n'}Estado: { estado }
 							</Heading>
 						</Box>
 					</ScrollView>

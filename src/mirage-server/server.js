@@ -89,7 +89,8 @@ export function makeServer({ environment = 'test' } = {}) {
 					'course_type': 'Programación',
 					'amount_exams': '3',
 					'subscription': 'Premium',
-					'location': 'Obera'
+					'location': 'Obera',
+					'estado': 'Vigente'
 				};
 			});
 			this.get(`${global.host}/misCursosCreados`, () => {
