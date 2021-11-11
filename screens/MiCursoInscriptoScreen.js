@@ -29,6 +29,8 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [verComoCreador, setVerComoCreador] = React.useState(false);
+	const [origen, setOrigen] = React.useState('');
 
 	const desinscribirse = () =>
 		Alert.alert(
@@ -61,6 +63,13 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			if (route.params.course_name == null){
+				setVerComoCreador(true);
+				setOrigen(route.params);
+			} else {
+				setVerComoCreador(false);
+				setOrigen(route.params.course_name);
+			}
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -115,13 +124,16 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
+								<Menu.Item isDisabled={verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
+								{ verComoCreador ?
+									<Menu.Item onPress={() => {navigation.goBack();}} >Ver curso como creador</Menu.Item> :
+									<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
+								}
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								{ route.params.course_name }
+								{ origen }
 							</Heading>
 						</Box>
 					</ScrollView>

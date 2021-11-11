@@ -35,7 +35,7 @@ function ListadoAlumnosScreen({ route }) {
 				.then((json) => {
 					setLoading(false);
 					setAlumnos(json);
-			});
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -59,7 +59,7 @@ function ListadoAlumnosScreen({ route }) {
 							data={alumnos}
 							renderItem={renderItem}
 							keyExtractor={item => item.id}
- 						/>
+						/>
 					</Box>
 			}
 		</NativeBaseProvider>
