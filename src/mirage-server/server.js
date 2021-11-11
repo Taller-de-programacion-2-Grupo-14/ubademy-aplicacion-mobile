@@ -132,6 +132,25 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.get(`${global.host}/obtenerAlumnos`, () => {
+				return [
+					{
+						'id': '1',
+						'apellido': 'Pacino',
+						'nombre': 'Al'
+					},
+					{
+						'id': '2',
+						'apellido': 'Cameron',
+						'nombre': 'James'
+					},
+					{
+						'id': '3',
+						'apellido': 'Tarantino',
+						'nombre': 'Quentin'
+					}
+				];
+			});
 		},
 	});
 

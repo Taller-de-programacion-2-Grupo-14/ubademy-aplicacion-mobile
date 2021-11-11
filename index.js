@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import { registerRootComponent } from 'expo';
 import { makeServer } from './src/mirage-server/server';
 import App from './App';
+//global.host = 'https://ubademy-14-prod.herokuapp.com';
 global.host = 'http://10.0.2.2:8080';
 //para desactivar el mirage, comentar estas lineas y el import del makeServer
 if (process.env.NODE_ENV === 'development') {

@@ -43,7 +43,7 @@ function EdicionCursoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCurso(route.params.course_name)
+			obtenerCurso(route.params)
 				.then(data => data.json())
 				.then(json => {
 					setLoading(false);

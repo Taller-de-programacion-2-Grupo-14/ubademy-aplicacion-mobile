@@ -123,8 +123,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params.course_name);}} >Editar curso</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen');}}>Listado de alumnos</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params.course_name)}} >Editar curso</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.course_name)}}>Listado de alumnos</Menu.Item>
 								<Menu.Item>Crear examen</Menu.Item>
 								<Divider />
 								<Menu.Item>Visualizar curso como estudiante</Menu.Item>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { crearCurso } from '../src/services/crearCurso';
+import { useIsFocused } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
@@ -33,6 +34,7 @@ export default function CrearCursoScreen({ navigation }) {
 	const [error, setError] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
+	const isFocused = useIsFocused();
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -42,7 +44,7 @@ export default function CrearCursoScreen({ navigation }) {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	this.onSubmit = () => {
