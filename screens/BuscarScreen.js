@@ -139,7 +139,7 @@ function BuscarScreen({ navigation }) {
 
 								<FormControl>
 									<FormControl.Label>Filtrar por texto libre</FormControl.Label>
-										<Input onChangeText={(textoLibre) => setTextoLibre(textoLibre)} value={textoLibre} />
+									<Input onChangeText={(textoLibre) => setTextoLibre(textoLibre)} value={textoLibre} />
 								</FormControl>
 							</VStack>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
