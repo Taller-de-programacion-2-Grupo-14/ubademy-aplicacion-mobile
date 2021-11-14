@@ -16,7 +16,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.put(`${global.host}/users`, () => {
+			this.patch(`${global.host}/users`, () => {
 				return {
 					'status': 200
 				};
@@ -86,10 +86,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					'course_name': 'Mas Python que nunca',
 					'course_description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
 					'hashtags': '#Python, #Sarasa',
-					'course_type': 'Programacion',
-					'amount_exams': 3,
+					'course_type': 'Programación',
+					'amount_exams': '3',
 					'subscription': 'Premium',
-					'location': 'Obera'
+					'location': 'Obera',
+					'estado': 'Vigente'
 				};
 			});
 			this.get(`${global.host}/misCursosCreados`, () => {
@@ -120,6 +121,35 @@ export function makeServer({ environment = 'test' } = {}) {
 				return {
 					'status': 200
 				};
+			});
+			this.patch(`${global.host}/editarCurso`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/cancelarCurso`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/obtenerAlumnos`, () => {
+				return [
+					{
+						'id': '1',
+						'apellido': 'Pacino',
+						'nombre': 'Al'
+					},
+					{
+						'id': '2',
+						'apellido': 'Cameron',
+						'nombre': 'James'
+					},
+					{
+						'id': '3',
+						'apellido': 'Tarantino',
+						'nombre': 'Quentin'
+					}
+				];
 			});
 		},
 	});

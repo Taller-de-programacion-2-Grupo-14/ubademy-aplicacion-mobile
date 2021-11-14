@@ -7,6 +7,7 @@ import {
 	Box,
 	Heading,
 	Select,
+	Input,
 	FormControl,
 	Text,
 	CheckIcon,
@@ -26,7 +27,9 @@ BuscarScreen.propTypes = {
 
 function BuscarScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
-	const [busqueda, setBusqueda] = React.useState('');
+	const [tipo, setTipo] = React.useState('');
+	const [suscripcion, setSuscripcion] = React.useState('');
+	const [textoLibre, setTextoLibre] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
 
@@ -42,7 +45,7 @@ function BuscarScreen({ navigation }) {
 	);
 
 	this.onSubmit = () => {
-		buscarCurso(busqueda)
+		buscarCurso(tipo, suscripcion, textoLibre)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json.status === 200) {
@@ -88,13 +91,13 @@ function BuscarScreen({ navigation }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Buscar por categoria
+								Busqueda de curso
 							</Heading>
 							<VStack space={3} mt="5">
-								<FormControl isRequired>
-									<FormControl.Label>Tipo de curso</FormControl.Label>
+								<FormControl>
+									<FormControl.Label>Filtrar por tipo de curso</FormControl.Label>
 									<Select
-										selectedValue={busqueda}
+										selectedValue={tipo}
 										minWidth="200"
 										accessibilityLabel="Elegir un tipo de curso"
 										placeholder="Elegir un tipo de curso"
@@ -103,13 +106,40 @@ function BuscarScreen({ navigation }) {
 											endIcon: <CheckIcon size="5" />,
 										}}
 										mt={1}
-										onValueChange={(busqueda) => setBusqueda(busqueda)}
+										onValueChange={(tipo) => setTipo(tipo)}
 									>
+										<Select.Item label="-" value="" />
 										<Select.Item label="Matemática" value="matematica" />
 										<Select.Item label="Programación" value="programacion" />
 										<Select.Item label="Cocina" value="cocina" />
 										<Select.Item label="Jardinería" value="jardineria" />
 									</Select>
+								</FormControl>
+
+								<FormControl>
+									<FormControl.Label>Filtrar por tipo de suscripción</FormControl.Label>
+									<Select
+										selectedValue={suscripcion}
+										minWidth="200"
+										accessibilityLabel="Elegir un tipo de suscripción"
+										placeholder="Elegir un tipo de suscripción"
+										_selectedItem={{
+											bg: 'teal.600',
+											endIcon: <CheckIcon size="5" />,
+										}}
+										mt={1}
+										onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
+									>
+										<Select.Item label="-" value="" />
+										<Select.Item label="Básico" value="suscripcion1" />
+										<Select.Item label="Estándar" value="suscripcion2" />
+										<Select.Item label="Premium" value="suscripcion3" />
+									</Select>
+								</FormControl>
+
+								<FormControl>
+									<FormControl.Label>Filtrar por texto libre</FormControl.Label>
+									<Input onChangeText={(textoLibre) => setTextoLibre(textoLibre)} value={textoLibre} />
 								</FormControl>
 							</VStack>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >

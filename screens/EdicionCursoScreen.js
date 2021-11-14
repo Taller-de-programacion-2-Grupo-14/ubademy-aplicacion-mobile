@@ -1,65 +1,78 @@
 import React from 'react';
-import { crearCurso } from '../src/services/crearCurso';
-import { useIsFocused } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
-	Text,
 	Heading,
-	VStack,
-	FormControl,
-	Input,
-	Button,
-	HStack,
-	Modal,
 	ScrollView,
-	Spinner,
-	Select,
+	Text,
 	CheckIcon,
-	WarningOutlineIcon
+	Input,
+	Select,
+	Spinner,
+	FormControl,
+	HStack,
+	VStack,
+	WarningOutlineIcon,
+	Modal,
+	Button
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import { obtenerCurso } from '../src/services/obtenerCurso';
+import { editarCurso } from '../src/services/editarCurso';
 
-export default function CrearCursoScreen({ navigation }) {
+EdicionCursoScreen.propTypes = {
+	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
+};
+
+function EdicionCursoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
+	const [showModal, setShowModal] = React.useState(false);
+	const [message, setMessage] = React.useState('');
+	const [error, setError] = React.useState(false);
 	const [titulo, setTitulo] = React.useState('');
+	const [suscripcion, setSuscripcion] = React.useState('');
 	const [descripcion, setDescripcion] = React.useState('');
 	const [hashtags, setHashtags] = React.useState('');
-	const [tipo, setTipo] = React.useState('');
 	const [examenes, setExamenes] = React.useState('');
-	const [suscripcion, setSuscripcion] = React.useState('');
+	const [tipoDeCurso, setTipoDeCurso] = React.useState('');
 	const [location, setLocation] = React.useState('');
-	const [error, setError] = React.useState(false);
-	const [message, setMessage] = React.useState('');
-	const [showModal, setShowModal] = React.useState(false);
-	const isFocused = useIsFocused();
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setLoading(false);
+			obtenerCurso(route.params)
+				.then(data => data.json())
+				.then(json => {
+					setLoading(false);
+					setTitulo(json.course_name);
+					setDescripcion(json.course_description);
+					setHashtags(json.hashtags);
+					setExamenes(json.amount_exams);
+					setTipoDeCurso(json.course_type);
+					setLocation(json.location);
+					setSuscripcion(json.subscription);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [isFocused])
+		}, [])
 	);
 
 	this.onSubmit = () => {
-		crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location)
+		editarCurso(titulo, descripcion, hashtags, examenes, tipoDeCurso, location, suscripcion)
 			.then((response) => response.json())
 			.then((json) => {
-				console.log('creando curso');
-				console.log(json);
 				if (json.status === 200) {
-					setMessage('Curso creado exitosamente');
 					setShowModal(true);
+					setMessage('Datos actualizados');
 				} else {
 					setError(true);
-					setMessage('Error al crear el curso');
 					setShowModal(true);
+					setMessage('Ha ocurrido un error');
 				}
 			});
 	};
@@ -95,44 +108,44 @@ export default function CrearCursoScreen({ navigation }) {
 											if (!error) navigation.goBack();
 										}}
 									>
-										Continuar
+                    Continuar
 									</Button>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Complete los siguientes datos para crear un curso
+                Editar { route.params }
 							</Heading>
 							<VStack space={3} mt="5">
-								<FormControl isRequired>
+								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Titulo
+                    Titulo
 									</FormControl.Label>
-									<Input onChangeText={(titulo) => setTitulo(titulo)} />
+									<Input onChangeText={(titulo) => setTitulo(titulo)} value={titulo} />
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Descripcion
+                    Descripcion
 									</FormControl.Label>
-									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} />
+									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} value={descripcion} />
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Hashtags asociados
+                    Hashtags asociados
 									</FormControl.Label>
-									<Input onChangeText={(hashtags) => setHashtags(hashtags)} />
+									<Input onChangeText={(hashtags) => setHashtags(hashtags)} value={hashtags} />
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl>
 									<FormControl.Label>Tipo de curso</FormControl.Label>
 									<Select
-										selectedValue={tipo}
+										selectedValue={tipoDeCurso}
 										minWidth="200"
 										accessibilityLabel="Elegir un tipo de curso"
 										placeholder="Elegir un tipo de curso"
@@ -141,26 +154,26 @@ export default function CrearCursoScreen({ navigation }) {
 											endIcon: <CheckIcon size="5" />,
 										}}
 										mt={1}
-										onValueChange={(tipo) => setTipo(tipo)}
+										onValueChange={(tipoDeCurso) => setTipoDeCurso(tipoDeCurso)} value={tipoDeCurso}
 									>
-										<Select.Item label="Matemática" value="matematica" />
-										<Select.Item label="Programación" value="programacion" />
-										<Select.Item label="Cocina" value="cocina" />
+										<Select.Item label="Matemática" value="Matemática" />
+										<Select.Item label="Programación" value="Programación" />
+										<Select.Item label="Cocina" value="Cocina" />
 									</Select>
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-										Seleccionar uno
+                    Seleccionar uno
 									</FormControl.ErrorMessage>
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Cantidad de exámenes
+                    Cantidad de exámenes
 									</FormControl.Label>
-									<Input onChangeText={(examenes) => setExamenes(examenes)} />
+									<Input onChangeText={(examenes) => setExamenes(examenes)} value={examenes} />
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl>
 									<FormControl.Label>Tipo de suscripción</FormControl.Label>
 									<Select
 										selectedValue={suscripcion}
@@ -172,27 +185,27 @@ export default function CrearCursoScreen({ navigation }) {
 											endIcon: <CheckIcon size="5" />,
 										}}
 										mt={1}
-										onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
+										onValueChange={(suscripcion) => setSuscripcion(suscripcion)} value={suscripcion}
 									>
-										<Select.Item label="Básico" value="suscripcion1" />
-										<Select.Item label="Estándar" value="suscripcion2" />
-										<Select.Item label="Premium" value="suscripcion3" />
+										<Select.Item label="Básico" value="Básico" />
+										<Select.Item label="Estándar" value="Estándar" />
+										<Select.Item label="Premium" value="Premium" />
 									</Select>
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-										Seleccionar uno
+                    Seleccionar uno
 									</FormControl.ErrorMessage>
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Ubicacion
+                    Ubicacion
 									</FormControl.Label>
-									<Input onChangeText={(location) => setLocation(location)} />
+									<Input onChangeText={(location) => setLocation(location)} value={location} />
 								</FormControl>
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-									Crear curso
+                  Confirmar
 								</Button>
 							</VStack>
 						</Box>
@@ -210,9 +223,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-CrearCursoScreen.propTypes = {
-	navigation: PropTypes.shape({
-		navigate: PropTypes.func.isRequired,
-		goBack: PropTypes.func,
-	}).isRequired,
-};
+export default EdicionCursoScreen;

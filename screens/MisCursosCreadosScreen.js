@@ -37,7 +37,7 @@ function MisCursosCreadosScreen({ navigation }) {
 					{item.course_name}
 				</Heading>
 				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.400">
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
             Ingresar
 					</Text>
 				</Flex>
