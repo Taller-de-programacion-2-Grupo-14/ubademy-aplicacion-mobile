@@ -1,11 +1,15 @@
-export function cancelarCurso(curso) {
+import * as SecureStore from 'expo-secure-store';
 
-	return fetch(`${global.host}/cancelarCurso`, {
-		method: 'POST',
+export async function cancelarCurso(id) {
+	const token = await SecureStore.getItemAsync('secure_token');
+
+	return fetch(`${global.host}/courses/${id}`, {
+		method: 'DELETE',
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json'
+			'x-access-token': token,
+			//'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 'curso': curso })
+		//body: JSON.stringify({ 'curso': curso })
 	});
 }

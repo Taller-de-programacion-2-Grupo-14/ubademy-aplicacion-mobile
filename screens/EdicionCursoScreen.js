@@ -6,14 +6,11 @@ import {
 	Heading,
 	ScrollView,
 	Text,
-	CheckIcon,
 	Input,
-	Select,
 	Spinner,
 	FormControl,
 	HStack,
 	VStack,
-	WarningOutlineIcon,
 	Modal,
 	Button
 } from 'native-base';
@@ -33,27 +30,21 @@ function EdicionCursoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [titulo, setTitulo] = React.useState('');
-	const [suscripcion, setSuscripcion] = React.useState('');
 	const [descripcion, setDescripcion] = React.useState('');
 	const [hashtags, setHashtags] = React.useState('');
-	const [examenes, setExamenes] = React.useState('');
-	const [tipoDeCurso, setTipoDeCurso] = React.useState('');
 	const [location, setLocation] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCurso(route.params)
+			obtenerCurso(String(route.params))
 				.then(data => data.json())
 				.then(json => {
 					setLoading(false);
-					setTitulo(json.course_name);
-					setDescripcion(json.course_description);
+					setTitulo(json.name);
+					setDescripcion(json.description);
 					setHashtags(json.hashtags);
-					setExamenes(json.amount_exams);
-					setTipoDeCurso(json.course_type);
 					setLocation(json.location);
-					setSuscripcion(json.subscription);
 				});
 			return () => {
 				// Do something when the screen is unfocused
@@ -63,7 +54,7 @@ function EdicionCursoScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		editarCurso(titulo, descripcion, hashtags, examenes, tipoDeCurso, location, suscripcion)
+		editarCurso(String(route.params), titulo, descripcion, hashtags, location)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json.status === 200) {
@@ -115,7 +106,7 @@ function EdicionCursoScreen({ navigation, route }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
-                Editar { route.params }
+                Editar curso
 							</Heading>
 							<VStack space={3} mt="5">
 								<FormControl>
@@ -140,60 +131,6 @@ function EdicionCursoScreen({ navigation, route }) {
                     Hashtags asociados
 									</FormControl.Label>
 									<Input onChangeText={(hashtags) => setHashtags(hashtags)} value={hashtags} />
-								</FormControl>
-
-								<FormControl>
-									<FormControl.Label>Tipo de curso</FormControl.Label>
-									<Select
-										selectedValue={tipoDeCurso}
-										minWidth="200"
-										accessibilityLabel="Elegir un tipo de curso"
-										placeholder="Elegir un tipo de curso"
-										_selectedItem={{
-											bg: 'teal.600',
-											endIcon: <CheckIcon size="5" />,
-										}}
-										mt={1}
-										onValueChange={(tipoDeCurso) => setTipoDeCurso(tipoDeCurso)} value={tipoDeCurso}
-									>
-										<Select.Item label="Matemática" value="Matemática" />
-										<Select.Item label="Programación" value="Programación" />
-										<Select.Item label="Cocina" value="Cocina" />
-									</Select>
-									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-                    Seleccionar uno
-									</FormControl.ErrorMessage>
-								</FormControl>
-
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Cantidad de exámenes
-									</FormControl.Label>
-									<Input onChangeText={(examenes) => setExamenes(examenes)} value={examenes} />
-								</FormControl>
-
-								<FormControl>
-									<FormControl.Label>Tipo de suscripción</FormControl.Label>
-									<Select
-										selectedValue={suscripcion}
-										minWidth="200"
-										accessibilityLabel="Elegir suscripción"
-										placeholder="Elegir suscripción"
-										_selectedItem={{
-											bg: 'teal.600',
-											endIcon: <CheckIcon size="5" />,
-										}}
-										mt={1}
-										onValueChange={(suscripcion) => setSuscripcion(suscripcion)} value={suscripcion}
-									>
-										<Select.Item label="Básico" value="Básico" />
-										<Select.Item label="Estándar" value="Estándar" />
-										<Select.Item label="Premium" value="Premium" />
-									</Select>
-									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-                    Seleccionar uno
-									</FormControl.ErrorMessage>
 								</FormControl>
 
 								<FormControl>

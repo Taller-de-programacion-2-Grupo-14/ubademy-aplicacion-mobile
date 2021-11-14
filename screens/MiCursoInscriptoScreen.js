@@ -29,8 +29,6 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [verComoCreador, setVerComoCreador] = React.useState(false);
-	const [origen, setOrigen] = React.useState('');
 
 	const desinscribirse = () =>
 		Alert.alert(
@@ -43,7 +41,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 				},
 				{ text: 'OK', style: 'destructive',
 					onPress: () => {
-						desinscripcionCurso(route.params.course_name)
+						desinscripcionCurso(String(route.params.id))
 							.then((response) => response.json())
 							.then((json) => {
 								if (json.status === 200) {
@@ -63,13 +61,6 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			if (route.params.course_name == null){
-				setVerComoCreador(true);
-				setOrigen(route.params);
-			} else {
-				setVerComoCreador(false);
-				setOrigen(route.params.course_name);
-			}
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -124,8 +115,8 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item isDisabled={verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
-								{ verComoCreador ?
+								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
+								{ route.params.verComoCreador ?
 									<Menu.Item onPress={() => {navigation.goBack();}} >Ver curso como creador</Menu.Item> :
 									<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 								}
@@ -133,7 +124,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								{ origen }
+								{ route.params.name }
 							</Heading>
 						</Box>
 					</ScrollView>

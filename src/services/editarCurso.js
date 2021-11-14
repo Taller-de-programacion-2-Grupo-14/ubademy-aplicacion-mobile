@@ -1,11 +1,15 @@
-export function editarCurso(titulo, descripcion, hashtags, examenes, tipoDeCurso, location, suscripcion) {
+import * as SecureStore from 'expo-secure-store';
+
+export async function editarCurso(id, titulo, descripcion, hashtags, location) {
+	const token = await SecureStore.getItemAsync('secure_token');
 	//cambiar la url por la de heroku cuando el mirage este desactivado
-	return fetch(`${global.host}/editarCurso`, {
+	return fetch(`${global.host}/courses/${id}`, {
 		method: 'PATCH',
 		headers: {
 			Accept: 'application/json',
+			'x-access-token': token,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 'course_name': titulo, 'course_description': descripcion, 'hashtags': hashtags, 'amount_exams': examenes, 'course_type': tipoDeCurso, 'location': location, 'subscription': suscripcion })
+		body: JSON.stringify({ 'name': titulo, 'description': descripcion, 'hashtags': hashtags, 'location': location })
 	});
 }

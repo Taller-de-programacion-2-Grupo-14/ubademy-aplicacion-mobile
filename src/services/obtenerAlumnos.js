@@ -1,6 +1,6 @@
-export function obtenerAlumnos(cursoElegido, nombre, apellido) {
+export function obtenerAlumnos(idCursoElegido, nombre, apellido) {
 
-	return fetch(`${global.host}/obtenerAlumnos?id_course=${cursoElegido}&nombre=${nombre}&apellido=${apellido}`, {
+	return fetch(`${global.host}/obtenerAlumnos?id_course=${idCursoElegido}&nombre=${nombre}&apellido=${apellido}`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

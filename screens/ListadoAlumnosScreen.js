@@ -40,7 +40,7 @@ function ListadoAlumnosScreen({ route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerAlumnos(route.params, nombre, apellido)
+			obtenerAlumnos(String(route.params), nombre, apellido)
 				.then((response) => response.json())
 				.then((json) => {
 					setLoading(false);
@@ -54,7 +54,7 @@ function ListadoAlumnosScreen({ route }) {
 	);
 
 	this.onSubmit = () => {
-		obtenerAlumnos(route.params, nombre, apellido)
+		obtenerAlumnos(String(route.params), nombre, apellido)
 			.then((response) => response.json())
 			.then((json) => {
 				setLoading(false);

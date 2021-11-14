@@ -47,7 +47,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/crearCurso`, () => {
+			this.post(`${global.host}/courses/create`, () => {
 				return {
 					'status': 200
 				};
@@ -81,39 +81,87 @@ export function makeServer({ environment = 'test' } = {}) {
 					}
 				];
 			});
-			this.get(`${global.host}/obtenerCurso`, () => {
+			this.get(`${global.host}/courses/1`, () => {
 				return {
-					'course_name': 'Mas Python que nunca',
-					'course_description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
-					'hashtags': '#Python, #Sarasa',
-					'course_type': 'Programación',
-					'amount_exams': '3',
+					'name': 'Algebra',
+					'creator_name': 'Essaya',
+					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+					'hashtags': 'Python, Sarasa',
+					'type': 'Programación',
+					'exams': 3,
 					'subscription': 'Premium',
 					'location': 'Obera',
+					'canEdit': true,
+					'estado': 'Vigente'
+				};
+			});
+			this.get(`${global.host}/courses/2`, () => {
+				return {
+					'name': 'Análisis Matemático III',
+					'creator_name': 'Essaya',
+					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+					'hashtags': 'Python, Sarasa',
+					'type': 'Programación',
+					'exams': 3,
+					'subscription': 'Premium',
+					'location': 'Obera',
+					'canEdit': true,
+					'estado': 'Vigente'
+				};
+			});
+			this.get(`${global.host}/courses/3`, () => {
+				return {
+					'name': 'Flores',
+					'creator_name': 'Essaya',
+					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+					'hashtags': 'Python, Sarasa',
+					'type': 'Programación',
+					'exams': 3,
+					'subscription': 'Premium',
+					'location': 'Obera',
+					'canEdit': true,
+					'estado': 'Vigente'
+				};
+			});
+			this.get(`${global.host}/courses/4`, () => {
+				return {
+					'name': 'Tortas',
+					'creator_name': 'Essaya',
+					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+					'hashtags': 'Python, Sarasa',
+					'type': 'Programación',
+					'exams': 3,
+					'subscription': 'Premium',
+					'location': 'Obera',
+					'canEdit': true,
 					'estado': 'Vigente'
 				};
 			});
 			this.get(`${global.host}/misCursosCreados`, () => {
 				return [
 					{
-						'course_name': 'Algebra',
-						'tipo': 'Matematica'
+						'name': 'Algebra',
+						'id': 1,
+						'type': 'Matematica'
 					},
 					{
-						'course_name': 'Análisis Matemático III',
-						'tipo': 'Matematica'
+						'name': 'Análisis Matemático III',
+						'id': 2,
+						'type': 'Matematica'
 					}
 				];
 			});
 			this.get(`${global.host}/misCursosInscriptos`, () => {
 				return [
 					{
-						'course_name': 'Flores',
-						'tipo': 'Jardineria'
+						'name': 'Flores',
+						'id': 3,
+						'type': 'Jardineria'
 					},
 					{
-						'course_name': 'Tortas',
-						'tipo': 'Cocina'
+						'name': 'Tortas',
+						'id': 4,
+						'type': 'Cocina'
 					}
 				];
 			});
@@ -122,12 +170,12 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.patch(`${global.host}/editarCurso`, () => {
+			this.patch(`${global.host}/courses/:id`, () => {
 				return {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/cancelarCurso`, () => {
+			this.delete(`${global.host}/courses/:id`, () => {
 				return {
 					'status': 200
 				};

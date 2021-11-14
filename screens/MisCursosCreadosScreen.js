@@ -25,16 +25,16 @@ function MisCursosCreadosScreen({ navigation }) {
 	const [cursos, setCursos] = React.useState([]);
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => navigation.navigate('MiCursoCreadoScreen', item) }>
+		<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item);} }>
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
-						{item.tipo}
+						{item.type}
 					</Text>
 					<Spacer />
 				</HStack>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
-					{item.course_name}
+					{item.name}
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
@@ -76,7 +76,7 @@ function MisCursosCreadosScreen({ navigation }) {
 						<FlatList
 							data={cursos}
 							renderItem={renderItem}
-							keyExtractor={item => item.course_name}
+							keyExtractor={item => String(item.id)}
 						/>
 					</Box>
 			}

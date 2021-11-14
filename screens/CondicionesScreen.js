@@ -38,14 +38,14 @@ function CondicionesScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCurso(route.params.course_name)
+			obtenerCurso(route.params.name)
 				.then(data => data.json())
 				.then(json => {
 					setLoading(false);
-					setDescripcion(json.course_description);
+					setDescripcion(json.description);
 					setHashtags(json.hashtags);
-					setExamenes(json.amount_exams);
-					setTipoDeCurso(json.course_type);
+					setExamenes(String(json.exams));
+					setTipoDeCurso(json.type);
 					setLocation(json.location);
 				});
 			return () => {
