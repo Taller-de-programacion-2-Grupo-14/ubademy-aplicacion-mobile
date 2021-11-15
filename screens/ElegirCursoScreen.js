@@ -7,6 +7,9 @@ import {
 	Link,
 	Text,
 	FlatList,
+	Modal,
+	VStack,
+	Button,
 	HStack,
 	Spacer,
 	Flex,
@@ -18,11 +21,13 @@ import PropTypes from 'prop-types';
 
 ElegirCursoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
-function ElegirCursoScreen({ navigation }) {
+function ElegirCursoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
+	const [showModal, setShowModal] = React.useState(false);
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => navigation.navigate('CondicionesScreen', item) }>
@@ -34,7 +39,7 @@ function ElegirCursoScreen({ navigation }) {
 					<Spacer />
 				</HStack>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
-					{item.course_name}
+					{item.name}
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
@@ -48,11 +53,15 @@ function ElegirCursoScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCursos()
+			obtenerCursos(route.params.tipo, route.params.suscripcion, route.params.textoLibre)
 				.then((response) => response.json())
 				.then((json) => {
+					if (json.status === 400) {
+						setShowModal(true);
+					} else {
+						setCursos(json);
+					}
 					setLoading(false);
-					setCursos(json);
 				});
 			return () => {
 				// Do something when the screen is unfocused
@@ -68,16 +77,37 @@ function ElegirCursoScreen({ navigation }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-						<Heading size="lg" color="coolGray.800" fontWeight="600">
-							Elegir un curso
-						</Heading>
-						<FlatList
-							data={cursos}
-							renderItem={renderItem}
-							keyExtractor={item => item.course_name}
-						/>
-					</Box>
+					<>
+						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">Búsqueda sin resultados</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => { setShowModal(false); navigation.goBack(); }}
+									>
+										Continuar
+									</Button>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+							<Heading size="lg" color="coolGray.800" fontWeight="600">
+								Elegir un curso
+							</Heading>
+							<FlatList
+								data={cursos}
+								renderItem={renderItem}
+								keyExtractor={item => String(item.id)}
+							/>
+						</Box>
+					</>
 			}
 		</NativeBaseProvider>
 	);

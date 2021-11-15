@@ -52,32 +52,48 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/buscarCurso`, () => {
+			this.post(`${global.host}/courses/:id`, () => {
 				return {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/elegirCurso`, () => {
-				return {
-					'status': 200
-				};
-			});
-			this.get(`${global.host}/obtenerCursos`, () => {
+			this.get(`${global.host}/courses`, () => {
 				return [
 					{
-						'course_name': 'Taller',
+						'name': 'Taller',
 						'creator_name': 'Agustin',
-						'subscription': 'Estándar'
+						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+						'hashtags': 'Python, Sarasa',
+						'type': 'Programación',
+						'exams': 3,
+						'subscription': 'Premium',
+						'location': 'Obera',
+						'id': 5,
+						'estado': 'Vigente'
 					},
 					{
-						'course_name': 'Organizacion de Datos',
+						'name': 'Organizacion de Datos',
 						'creator_name': 'Luis',
-						'subscription': 'Premium'
+						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+						'hashtags': 'Python, Sarasa',
+						'type': 'Programación',
+						'exams': 3,
+						'subscription': 'Premium',
+						'location': 'Obera',
+						'id': 6,
+						'estado': 'Vigente'
 					},
 					{
-						'course_name': 'Sistemas Operativos',
+						'name': 'Sistemas Operativos',
 						'creator_name': 'Clua',
-						'subscription': 'Premium'
+						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+						'hashtags': 'Python, Sarasa',
+						'type': 'Programación',
+						'exams': 3,
+						'subscription': 'Premium',
+						'location': 'Obera',
+						'id': 7,
+						'estado': 'Vigente'
 					}
 				];
 			});
@@ -127,6 +143,48 @@ export function makeServer({ environment = 'test' } = {}) {
 				return {
 					'name': 'Tortas',
 					'creator_name': 'Essaya',
+					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+					'hashtags': 'Python, Sarasa',
+					'type': 'Programación',
+					'exams': 3,
+					'subscription': 'Premium',
+					'location': 'Obera',
+					'canEdit': true,
+					'estado': 'Vigente'
+				};
+			});
+			this.get(`${global.host}/courses/5`, () => {
+				return {
+					'name': 'Taller',
+					'creator_name': 'Agustin',
+					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+					'hashtags': 'Python, Sarasa',
+					'type': 'Programación',
+					'exams': 3,
+					'subscription': 'Premium',
+					'location': 'Obera',
+					'canEdit': true,
+					'estado': 'Vigente'
+				};
+			});
+			this.get(`${global.host}/courses/6`, () => {
+				return {
+					'name': 'Organizacion de Datos',
+					'creator_name': 'Luis',
+					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+					'hashtags': 'Python, Sarasa',
+					'type': 'Programación',
+					'exams': 3,
+					'subscription': 'Premium',
+					'location': 'Obera',
+					'canEdit': true,
+					'estado': 'Vigente'
+				};
+			});
+			this.get(`${global.host}/courses/7`, () => {
+				return {
+					'name': 'Sistemas Operativos',
+					'creator_name': 'Clua',
 					'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
 					'hashtags': 'Python, Sarasa',
 					'type': 'Programación',

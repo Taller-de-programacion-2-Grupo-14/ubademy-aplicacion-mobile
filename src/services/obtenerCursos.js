@@ -1,10 +1,9 @@
-export function obtenerCursos() {
+export function obtenerCursos(tipo, suscripcion, textoLibre) {
 
-	return fetch(`${global.host}/obtenerCursos`, {
+	return fetch(`${global.host}/courses?type=${tipo}&subscription=${suscripcion}&name=${textoLibre}`, {
 		method: 'GET',
 		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json'
+			Accept: 'application/json'
 		},
 	});
 }
