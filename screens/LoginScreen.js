@@ -95,7 +95,7 @@ export default function LoginScreen({ navigation }) {
 						console.log(json.token);
 						navigation.navigate('Home');
 					}	else {
-						if (json.status === 401) {
+						if (json.status === 403) {
 							setMensaje('Usuario bloqueado');
 							setShowModal(true);
 						} else {

@@ -63,9 +63,15 @@ function CondicionesScreen({ navigation, route }) {
 					setMessage('¡Inscripción exitosa!');
 					setShowModal(true);
 				} else {
-					setError(true);
-					setMessage('Error al inscribirse');
-					setShowModal(true);
+					if (json.status === 403) {
+						setError(true);
+						setMessage('Debe subir su nivel de suscripción');
+						setShowModal(true);
+					} else {
+						setError(true);
+						setMessage('Error al inscribirse');
+						setShowModal(true);
+					}
 				}
 			});
 	};
