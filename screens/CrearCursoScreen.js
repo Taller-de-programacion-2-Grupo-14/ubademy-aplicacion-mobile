@@ -143,9 +143,10 @@ export default function CrearCursoScreen({ navigation }) {
 										mt={1}
 										onValueChange={(tipo) => setTipo(tipo)}
 									>
-										<Select.Item label="Matemática" value="matematica" />
-										<Select.Item label="Programación" value="programacion" />
-										<Select.Item label="Cocina" value="cocina" />
+										<Select.Item label="Matemática" value="Matematica" />
+										<Select.Item label="Programación" value="Programacion" />
+										<Select.Item label="Cocina" value="Cocina" />
+										<Select.Item label="Jardinería" value="Jardineria" />
 									</Select>
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
 										Seleccionar uno
@@ -174,9 +175,9 @@ export default function CrearCursoScreen({ navigation }) {
 										mt={1}
 										onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
 									>
-										<Select.Item label="Básico" value="suscripcion1" />
-										<Select.Item label="Estándar" value="suscripcion2" />
-										<Select.Item label="Premium" value="suscripcion3" />
+										<Select.Item label="Básico" value="Basico" />
+										<Select.Item label="Estándar" value="Estandar" />
+										<Select.Item label="Premium" value="Premium" />
 									</Select>
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
 										Seleccionar uno

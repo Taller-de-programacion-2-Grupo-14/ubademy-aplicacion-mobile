@@ -1,6 +1,6 @@
 import React from 'react';
 import { elegirCurso } from '../src/services/elegirCurso';
-import { obtenerCurso } from '../src/services/obtenerCurso';
+//import { obtenerCurso } from '../src/services/obtenerCurso';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
@@ -25,29 +25,28 @@ CondicionesScreen.propTypes = {
 
 function CondicionesScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
-	const [cursoElegido, setCursoElegido] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [descripcion, setDescripcion] = React.useState('');
-	const [hashtags, setHashtags] = React.useState('');
-	const [examenes, setExamenes] = React.useState('');
-	const [tipoDeCurso, setTipoDeCurso] = React.useState('');
-	const [location, setLocation] = React.useState('');
+	// const [descripcion, setDescripcion] = React.useState('');
+	// const [hashtags, setHashtags] = React.useState('');
+	// const [examenes, setExamenes] = React.useState('');
+	// const [tipoDeCurso, setTipoDeCurso] = React.useState('');
+	// const [location, setLocation] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCurso(route.params.course_name)
-				.then(data => data.json())
-				.then(json => {
-					setLoading(false);
-					setDescripcion(json.course_description);
-					setHashtags(json.hashtags);
-					setExamenes(json.amount_exams);
-					setTipoDeCurso(json.course_type);
-					setLocation(json.location);
-				});
+			// obtenerCurso(route.params.id)
+			// 	.then(data => data.json())
+			// 	.then(json => {
+			setLoading(false);
+			// 		setDescripcion(json.description);
+			// 		setHashtags(json.hashtags);
+			// 		setExamenes(String(json.exams));
+			// 		setTipoDeCurso(json.type);
+			// 		setLocation(json.location);
+			// 	});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -56,9 +55,10 @@ function CondicionesScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		elegirCurso(cursoElegido)
+		elegirCurso(route.params.id)
 			.then((response) => response.json())
 			.then((json) => {
+				console.log(json);
 				if (json.status === 200) {
 					setMessage('¡Inscripción exitosa!');
 					setShowModal(true);
@@ -107,7 +107,7 @@ function CondicionesScreen({ navigation, route }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" >
-								{ route.params.course_name }
+								{ route.params.name }
 							</Heading>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								{'\n'}Condiciones de la inscripción
@@ -119,35 +119,35 @@ function CondicionesScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Creador del curso:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.creator_name } </Text>
+									<Text fontSize="sm" > { route.params.creator_first_name } { route.params.creator_last_name } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Descripción:
 									</FormControl.Label>
-									<Text fontSize="sm" > {descripcion} </Text>
+									<Text fontSize="sm" > { route.params.description } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Hashtags:
 									</FormControl.Label>
-									<Text fontSize="sm"> {hashtags} </Text>
+									<Text fontSize="sm"> { route.params.hashtags } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de curso:
 									</FormControl.Label>
-									<Text fontSize="sm" > {tipoDeCurso} </Text>
+									<Text fontSize="sm" > { route.params.type } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Cantidad de exámenes:
 									</FormControl.Label>
-									<Text fontSize="sm" > {examenes} </Text>
+									<Text fontSize="sm" > { route.params.exams } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
@@ -161,10 +161,10 @@ function CondicionesScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Ubicación:
 									</FormControl.Label>
-									<Text fontSize="sm" > {location} </Text>
+									<Text fontSize="sm" > { route.params.location } </Text>
 								</FormControl>
 							</VStack>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={(cursoElegido) => setCursoElegido(cursoElegido), () => this.onSubmit()} >
+							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 								Confirmar inscripción
 							</Button>
 						</Box>

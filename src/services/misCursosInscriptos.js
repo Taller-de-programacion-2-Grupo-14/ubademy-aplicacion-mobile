@@ -1,10 +1,13 @@
-export function misCursosInscriptos() {
+import * as SecureStore from 'expo-secure-store';
 
-	return fetch(`${global.host}/misCursosInscriptos`, {
+export async function misCursosInscriptos() {
+	const token = await SecureStore.getItemAsync('secure_token');
+
+	return fetch(`${global.host}/courses/my_subscriptions`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json'
+			'x-access-token': token
 		},
 	});
 }

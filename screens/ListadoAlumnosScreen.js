@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -7,6 +8,8 @@ import {
 	Modal,
 	FormControl,
 	Input,
+	VStack,
+	HStack,
 	Button,
 	Link,
 	Text,
@@ -20,45 +23,57 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 ListadoAlumnosScreen.propTypes = {
+	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-//function ListadoAlumnosScreen({ navigation }) {
-function ListadoAlumnosScreen({ route }) {
+function ListadoAlumnosScreen({ navigation, route }) {
+//function ListadoAlumnosScreen({ route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [alumnos, setAlumnos] = React.useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [nombre, setNombre] = React.useState('');
 	const [apellido, setApellido] = React.useState('');
+	const [message, setMessage] = React.useState('');
+	const [error, setError] = React.useState(false);
+	const [showModalError, setShowModalError] = React.useState(false);
+	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
 		<Text fontSize="md">
-			{item.apellido}, {item.nombre}
+			{item.last_name}, {item.first_name}
 		</Text>
 	);
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerAlumnos(route.params, nombre, apellido)
+			obtenerAlumnos(String(route.params), nombre, apellido)
 				.then((response) => response.json())
 				.then((json) => {
+					console.log(json);
+					if (json.status === 503){
+						setMessage('courses service is currently unavailable, please try later');
+						setError(true);
+						setShowModalError(true);
+					} else {
+						setAlumnos(json.message);
+					}
 					setLoading(false);
-					setAlumnos(json);
 				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	this.onSubmit = () => {
-		obtenerAlumnos(route.params, nombre, apellido)
+		obtenerAlumnos(String(route.params), nombre, apellido)
 			.then((response) => response.json())
 			.then((json) => {
+				setAlumnos(json.message);
 				setLoading(false);
-				setAlumnos(json);
 			});
 	};
 
@@ -108,6 +123,27 @@ function ListadoAlumnosScreen({ route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
+						<Modal isOpen={showModalError} onClose={() => setShowModalError(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">{message}</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => {
+											error ? setShowModalError(false) : navigation.goBack();
+										}}
+									>
+										Continuar
+									</Button>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
 						<Link onPress={() => setShowModal(true)} style={{ position: 'absolute', right: 20, top: 10 }}>
 							<SearchIcon size="8" />
 						</Link>
@@ -118,7 +154,7 @@ function ListadoAlumnosScreen({ route }) {
 							<FlatList
 								data={alumnos}
 								renderItem={renderItem}
-								keyExtractor={item => item.id}
+								keyExtractor={item => String(item.user_id)}
 							/>
 						</Box>
 					</>

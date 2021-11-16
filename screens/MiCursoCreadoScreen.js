@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Pressable,
@@ -32,6 +33,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [estado, setEstado] = React.useState('');
+	const isFocused = useIsFocused();
 
 	const cancelar = () =>
 		Alert.alert(
@@ -44,7 +46,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 				},
 				{ text: 'Si', style: 'destructive',
 					onPress: () => {
-						cancelarCurso(route.params.course_name)
+						cancelarCurso(String(route.params.id))
 							.then((response) => response.json())
 							.then((json) => {
 								if (json.status === 200) {
@@ -64,17 +66,26 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCurso(route.params.course_name)
+			obtenerCurso(String(route.params.id))
 				.then(data => data.json())
 				.then(json => {
+					console.log(json);
+					if (json.status === 503) {
+						setEstado('Indeterminado (por error 503)');
+					} else {
+						if (json.message.cancelled == 0){
+							setEstado('Vigente');
+						} else {
+							setEstado('Cancelado');
+						}
+					}
 					setLoading(false);
-					setEstado(json.estado);
 				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	return (
@@ -123,11 +134,11 @@ function MiCursoCreadoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params.course_name);}} >Editar curso</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.course_name);}}>Listado de alumnos</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params);}} >Editar curso</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.id);}}>Listado de alumnos</Menu.Item>
 								<Menu.Item>Crear examen</Menu.Item>
 								<Divider />
-								<Menu.Item onPress={() => {navigation.navigate('MiCursoInscriptoScreen', route.params.course_name);}} >Ver curso como estudiante</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('MiCursoInscriptoScreen', route.params);}} >Ver curso como estudiante</Menu.Item>
 								<Divider />
 								<Menu.Item onPress={cancelar} >Cancelar curso</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
@@ -135,7 +146,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								{ route.params.course_name }
+								{ route.params.name }
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600">
 								{'\n'}Estado: { estado }

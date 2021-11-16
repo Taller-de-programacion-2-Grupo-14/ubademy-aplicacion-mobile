@@ -39,7 +39,7 @@ export default function CursosApp() {
 	return (
 		<Drawer.Navigator initialRouteName="CursosScreen">
 			<Drawer.Screen name="Mis cursos" component={CursosScreen} />
-			<Drawer.Screen name="Inscribirme a un curso" component={InscribirmeScreen} />
+			<Drawer.Screen name="Buscar un curso" component={InscribirmeScreen} />
 			<Drawer.Screen name="Crear un curso" component={CrearCursoScreen} />
 			<Drawer.Screen name="Ser colaborador de un curso" component={SerColaboradorScreen} />
 		</Drawer.Navigator>

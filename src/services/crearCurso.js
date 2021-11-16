@@ -1,11 +1,15 @@
-export function crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location) {
+import * as SecureStore from 'expo-secure-store';
 
-	return fetch(`${global.host}/crearCurso`, {
+export async function crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location) {
+	const token = await SecureStore.getItemAsync('secure_token');
+
+	return fetch(`${global.host}/courses/create`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
+			'x-access-token': token,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 'titulo': titulo, 'descripcion': descripcion, 'hashtags': hashtags, 'tipo': tipo, 'examenes': examenes, 'suscripcion': suscripcion, 'location': location })
+		body: JSON.stringify({ 'name': titulo, 'description': descripcion, 'hashtags': hashtags, 'type': tipo, 'exams': parseInt(examenes), 'subscription': suscripcion, 'location': location })
 	});
 }
