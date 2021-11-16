@@ -33,7 +33,7 @@ function ListadoAlumnosScreen({ route }) {
 
 	const renderItem = ({ item }) => (
 		<Text fontSize="md">
-			{item.apellido}, {item.nombre}
+			{item.last_name}, {item.first_name}
 		</Text>
 	);
 
@@ -43,8 +43,10 @@ function ListadoAlumnosScreen({ route }) {
 			obtenerAlumnos(String(route.params), nombre, apellido)
 				.then((response) => response.json())
 				.then((json) => {
+					console.log(String(route.params));
+					console.log(json);
+					setAlumnos(json.message);
 					setLoading(false);
-					setAlumnos(json);
 				});
 			return () => {
 				// Do something when the screen is unfocused
@@ -118,7 +120,7 @@ function ListadoAlumnosScreen({ route }) {
 							<FlatList
 								data={alumnos}
 								renderItem={renderItem}
-								keyExtractor={item => item.id}
+								keyExtractor={item => String(item.user_id)}
 							/>
 						</Box>
 					</>

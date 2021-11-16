@@ -82,7 +82,7 @@ export default function LoginScreen({ navigation }) {
 	this.onSubmit = () => {
 		validate({
 			email: { email: true, required: true },
-			password: { minlength: 3, maxlength: 15, required: true },
+			password: { minlength: 3, maxlength: 35, required: true },
 		});
 
 		if (isFormValid() == true) {
@@ -94,12 +94,16 @@ export default function LoginScreen({ navigation }) {
 						SecureStore.setItemAsync('secure_token', json.token);
 						console.log(json.token);
 						navigation.navigate('Home');
-					} else {
-						setMensaje('Usuario o contraseña invalidos');
-						setShowModal(true);
-						console.log('email o contrasenia invalidos');
+					}	else {
+						if (json.status === 401) {
+							setMensaje('Usuario bloqueado');
+							setShowModal(true);
+						} else {
+							setMensaje('Usuario o contraseña invalidos');
+							setShowModal(true);
+							console.log('email o contrasenia invalidos');
+						}
 					}
-
 				})
 				.catch((error) => {
 					console.error(error);

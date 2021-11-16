@@ -58,6 +58,7 @@ function CondicionesScreen({ navigation, route }) {
 		elegirCurso(route.params.id)
 			.then((response) => response.json())
 			.then((json) => {
+				console.log(json);
 				if (json.status === 200) {
 					setMessage('¡Inscripción exitosa!');
 					setShowModal(true);

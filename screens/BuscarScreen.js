@@ -97,9 +97,9 @@ function BuscarScreen({ navigation }) {
 										onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
 									>
 										<Select.Item label="-" value="" />
-										<Select.Item label="Básico" value="suscripcion1" />
-										<Select.Item label="Estándar" value="suscripcion2" />
-										<Select.Item label="Premium" value="suscripcion3" />
+										<Select.Item label="Básico" value="Basico" />
+										<Select.Item label="Estándar" value="Estandar" />
+										<Select.Item label="Premium" value="Premium" />
 									</Select>
 								</FormControl>
 

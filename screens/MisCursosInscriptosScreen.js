@@ -51,8 +51,9 @@ function MisCursosInscriptosScreen({ navigation }) {
 			misCursosInscriptos()
 				.then((response) => response.json())
 				.then((json) => {
+					console.log(json);
+					setCursos(json.message);
 					setLoading(false);
-					setCursos(json);
 				});
 			return () => {
 				// Do something when the screen is unfocused

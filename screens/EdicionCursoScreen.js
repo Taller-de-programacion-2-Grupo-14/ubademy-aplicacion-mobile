@@ -40,11 +40,11 @@ function EdicionCursoScreen({ navigation, route }) {
 			obtenerCurso(String(route.params))
 				.then(data => data.json())
 				.then(json => {
-					setLoading(false);
 					setTitulo(json.name);
 					setDescripcion(json.description);
 					setHashtags(json.hashtags);
 					setLocation(json.location);
+					setLoading(false);
 				});
 			return () => {
 				// Do something when the screen is unfocused

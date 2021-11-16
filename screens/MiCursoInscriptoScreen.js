@@ -41,7 +41,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 				},
 				{ text: 'OK', style: 'destructive',
 					onPress: () => {
-						desinscripcionCurso(String(route.params.id))
+						desinscripcionCurso(String(route.params.courseid))
 							.then((response) => response.json())
 							.then((json) => {
 								if (json.status === 200) {

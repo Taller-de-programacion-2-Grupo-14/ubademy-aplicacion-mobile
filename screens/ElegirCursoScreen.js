@@ -57,10 +57,11 @@ function ElegirCursoScreen({ navigation, route }) {
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
-					if (json.status === 400) {
+					if (json.status === 204) {
 						setShowModal(true);
 					} else {
-						setCursos(json.info);
+						//setCursos(json);
+						setCursos(json.message);
 					}
 					setLoading(false);
 				});

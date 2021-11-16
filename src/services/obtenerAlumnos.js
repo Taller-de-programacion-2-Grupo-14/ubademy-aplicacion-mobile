@@ -1,10 +1,13 @@
-export function obtenerAlumnos(idCursoElegido, nombre, apellido) {
+import * as SecureStore from 'expo-secure-store';
 
-	return fetch(`${global.host}/obtenerAlumnos?id_course=${idCursoElegido}&nombre=${nombre}&apellido=${apellido}`, {
+export async function obtenerAlumnos(idCursoElegido, nombre, apellido) {
+	const token = await SecureStore.getItemAsync('secure_token');
+
+	return fetch(`${global.host}/courses/users/${idCursoElegido}?first_name=${nombre}&last_name=${apellido}`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json'
+			'x-access-token': token
 		},
 	});
 }

@@ -52,7 +52,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/courses/:id`, () => {
+			this.post(`${global.host}/courses/subscription/:id`, () => {
 				return {
 					'status': 200
 				};
@@ -195,7 +195,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'estado': 'Vigente'
 				};
 			});
-			this.get(`${global.host}/misCursosCreados`, () => {
+			this.get(`${global.host}/my_courses`, () => {
 				return [
 					{
 						'name': 'Algebra',
@@ -209,7 +209,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					}
 				];
 			});
-			this.get(`${global.host}/misCursosInscriptos`, () => {
+			this.get(`${global.host}/my_subscriptions`, () => {
 				return [
 					{
 						'name': 'Flores',
@@ -223,7 +223,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					}
 				];
 			});
-			this.post(`${global.host}/desinscripcionCurso`, () => {
+			this.delete(`${global.host}/courses/subscription/:id`, () => {
 				return {
 					'status': 200
 				};
@@ -238,7 +238,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/obtenerAlumnos`, () => {
+			this.get(`${global.host}/courses/subscribers/:id`, () => {
 				return [
 					{
 						'id': '1',

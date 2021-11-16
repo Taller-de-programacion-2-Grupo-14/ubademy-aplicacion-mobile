@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 export async function obtenerCurso(id) {
 	const token = await SecureStore.getItemAsync('secure_token');
 
-	return fetch(`${global.host}/courses/${id}`, {
+	return fetch(`${global.host}/courses/${id}/view`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

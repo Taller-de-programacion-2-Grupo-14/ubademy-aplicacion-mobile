@@ -67,8 +67,13 @@ function MiCursoCreadoScreen({ navigation, route }) {
 			obtenerCurso(String(route.params.id))
 				.then(data => data.json())
 				.then(json => {
+					console.log(json);
+					if (json.message.cancelled == 0){
+						setEstado("Vigente");
+					} else {
+						setEstado("Cancelado")
+					}
 					setLoading(false);
-					setEstado(json.estado);
 				});
 			return () => {
 				// Do something when the screen is unfocused
