@@ -70,10 +70,14 @@ function MiCursoCreadoScreen({ navigation, route }) {
 				.then(data => data.json())
 				.then(json => {
 					console.log(json);
-					if (json.message.cancelled == 0){
-						setEstado('Vigente');
+					if (json.status === 503) {
+						setEstado('Indeterminado (por error 503)');
 					} else {
-						setEstado('Cancelado');
+						if (json.message.cancelled == 0){
+							setEstado('Vigente');
+						} else {
+							setEstado('Cancelado');
+						}
 					}
 					setLoading(false);
 				});

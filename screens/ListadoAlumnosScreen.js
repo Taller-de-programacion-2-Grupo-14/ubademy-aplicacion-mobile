@@ -23,11 +23,12 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 ListadoAlumnosScreen.propTypes = {
+	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-//function ListadoAlumnosScreen({ navigation }) {
-function ListadoAlumnosScreen({ route }) {
+function ListadoAlumnosScreen({ navigation, route }) {
+//function ListadoAlumnosScreen({ route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [alumnos, setAlumnos] = React.useState([]);
 	const [showModal, setShowModal] = useState(false);

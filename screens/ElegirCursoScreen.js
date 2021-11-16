@@ -28,6 +28,7 @@ function ElegirCursoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
+	const [message, setMessage] = React.useState('');
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => navigation.navigate('CondicionesScreen', item) }>
@@ -58,10 +59,16 @@ function ElegirCursoScreen({ navigation, route }) {
 				.then((json) => {
 					console.log(json);
 					if (json.status === 204) {
+						setMessage('Busqueda sin resultados');
 						setShowModal(true);
 					} else {
-						//setCursos(json);
-						setCursos(json.message);
+						if (json.status === 503){
+							setMessage('courses service is currently unavailable, please try later');
+							setShowModal(true);
+						} else {
+							//setCursos(json);
+							setCursos(json.message);
+						}
 					}
 					setLoading(false);
 				});
@@ -85,7 +92,7 @@ function ElegirCursoScreen({ navigation, route }) {
 								<Modal.Body>
 									<VStack space={3}>
 										<HStack alignItems="center" justifyContent="space-between">
-											<Text fontWeight="medium">Búsqueda sin resultados</Text>
+											<Text fontWeight="medium">{message}</Text>
 										</HStack>
 									</VStack>
 								</Modal.Body>
