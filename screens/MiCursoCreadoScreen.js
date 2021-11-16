@@ -33,7 +33,6 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [estado, setEstado] = React.useState('');
-
 	const isFocused = useIsFocused();
 
 	const cancelar = () =>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -30,6 +31,7 @@ function ListadoAlumnosScreen({ route }) {
 	const [showModal, setShowModal] = useState(false);
 	const [nombre, setNombre] = React.useState('');
 	const [apellido, setApellido] = React.useState('');
+	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
 		<Text fontSize="md">
@@ -52,15 +54,15 @@ function ListadoAlumnosScreen({ route }) {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	this.onSubmit = () => {
 		obtenerAlumnos(String(route.params), nombre, apellido)
 			.then((response) => response.json())
 			.then((json) => {
+				setAlumnos(json.message);
 				setLoading(false);
-				setAlumnos(json);
 			});
 	};
 

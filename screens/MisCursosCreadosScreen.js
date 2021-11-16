@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -23,6 +24,7 @@ MisCursosCreadosScreen.propTypes = {
 function MisCursosCreadosScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
+	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item);} }>
@@ -59,7 +61,7 @@ function MisCursosCreadosScreen({ navigation }) {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	return (
