@@ -1,10 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
 	Heading,
 	Spinner,
+	Modal,
+	VStack,
+	Button,
 	Text,
 	Flex,
 	FlatList,
@@ -23,6 +27,10 @@ MisCursosInscriptosScreen.propTypes = {
 function MisCursosInscriptosScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
+	const [showModal, setShowModal] = React.useState(false);
+	const [message, setMessage] = React.useState('');
+	const [error, setError] = React.useState(false);
+	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoInscriptoScreen', item);} }>
@@ -52,14 +60,20 @@ function MisCursosInscriptosScreen({ navigation }) {
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
-					setCursos(json.message);
+					if (json.status === 503) {
+						setMessage('courses service is currently unavailable, please try later');
+						setError(true);
+						setShowModal(true);
+					} else {
+						setCursos(json.message);
+					}
 					setLoading(false);
 				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	return (
@@ -70,16 +84,39 @@ function MisCursosInscriptosScreen({ navigation }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-						<Heading size="lg" color="coolGray.800" fontWeight="600">
-							Cursos en los que estoy inscripto
-						</Heading>
-						<FlatList
-							data={cursos}
-							renderItem={renderItem}
-							keyExtractor={item => String(item.id)}
-						/>
-					</Box>
+					<>
+						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">{message}</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => {
+											error ? setShowModal(false) : navigation.goBack();
+										}}
+									>
+										Continuar
+									</Button>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+							<Heading size="lg" color="coolGray.800" fontWeight="600">
+								Cursos en los que estoy inscripto
+							</Heading>
+							<FlatList
+								data={cursos}
+								renderItem={renderItem}
+								keyExtractor={item => String(item.id)}
+							/>
+						</Box>
+					</>
 			}
 		</NativeBaseProvider>
 	);

@@ -8,6 +8,8 @@ import {
 	Modal,
 	FormControl,
 	Input,
+	VStack,
+	HStack,
 	Button,
 	Link,
 	Text,
@@ -31,6 +33,9 @@ function ListadoAlumnosScreen({ route }) {
 	const [showModal, setShowModal] = useState(false);
 	const [nombre, setNombre] = React.useState('');
 	const [apellido, setApellido] = React.useState('');
+	const [message, setMessage] = React.useState('');
+	const [error, setError] = React.useState(false);
+	const [showModalError, setShowModalError] = React.useState(false);
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
@@ -45,9 +50,14 @@ function ListadoAlumnosScreen({ route }) {
 			obtenerAlumnos(String(route.params), nombre, apellido)
 				.then((response) => response.json())
 				.then((json) => {
-					console.log(String(route.params));
 					console.log(json);
-					setAlumnos(json.message);
+					if (json.status === 503){
+						setMessage('courses service is currently unavailable, please try later');
+						setError(true);
+						setShowModalError(true);
+					} else {
+						setAlumnos(json.message);
+					}
 					setLoading(false);
 				});
 			return () => {
@@ -109,6 +119,27 @@ function ListadoAlumnosScreen({ route }) {
 										Buscar
 										</Button>
 									</Button.Group>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
+						<Modal isOpen={showModalError} onClose={() => setShowModalError(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">{message}</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => {
+											error ? setShowModalError(false) : navigation.goBack();
+										}}
+									>
+										Continuar
+									</Button>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
