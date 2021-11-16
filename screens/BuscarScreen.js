@@ -75,10 +75,10 @@ function BuscarScreen({ navigation }) {
 										onValueChange={(tipo) => setTipo(tipo)}
 									>
 										<Select.Item label="-" value="" />
-										<Select.Item label="Matemática" value="matematica" />
-										<Select.Item label="Programación" value="programacion" />
-										<Select.Item label="Cocina" value="cocina" />
-										<Select.Item label="Jardinería" value="jardineria" />
+										<Select.Item label="Matemática" value="Matematica" />
+										<Select.Item label="Programación" value="Programacion" />
+										<Select.Item label="Cocina" value="Cocina" />
+										<Select.Item label="Jardinería" value="Jardineria" />
 									</Select>
 								</FormControl>
 
