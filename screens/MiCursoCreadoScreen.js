@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Pressable,
@@ -32,6 +33,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [estado, setEstado] = React.useState('');
+
+	const isFocused = useIsFocused();
 
 	const cancelar = () =>
 		Alert.alert(
@@ -79,7 +82,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	return (
@@ -128,8 +131,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params.id);}} >Editar curso</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.id);}}>Listado de alumnos</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params)}} >Editar curso</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.id)}}>Listado de alumnos</Menu.Item>
 								<Menu.Item>Crear examen</Menu.Item>
 								<Divider />
 								<Menu.Item onPress={() => {navigation.navigate('MiCursoInscriptoScreen', route.params);}} >Ver curso como estudiante</Menu.Item>

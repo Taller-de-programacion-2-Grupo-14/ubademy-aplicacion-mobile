@@ -16,7 +16,6 @@ import {
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { obtenerCurso } from '../src/services/obtenerCurso';
 import { editarCurso } from '../src/services/editarCurso';
 
 EdicionCursoScreen.propTypes = {
@@ -37,15 +36,11 @@ function EdicionCursoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCurso(String(route.params))
-				.then(data => data.json())
-				.then(json => {
-					setTitulo(json.name);
-					setDescripcion(json.description);
-					setHashtags(json.hashtags);
-					setLocation(json.location);
-					setLoading(false);
-				});
+			setTitulo(route.params.name);
+			setDescripcion(route.params.description);
+			setHashtags(route.params.hashtags);
+			setLocation(route.params.location);
+			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -54,7 +49,7 @@ function EdicionCursoScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		editarCurso(String(route.params), titulo, descripcion, hashtags, location)
+		editarCurso(String(route.params.id), titulo, descripcion, hashtags, location)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json.status === 200) {
