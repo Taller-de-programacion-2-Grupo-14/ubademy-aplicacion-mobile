@@ -119,7 +119,7 @@ function CondicionesScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Creador del curso:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.creator_name } </Text>
+									<Text fontSize="sm" > { route.params.creator_name.first_name } { route.params.creator_name.last_name } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
