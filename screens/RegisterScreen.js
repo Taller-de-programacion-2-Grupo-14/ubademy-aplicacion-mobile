@@ -31,7 +31,6 @@ export default function RegisterScreen({ navigation }) {
 	const [passwordR, setPasswordR] = React.useState('');
 	const [name, setName] = React.useState('');
 	const [lastName, setLastName] = React.useState('');
-	const [perfil, setPerfil] = React.useState('');
 	const [interests, setInterests] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
@@ -49,7 +48,7 @@ export default function RegisterScreen({ navigation }) {
 						setErrorMsg('Permission to access location was denied');
 						return;
 					}
-					
+
 					const location = await Location.getCurrentPositionAsync({});
 					const latLong = {
 						longitude: location.coords.longitude,
@@ -81,13 +80,13 @@ export default function RegisterScreen({ navigation }) {
 	this.handleSubmit = () => {
 		validate({
 			mail: { email: true, required: true },
-			password: { minlength: 3, maxlength: 9, required: true },
-			passwordR: { minlength: 3, maxlength: 9, required: true, equalPassword: password },
+			password: { minlength: 6, maxlength: 35, required: true },
+			passwordR: { minlength: 6, maxlength: 35, required: true, equalPassword: password },
 			name: { minlength: 1, maxlength: 30, required: true },
 			lastName: { minlength: 1, maxlength: 30, required: true },
 			location: { required: true },
 		});
-		register(mail, password, name, lastName, perfil, location, interests)
+		register(mail, password, name, lastName, location, interests)
 			.then((response) => {
 				const json = response.json();
 				console.log(json);
@@ -228,28 +227,6 @@ export default function RegisterScreen({ navigation }) {
 								getErrorsInField('lastName').map(errorMessage => (
 									<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 								))}
-						</FormControl>
-						<FormControl>
-							<FormControl.Label>Perfil</FormControl.Label>
-							<Select
-								selectedValue={perfil}
-								minWidth="200"
-								accessibilityLabel="Elegir Perfil"
-								placeholder="Elegir Perfil"
-								_selectedItem={{
-									bg: 'teal.600',
-									endIcon: <CheckIcon size="5" />,
-								}}
-								mt={1}
-								onValueChange={(perfil) => setPerfil(perfil)}
-							>
-								<Select.Item label="Estudiante" value="Student" />
-								<Select.Item label="Creador" value="Creator" />
-								<Select.Item label="Colaborador" value="Collaborator" />
-							</Select>
-							<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-								Seleccionar uno
-							</FormControl.ErrorMessage>
 						</FormControl>
 						<FormControl >
 							<FormControl.Label>Intereses</FormControl.Label>
