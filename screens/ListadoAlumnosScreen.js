@@ -11,6 +11,7 @@ import {
 	VStack,
 	HStack,
 	Button,
+	Divider,
 	Link,
 	Text,
 	SearchIcon,
@@ -40,9 +41,12 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Text fontSize="md">
-			{item.last_name}, {item.first_name}
-		</Text>
+		<>
+			<Text bold fontSize="md">
+				{item.last_name}, {item.first_name}
+			</Text>
+			<Divider my="1" />
+		</>
 	);
 
 	useFocusEffect(

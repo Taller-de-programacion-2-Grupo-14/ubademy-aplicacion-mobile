@@ -170,7 +170,7 @@ function CondicionesScreen({ navigation, route }) {
 									<Text fontSize="sm" > { route.params.location } </Text>
 								</FormControl>
 							</VStack>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+							<Button mt="2" isDisabled={route.params.can_edit} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 								Confirmar inscripción
 							</Button>
 						</Box>
