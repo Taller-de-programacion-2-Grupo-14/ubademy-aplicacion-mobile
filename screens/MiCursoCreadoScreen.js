@@ -33,6 +33,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [estado, setEstado] = React.useState('');
+	const [nombre, setNombre] = React.useState('');
 	const isFocused = useIsFocused();
 
 	const cancelar = () =>
@@ -73,6 +74,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 					if (json.status === 503) {
 						setEstado('Indeterminado (por error 503)');
 					} else {
+						setNombre(json.message.name);
 						if (json.message.cancelled == 0){
 							setEstado('Vigente');
 						} else {
@@ -146,7 +148,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								{ route.params.name }
+								{ nombre }
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600">
 								{'\n'}Estado: { estado }
