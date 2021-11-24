@@ -14,6 +14,7 @@ import ListadoAlumnosScreen from './ListadoAlumnosScreen';
 import ListadoProfesoresScreen from './ListadoProfesoresScreen';
 import MisColaboracionesScreen from './MisColaboracionesScreen';
 import MiCursoColaboradorScreen from './MiCursoColaboradorScreen';
+import HistoricoDeCursosScreen from './HistoricoDeCursosScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
@@ -47,6 +48,7 @@ export default function CursosApp() {
 			<Drawer.Screen name="Mis cursos" component={CursosScreen} />
 			<Drawer.Screen name="Buscar un curso" component={InscribirmeScreen} />
 			<Drawer.Screen name="Crear un curso" component={CrearCursoScreen} />
+			<Drawer.Screen name="Histórico de cursos" component={HistoricoDeCursosScreen} />
 			<Drawer.Screen name="Cursos favoritos" component={SerColaboradorScreen} />
 		</Drawer.Navigator>
 	);

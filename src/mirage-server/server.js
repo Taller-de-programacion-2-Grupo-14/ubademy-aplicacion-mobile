@@ -310,6 +310,27 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.get(`${global.host}/courses/historial`, () => {
+				return {
+					'message':[
+						{
+							'id': 1,
+							'nombre': 'Pensamiento Cientifico',
+							'cancelado': 0
+						},
+						{
+							'id': 2,
+							'nombre': 'Sociedad y Estado',
+							'cancelado': 1
+						},
+						{
+							'id': 3,
+							'nombre': 'Fisica cuantica',
+							'cancelado': 0
+						}],
+					'status': 200
+				};
+			});
 		},
 	});
 
