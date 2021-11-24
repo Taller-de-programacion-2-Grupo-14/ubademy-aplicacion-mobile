@@ -289,6 +289,22 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.get(`${global.host}/courses/colaboraciones`, () => {
+				return {
+					'message':[
+						{
+							'name': 'Empanadas',
+							'id': 5,
+							'type': 'Cocina'
+						},
+						{
+							'name': 'Pizzas',
+							'id': 6,
+							'type': 'Cocina'
+						}],
+					'status': 200
+				};
+			});
 		},
 	});
 

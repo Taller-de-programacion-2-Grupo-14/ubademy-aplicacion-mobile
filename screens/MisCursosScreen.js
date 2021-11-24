@@ -70,6 +70,12 @@ function MisCursosScreen({ navigation }) {
 								>
 									Cursos en los que estoy inscripto
 								</Button>
+								<Button
+									size="lg"
+									colorScheme="tertiary" onPress={() => navigation.navigate('MisColaboracionesScreen')}
+								>
+									Cursos en los que soy colaborador
+								</Button>
 							</Stack>
 						</VStack>
 					</Center>
