@@ -11,6 +11,7 @@ import MisCursosInscriptosScreen from './MisCursosInscriptosScreen';
 import MiCursoInscriptoScreen from './MiCursoInscriptoScreen';
 import EdicionCursoScreen from './EdicionCursoScreen';
 import ListadoAlumnosScreen from './ListadoAlumnosScreen';
+import ListadoProfesoresScreen from './ListadoProfesoresScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
@@ -28,6 +29,7 @@ export function CursosScreen() {
 				<Stack.Screen name="MiCursoInscriptoScreen" component={MiCursoInscriptoScreen} options={{ headerShown: false }}/>
 				<Stack.Screen name="EdicionCursoScreen" component={EdicionCursoScreen} options={{ headerShown: false }}/>
 				<Stack.Screen name="ListadoAlumnosScreen" component={ListadoAlumnosScreen} options={{ headerShown: false }}/>
+				<Stack.Screen name="ListadoProfesoresScreen" component={ListadoProfesoresScreen} options={{ headerShown: false }}/>
 			</Stack.Navigator>
 		</NativeBaseProvider>
 	);
@@ -41,7 +43,7 @@ export default function CursosApp() {
 			<Drawer.Screen name="Mis cursos" component={CursosScreen} />
 			<Drawer.Screen name="Buscar un curso" component={InscribirmeScreen} />
 			<Drawer.Screen name="Crear un curso" component={CrearCursoScreen} />
-			<Drawer.Screen name="Ser colaborador de un curso" component={SerColaboradorScreen} />
+			<Drawer.Screen name="Cursos favoritos" component={SerColaboradorScreen} />
 		</Drawer.Navigator>
 	);
 }

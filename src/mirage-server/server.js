@@ -195,19 +195,21 @@ export function makeServer({ environment = 'test' } = {}) {
 					'estado': 'Vigente'
 				};
 			});
-			this.get(`${global.host}/my_courses`, () => {
-				return [
-					{
-						'name': 'Algebra',
-						'id': 1,
-						'type': 'Matematica'
-					},
-					{
-						'name': 'Análisis Matemático III',
-						'id': 2,
-						'type': 'Matematica'
-					}
-				];
+			this.get(`${global.host}/courses/my_courses`, () => {
+				return {
+					'message':[
+						{
+							'name': 'Algebra',
+							'id': 1,
+							'type': 'Matematica'
+						},
+						{
+							'name': 'Análisis Matemático III',
+							'id': 2,
+							'type': 'Matematica'
+						}],
+					'status': 200
+				};
 			});
 			this.get(`${global.host}/my_subscriptions`, () => {
 				return [
@@ -256,6 +258,36 @@ export function makeServer({ environment = 'test' } = {}) {
 						'nombre': 'Quentin'
 					}
 				];
+			});
+			this.get(`${global.host}/courses/profesores/:id`, () => {
+				return {
+					'message':[
+						{
+							'user_id': '1',
+							'last_name': 'Pacino',
+							'first_name': 'Al'
+						},
+						{
+							'user_id': '2',
+							'last_name': 'Cameron',
+							'first_name': 'James'
+						},
+						{
+							'user_id': '3',
+							'last_name': 'Tarantino',
+							'first_name': 'Quentin'
+						}],
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/courses/:id/view`, () => {
+				return {
+					'message':{
+						'name': 'Quimica',
+						'cancelled': 0
+					},
+					'status': 200
+				};
 			});
 		},
 	});
