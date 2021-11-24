@@ -13,6 +13,7 @@ import EdicionCursoScreen from './EdicionCursoScreen';
 import ListadoAlumnosScreen from './ListadoAlumnosScreen';
 import ListadoProfesoresScreen from './ListadoProfesoresScreen';
 import MisColaboracionesScreen from './MisColaboracionesScreen';
+import MiCursoColaboradorScreen from './MiCursoColaboradorScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
@@ -29,6 +30,7 @@ export function CursosScreen() {
 				<Stack.Screen name="MisCursosInscriptosScreen" component={MisCursosInscriptosScreen} options={{ headerShown: false }}/>
 				<Stack.Screen name="MiCursoInscriptoScreen" component={MiCursoInscriptoScreen} options={{ headerShown: false }}/>
 				<Stack.Screen name="MisColaboracionesScreen" component={MisColaboracionesScreen} options={{ headerShown: false }}/>
+				<Stack.Screen name="MiCursoColaboradorScreen" component={MiCursoColaboradorScreen} options={{ headerShown: false }}/>
 				<Stack.Screen name="EdicionCursoScreen" component={EdicionCursoScreen} options={{ headerShown: false }}/>
 				<Stack.Screen name="ListadoAlumnosScreen" component={ListadoAlumnosScreen} options={{ headerShown: false }}/>
 				<Stack.Screen name="ListadoProfesoresScreen" component={ListadoProfesoresScreen} options={{ headerShown: false }}/>

@@ -33,7 +33,7 @@ function MisColaboracionesScreen({ navigation }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoInscriptoScreen', item);} }>
+		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoColaboradorScreen', item);} }>
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
