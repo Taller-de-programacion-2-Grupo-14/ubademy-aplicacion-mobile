@@ -331,6 +331,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.delete(`${global.host}/courses/collaborators`, () => {
+				return {
+					'status': 200
+				};
+			});
 		},
 	});
 
