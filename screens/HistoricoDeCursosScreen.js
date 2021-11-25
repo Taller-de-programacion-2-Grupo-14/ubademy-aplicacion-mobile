@@ -5,6 +5,8 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
+  Pressable,
+	Menu,
 	Modal,
 	FlatList,
 	Divider,
@@ -15,6 +17,7 @@ import {
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { historialDeCursos } from '../src/services/historialDeCursos';
 import PropTypes from 'prop-types';
 
@@ -30,6 +33,7 @@ function HistoricoDeCursosScreen({ navigation }) {
 	const [error, setError] = React.useState(false);
 	const [showModalError, setShowModalError] = React.useState(false);
 	const isFocused = useIsFocused();
+  const [porDefecto, setPorDefecto] = React.useState('Todos');
 
 	const renderItem = ({ item }) => (
 		<>
@@ -93,6 +97,24 @@ function HistoricoDeCursosScreen({ navigation }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
+            <Box style={{position: 'absolute', top: 20, right: 20}}>
+              <Menu
+                w="190"
+                trigger={(triggerProps) => {
+                  return (
+                    <Pressable accessibilityLabel="More options menu" {...triggerProps} >
+                      <Icon name="more-vert" size={35} />
+                    </Pressable>
+                  );
+                }}
+              >
+                <Menu.OptionGroup defaultValue={porDefecto} title="Cursos" type="radio">
+                  <Menu.ItemOption onPress={() => {setPorDefecto('Todos')}} value="Todos">Todos</Menu.ItemOption>
+                  <Menu.ItemOption onPress={() => {setPorDefecto('En curso')}} value="En curso">En curso</Menu.ItemOption>
+                  <Menu.ItemOption onPress={() => {setPorDefecto('Finalizados')}} value="Finalizados">Finalizados</Menu.ItemOption>
+                </Menu.OptionGroup>
+              </Menu>
+            </Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center', top: 20 }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 							Histórico de cursos{'\n'}
