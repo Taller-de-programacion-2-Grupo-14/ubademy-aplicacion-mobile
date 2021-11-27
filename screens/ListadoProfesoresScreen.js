@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
@@ -22,11 +22,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { obtenerProfesores } from '../src/services/obtenerProfesores';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { bajaDeColaborador } from '../src/services/bajaDeColaborador';
 
 ListadoProfesoresScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
+
+
 
 function ListadoProfesoresScreen({ navigation, route }) {
 //function ListadoProfesoresScreen({ route }) {
@@ -40,13 +43,48 @@ function ListadoProfesoresScreen({ navigation, route }) {
 	const [showModalError, setShowModalError] = React.useState(false);
 	const isFocused = useIsFocused();
 
+	function baja(nombreAEliminar, idColaboradorAEliminar) {
+		Alert.alert(
+			'Baja de colaborador',
+			'¿Está seguro que desea dar de baja a ' + nombreAEliminar + '?',
+			[
+				{
+					text: 'No',
+					style: 'cancel'
+				},
+				{ text: 'Si', style: 'destructive',
+					onPress: () => {
+						bajaDeColaborador(String(route.params), idColaboradorAEliminar)
+							.then((response) => response.json())
+							.then((json) => {
+								if (json.status === 200) {
+									setMessage('Baja exitosa');
+									setShowModalError(true);
+								} else {
+									setError(true);
+									setMessage('Error en la baja');
+									setShowModalError(true);
+								}
+							});
+					}
+				}
+			]
+		);
+	}
+
 	const renderItem = ({ item }) => (
-		<>
-			<Text bold fontSize="md">
-				{item.last_name}, {item.first_name}
-			</Text>
-			<Divider my="1" />
-		</>
+		<Box safeArea flex={1} w="90%" mx="auto" py="3" style={{ justifyContent: 'center', top: 20 }}>
+			<View style={{flexDirection:'row'}}>
+				<Text bold fontSize="md">
+					{item.last_name}, {item.first_name}
+				</Text>
+				<Button colorScheme="red" _text={{ color: 'white' }} style={{ position: 'absolute', right: 20, top: -6}}
+					onPress={() => baja(item.first_name + ' ' + item.last_name, item.user_id)} >
+					Dar de baja
+				</Button>
+			</View>
+			<Divider my="3" />
+		</Box>
 	);
 
 	useFocusEffect(

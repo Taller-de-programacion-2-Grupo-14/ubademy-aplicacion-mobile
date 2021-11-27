@@ -263,17 +263,17 @@ export function makeServer({ environment = 'test' } = {}) {
 				return {
 					'message':[
 						{
-							'user_id': '1',
+							'user_id': 1,
 							'last_name': 'Pacino',
 							'first_name': 'Al'
 						},
 						{
-							'user_id': '2',
+							'user_id': 2,
 							'last_name': 'Cameron',
 							'first_name': 'James'
 						},
 						{
-							'user_id': '3',
+							'user_id': 3,
 							'last_name': 'Tarantino',
 							'first_name': 'Quentin'
 						}],
@@ -284,7 +284,8 @@ export function makeServer({ environment = 'test' } = {}) {
 				return {
 					'message':{
 						'name': 'Quimica',
-						'cancelled': 0
+						'cancelled': 0,
+						'id': 27
 					},
 					'status': 200
 				};
