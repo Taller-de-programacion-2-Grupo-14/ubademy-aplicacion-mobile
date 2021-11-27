@@ -7,6 +7,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Button } from 'react-native';
 import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
+import { getGoogleAPIKey } from '../environment';
+
+const GOOGLE_PLACES_API_KEY = getGoogleAPIKey();
 
 navigator.geolocation = require('react-native-geolocation-service');
 
@@ -52,7 +55,7 @@ const MapInput = (props) => {
 			}
 
 			query={{
-				key: 'AIzaSyChBqyOXHQRQ2WhKwTrrAcxQqaboAfxWCI',
+				key: GOOGLE_PLACES_API_KEY,
 				language: 'es'
 			}}
 
@@ -117,6 +120,7 @@ const LocationScreen = ({ navigation }) => {
 	const saveAndGoBack = () => {
 		console.log(address);
 		const token = SecureStore.getItemAsync('secure_token');
+		console.log(token);
 		if (token) {
 			navigation.navigate({
 				name: 'UpdateUsuarioScreen',
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
 
 LocationScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
-	route: PropTypes.func,
+	route: PropTypes.object,
 };
 
 MyMapView.propTypes = {

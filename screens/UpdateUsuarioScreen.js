@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
 
 UpdateUsuarioScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
-	route: PropTypes.params
+	route: PropTypes.object
 };
 
 function UpdateUsuarioScreen({ navigation, route }) {

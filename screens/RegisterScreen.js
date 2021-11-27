@@ -366,5 +366,5 @@ RegisterScreen.propTypes = {
 		navigate: PropTypes.func.isRequired,
 		goBack: PropTypes.func,
 	}).isRequired,
-	route: PropTypes.params
+	route: PropTypes.object
 };
