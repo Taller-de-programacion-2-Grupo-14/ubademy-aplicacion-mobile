@@ -82,7 +82,7 @@ export default function LoginScreen({ navigation }) {
 	this.onSubmit = () => {
 		validate({
 			email: { email: true, required: true },
-			password: { minlength: 3, maxlength: 35, required: true },
+			password: { minlength: 6, maxlength: 35, required: true },
 		});
 
 		if (isFormValid() == true) {

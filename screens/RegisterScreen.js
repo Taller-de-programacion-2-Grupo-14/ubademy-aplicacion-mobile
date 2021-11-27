@@ -60,8 +60,8 @@ export default function RegisterScreen({ navigation, route }) {
 	this.handleSubmit = () => {
 		validate({
 			mail: { email: true, required: true },
-			password: { minlength: 3, maxlength: 9, required: true },
-			passwordR: { minlength: 3, maxlength: 9, required: true, equalPassword: password },
+			password: { minlength: 6, maxlength: 35, required: true },
+			passwordR: { minlength: 6, maxlength: 35, required: true, equalPassword: password },
 			name: { minlength: 1, maxlength: 30, required: true },
 			lastName: { minlength: 1, maxlength: 30, required: true },
 			location: { required: true },
