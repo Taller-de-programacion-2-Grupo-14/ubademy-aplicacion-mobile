@@ -7,6 +7,7 @@ import {
 	Heading,
 	VStack,
 	FormControl,
+	Link,
 	Input,
 	Button,
 	HStack,
@@ -21,13 +22,14 @@ import PropTypes from 'prop-types';
 
 UpdateUsuarioScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.params
 };
 
-function UpdateUsuarioScreen({ navigation }) {
+function UpdateUsuarioScreen({ navigation, route }) {
 	const [firstName, setFirstName] = React.useState('');
 	const [lastName, setLastName] = React.useState('');
 	const [location, setLocation] = React.useState('');
-	const [intrests, setIntrests] = React.useState('');
+	const [interest, setInterests] = React.useState('');
 	const [email, setEmail] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalMessage, setModalMessage] = React.useState('');
@@ -36,26 +38,35 @@ function UpdateUsuarioScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			if (route.params?.ubicacion) {
+				const { ubicacion } = route.params;
+				console.log(ubicacion);
+				setLocation(ubicacion);
+				console.log('en register screen');
+				console.log(location);
+			}
 			obtenerUsuario()
 				.then(data => data.json())
 				.then(json => {
 					setLoading(false);
-					console.log('useeffect de update usuario');
 					console.log(json);
 					setFirstName(json.first_name);
 					setLastName(json.last_name);
 					setEmail(json.email);
-					setLocation(json.location);
+					if (!route.params?.ubicacion) {
+						setLocation(json.location);
+					}
+					setInterests(json.interest);
 				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [route.params?.ubicacion])
 	);
 
 	this.onSubmit = () => {
-		editarUsuario(firstName, lastName, location, intrests, email)
+		editarUsuario(firstName, lastName, location, interest, email)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log('editar usuario ');
@@ -86,7 +97,7 @@ function UpdateUsuarioScreen({ navigation }) {
 						<Button colorScheme="indigo"
 							flex="1"
 							onPress={() => {
-								navigation.goBack();
+								setShowModal(false);
 							}}
 						>
 							Continuar
@@ -139,7 +150,16 @@ function UpdateUsuarioScreen({ navigation }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Ubicacion
 									</FormControl.Label>
-									<Input onChangeText={(location) => setLocation(location)} value={location} />
+									<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
+									<Link onPress={() => navigation.navigate('LocationScreen')}
+										_text={{
+											color: 'indigo.500',
+											fontWeight: 'medium',
+											fontSize: 'sm',
+										}}
+									>
+										Modificar mi ubicacion
+									</Link>
 								</FormControl>
 
 								<FormControl>
@@ -147,7 +167,7 @@ function UpdateUsuarioScreen({ navigation }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de curso de mayor interes
 									</FormControl.Label>
-									<Input onChangeText={(intrests) => setIntrests(intrests)} value={intrests} />
+									<Input onChangeText={(interest) => setInterests(interest)} value={interest} />
 								</FormControl>
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Confirmar

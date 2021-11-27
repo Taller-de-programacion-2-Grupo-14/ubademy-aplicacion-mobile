@@ -1,7 +1,6 @@
 import React from 'react';
 import { register } from '../src/services/register';
 import PropTypes from 'prop-types';
-//import { useFocusEffect } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -11,72 +10,52 @@ import {
 	FormControl,
 	Input,
 	Button,
-	Select,
-	CheckIcon,
-	WarningOutlineIcon,
 	Checkbox,
 	HStack,
 	Center,
 	ScrollView,
 	Image,
-	Modal
+	Modal,
+	Link
 } from 'native-base';
 import { useValidation } from 'react-native-form-validator';
-//import * as Location from 'expo-location';
+import { useFocusEffect } from '@react-navigation/native';
 
-
-export default function RegisterScreen({ navigation }) {
+export default function RegisterScreen({ navigation, route }) {
 	const [mail, setMail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [passwordR, setPasswordR] = React.useState('');
 	const [name, setName] = React.useState('');
 	const [lastName, setLastName] = React.useState('');
-	const [perfil, setPerfil] = React.useState('');
 	const [interests, setInterests] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [location, setLocation] = React.useState('Waiting..');
-	//const [errorMsg, setErrorMsg] = React.useState(null);
-
-	/*
-		useFocusEffect(
-			React.useCallback(() => {
-				// Do something when the screen is focused
-				(async () => {
-					const { status } = await Location.requestForegroundPermissionsAsync();
-					if (status !== 'granted') {
-						setErrorMsg('Permission to access location was denied');
-						return;
-					}
-					
-					const location = await Location.getCurrentPositionAsync({});
-					const latLong = {
-						longitude: location.coords.longitude,
-						latitude: location.coords.latitude
-					};
-					const stringLocation = Location.reverseGeocodeAsync(latLong);
-					//setLocation(stringLocation[0].city);
-					if (errorMsg) {
-						setLocation(errorMsg);
-					} else {
-						setLocation(JSON.stringify(location));
-					}
-					console.log(stringLocation);
-					console.log(errorMsg);
-				})();
-				return () => {
-					// Do something when the screen is unfocused
-					// Useful for cleanup functions
-				};
-			}, [])
-		); */
+	const [location, setLocation] = React.useState('');
 
 	const { validate, isFieldInError, getErrorsInField } =
 		useValidation({
 			state: { mail, password, passwordR, name, lastName, location },
 			deviceLocale: 'es'
 		});
+
+	useFocusEffect(
+		React.useCallback(() => {
+			console.log('intento imprimir route');
+			console.log(route);
+			if (route.params?.ubicacion) {
+				const { ubicacion } = route.params;
+				console.log(ubicacion);
+				setLocation(ubicacion);
+				console.log('en register screen');
+				console.log(location);
+			}
+			return () => {
+				// Do something when the screen is unfocused
+				// Useful for cleanup functions
+			};
+		}, [route.params?.ubicacion])
+	);
 
 	this.handleSubmit = () => {
 		validate({
@@ -87,7 +66,7 @@ export default function RegisterScreen({ navigation }) {
 			lastName: { minlength: 1, maxlength: 30, required: true },
 			location: { required: true },
 		});
-		register(mail, password, name, lastName, perfil, location, interests)
+		register(mail, password, name, lastName, location, interests)
 			.then((response) => {
 				const json = response.json();
 				console.log(json);
@@ -128,6 +107,21 @@ export default function RegisterScreen({ navigation }) {
 
 	};
 
+	this.onRegionChange = (region) => {
+		this.setState({ region });
+	};
+
+	this.getInitialState = () => {
+		return {
+			region: {
+				latitude: 37.78825,
+				longitude: -122.4324,
+				latitudeDelta: 0.0922,
+				longitudeDelta: 0.0421,
+			},
+		};
+	};
+
 	return (
 		<NativeBaseProvider>
 			<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
@@ -151,7 +145,7 @@ export default function RegisterScreen({ navigation }) {
 					</Modal.Footer>
 				</Modal.Content>
 			</Modal>
-			<ScrollView
+			<ScrollView keyboardShouldPersistTaps={'handled'}
 				_contentContainerStyle={{
 					px: '20px',
 					mb: '4',
@@ -205,6 +199,7 @@ export default function RegisterScreen({ navigation }) {
 								getErrorsInField('passwordR').map(errorMessage => (
 									<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 								))}
+
 						</FormControl>
 
 						<FormControl isRequired isInvalid={isFieldInError('name')}>
@@ -229,28 +224,6 @@ export default function RegisterScreen({ navigation }) {
 									<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 								))}
 						</FormControl>
-						<FormControl>
-							<FormControl.Label>Perfil</FormControl.Label>
-							<Select
-								selectedValue={perfil}
-								minWidth="200"
-								accessibilityLabel="Elegir Perfil"
-								placeholder="Elegir Perfil"
-								_selectedItem={{
-									bg: 'teal.600',
-									endIcon: <CheckIcon size="5" />,
-								}}
-								mt={1}
-								onValueChange={(perfil) => setPerfil(perfil)}
-							>
-								<Select.Item label="Estudiante" value="Student" />
-								<Select.Item label="Creador" value="Creator" />
-								<Select.Item label="Colaborador" value="Collaborator" />
-							</Select>
-							<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-								Seleccionar uno
-							</FormControl.ErrorMessage>
-						</FormControl>
 						<FormControl >
 							<FormControl.Label>Intereses</FormControl.Label>
 							<VStack space={2}>
@@ -259,27 +232,102 @@ export default function RegisterScreen({ navigation }) {
 										<Text>Seleccionados: ({interests.length})</Text>
 									</Box>
 								</VStack>
-								<Checkbox.Group
-									colorScheme="green"
-									defaultValue={interests}
-									accessibilityLabel="pick an item"
-									onChange={(interests) => {
-										setInterests(interests || []);
+								<ScrollView horizontal={true} keyboardShouldPersistTaps={'handled'}
+									_contentContainerStyle={{
+										px: '20px',
+										mb: '4',
 									}}
 								>
-									<Checkbox value="Matematica" my="1">
-										Matematica
-									</Checkbox>
-									<Checkbox value="Programacion" my="1">
-										Programacion
-									</Checkbox>
-									<Checkbox value="Cocina" my="1">
-										Cocina
-									</Checkbox>
-									<Checkbox value="Jardineria" my="1">
-										Jardineria
-									</Checkbox>
-								</Checkbox.Group>
+									<Checkbox.Group
+										colorScheme="green"
+										defaultValue={interests}
+										accessibilityLabel="pick an item"
+										onChange={(interests) => {
+											setInterests(interests || []);
+										}}
+									>
+										<HStack>
+											<Checkbox value="Matematica" my="1" mr="1">
+												Ciencias
+											</Checkbox>
+											<Checkbox value="Programacion" my="1" mr="1">
+												Programacion
+											</Checkbox>
+											<Checkbox value="Cocina" my="1" mr="1">
+												Medicina
+											</Checkbox>
+											<Checkbox value="Deportes" my="1" mr="1">
+												Deportes
+											</Checkbox>
+											<Checkbox value="Matematica" my="1" mr="1">
+												Matematicas
+											</Checkbox>
+											<Checkbox value="Fisica" my="1" mr="1">
+												Fisica
+											</Checkbox>
+										</HStack>
+										<HStack>
+											<Checkbox value="Marketing" my="1" mr="1">
+												Marketing
+											</Checkbox>
+											<Checkbox value="Publicidad digital" my="1" mr="1">
+												Publicidad digital
+											</Checkbox>
+											<Checkbox value="Criptomonedas" my="1" mr="1">
+												Criptomonedas
+											</Checkbox>
+											<Checkbox value="Blockchain" my="1" mr="1">
+												Blockchain
+											</Checkbox>
+											<Checkbox value="Idiomas" my="1" mr="1">
+												Idiomas
+											</Checkbox>
+											<Checkbox value="Social media" my="1" mr="1">
+												Social Media
+											</Checkbox>
+										</HStack>
+										<HStack>
+											<Checkbox value="Data science" my="1" mr="1">
+												Data science
+											</Checkbox>
+											<Checkbox value="Diseño" my="1" mr="1">
+												Diseño
+											</Checkbox>
+											<Checkbox value="Edición" my="1" mr="1">
+												Medicina
+											</Checkbox>
+											<Checkbox value="Ventas online" my="1" mr="1">
+												Ventas online
+											</Checkbox>
+											<Checkbox value="Gestión de proyectos" my="1" mr="1">
+												Gestión de proyectos
+											</Checkbox>
+											<Checkbox value="Manualidades" my="1" mr="1">
+												Manualidades
+											</Checkbox>
+										</HStack>
+										<HStack>
+											<Checkbox value="Arte" my="1" mr="1">
+												Arte
+											</Checkbox>
+											<Checkbox value="Analytics" my="1" mr="1">
+												Analytics
+											</Checkbox>
+											<Checkbox value="Meditacion" my="1" mr="1">
+												Meditacion
+											</Checkbox>
+											<Checkbox value="Espiritualidad" my="1" mr="1">
+												Espiritualidad
+											</Checkbox>
+											<Checkbox value="Matematica" my="1" mr="1">
+												Ciencias
+											</Checkbox>
+											<Checkbox value="Atención online" my="1" mr="1">
+												Atención online
+											</Checkbox>
+										</HStack>
+									</Checkbox.Group>
+								</ScrollView>
 							</VStack>
 						</FormControl>
 						<FormControl isRequired isInvalid={isFieldInError('location')}>
@@ -287,14 +335,23 @@ export default function RegisterScreen({ navigation }) {
 								_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 								Ubicacion
 							</FormControl.Label>
-							<Input onChangeText={(text) => setLocation(text)} />
+							<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
 							{isFieldInError('location') &&
 								getErrorsInField('location').map(errorMessage => (
 									<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 								))}
+							<Link onPress={() => navigation.navigate('LocationScreen')}
+								_text={{
+									color: 'indigo.500',
+									fontWeight: 'medium',
+									fontSize: 'sm',
+								}}
+							>
+								Seleccionar mi ubicacion
+							</Link>
 						</FormControl>
 						<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.handleSubmit()} >
-							Registrate
+							Registrarme
 						</Button>
 					</VStack>
 				</Box>
@@ -303,9 +360,11 @@ export default function RegisterScreen({ navigation }) {
 	);
 }
 
+
 RegisterScreen.propTypes = {
 	navigation: PropTypes.shape({
 		navigate: PropTypes.func.isRequired,
 		goBack: PropTypes.func,
 	}).isRequired,
+	route: PropTypes.params
 };
