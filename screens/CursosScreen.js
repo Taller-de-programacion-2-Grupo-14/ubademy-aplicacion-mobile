@@ -3,7 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import CrearCursoScreen from './CrearCursoScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InscribirmeScreen from './InscribirmeScreen';
-import SerColaboradorScreen from './SerColaboradorScreen';
+import FavoritosScreen from './FavoritosScreen';
 import MisCursosScreen from './MisCursosScreen';
 import MisCursosCreadosScreen from './MisCursosCreadosScreen';
 import MiCursoCreadoScreen from './MiCursoCreadoScreen';
@@ -51,7 +51,7 @@ export default function CursosApp() {
 			<Drawer.Screen name="Buscar un curso" component={InscribirmeScreen} />
 			<Drawer.Screen name="Crear un curso" component={CrearCursoScreen} />
 			<Drawer.Screen name="Histórico de cursos" component={HistoricoDeCursosScreen} />
-			<Drawer.Screen name="Cursos favoritos" component={SerColaboradorScreen} />
+			<Drawer.Screen name="Cursos favoritos" component={FavoritosScreen} />
 		</Drawer.Navigator>
 	);
 }

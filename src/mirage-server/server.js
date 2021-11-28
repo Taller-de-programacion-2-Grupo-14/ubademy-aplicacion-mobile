@@ -58,44 +58,96 @@ export function makeServer({ environment = 'test' } = {}) {
 				};
 			});
 			this.get(`${global.host}/courses`, () => {
-				return [
-					{
-						'name': 'Taller',
-						'creator_name': 'Agustin',
-						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
-						'hashtags': 'Python, Sarasa',
-						'type': 'Programación',
-						'exams': 3,
-						'subscription': 'Premium',
-						'location': 'Obera',
-						'id': 5,
-						'estado': 'Vigente'
-					},
-					{
-						'name': 'Organizacion de Datos',
-						'creator_name': 'Luis',
-						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
-						'hashtags': 'Python, Sarasa',
-						'type': 'Programación',
-						'exams': 3,
-						'subscription': 'Premium',
-						'location': 'Obera',
-						'id': 6,
-						'estado': 'Vigente'
-					},
-					{
-						'name': 'Sistemas Operativos',
-						'creator_name': 'Clua',
-						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
-						'hashtags': 'Python, Sarasa',
-						'type': 'Programación',
-						'exams': 3,
-						'subscription': 'Premium',
-						'location': 'Obera',
-						'id': 7,
-						'estado': 'Vigente'
-					}
-				];
+				return {
+					'message':[
+						{
+							'name': 'Taller',
+							'creator_first_name': 'Franco',
+							'creator_last_name': 'Armani',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 5,
+							'estado': 'Vigente'
+						},
+						{
+							'name': 'Organizacion de Datos',
+							'creator_first_name': 'Luis',
+							'creator_last_name': 'Argerich',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 6,
+							'estado': 'Vigente'
+						},
+						{
+							'name': 'Sistemas Operativos',
+							'creator_first_name': 'Osvaldo',
+							'creator_last_name': 'Clua',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 7,
+							'estado': 'Vigente'
+						}
+					],
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/favoritos`, () => {
+				return {
+					'message':[
+						{
+							'name': 'Fisica Newtoniana',
+							'creator_first_name': 'Franco',
+							'creator_last_name': 'Armani',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 5,
+							'estado': 'Vigente'
+						},
+						{
+							'name': 'Fisica Relativista',
+							'creator_first_name': 'Luis',
+							'creator_last_name': 'Argerich',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 6,
+							'estado': 'Vigente'
+						},
+						{
+							'name': 'Fisica Cuantica',
+							'creator_first_name': 'Osvaldo',
+							'creator_last_name': 'Clua',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 7,
+							'estado': 'Vigente'
+						}
+					],
+					'status': 200
+				};
 			});
 			this.get(`${global.host}/courses/1`, () => {
 				return {
