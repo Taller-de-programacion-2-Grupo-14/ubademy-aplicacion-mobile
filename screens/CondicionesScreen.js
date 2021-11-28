@@ -4,6 +4,7 @@ import { elegirCurso } from '../src/services/elegirCurso';
 import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
+	Pressable,
 	Box,
 	Button,
 	Heading,
@@ -16,7 +17,11 @@ import {
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
+import { obtenerCurso } from '../src/services/obtenerCurso';
+import { agregarAFavoritos } from '../src/services/agregarAFavoritos';
+import { eliminarDeFavoritos } from '../src/services/eliminarDeFavoritos';
 
 CondicionesScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -28,6 +33,7 @@ function CondicionesScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [favorito, setFavorito] = React.useState(false);
 	// const [descripcion, setDescripcion] = React.useState('');
 	// const [hashtags, setHashtags] = React.useState('');
 	// const [examenes, setExamenes] = React.useState('');
@@ -36,17 +42,13 @@ function CondicionesScreen({ navigation, route }) {
 
 	useFocusEffect(
 		React.useCallback(() => {
-			// Do something when the screen is focused
-			// obtenerCurso(route.params.id)
-			// 	.then(data => data.json())
-			// 	.then(json => {
-			setLoading(false);
-			// 		setDescripcion(json.description);
-			// 		setHashtags(json.hashtags);
-			// 		setExamenes(String(json.exams));
-			// 		setTipoDeCurso(json.type);
-			// 		setLocation(json.location);
-			// 	});
+			obtenerCurso(String(route.params.id))
+				.then(data => data.json())
+				.then(json => {
+					console.log(json);
+					setFavorito(json.message.favorito);
+					setLoading(false);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -74,6 +76,16 @@ function CondicionesScreen({ navigation, route }) {
 					}
 				}
 			});
+	};
+
+	this.corazon = () => {
+		if (favorito) {
+			eliminarDeFavoritos(route.params.id);
+			setFavorito(false);
+		} else {
+			agregarAFavoritos(route.params.id);
+			setFavorito(true);
+		}
 	};
 
 	return (
@@ -111,6 +123,11 @@ function CondicionesScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
+						<Box style={{top: 20, alignItems: 'flex-end'}}>
+							<Pressable onPress={() => this.corazon()} >
+								<Icon name={favorito ? "favorite" : "favorite-border"} size={35} color={favorito ? "red" : "black"} />
+							</Pressable>
+						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" >
 								{ route.params.name }

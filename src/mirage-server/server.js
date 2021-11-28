@@ -318,7 +318,8 @@ export function makeServer({ environment = 'test' } = {}) {
 					'message':{
 						'name': 'Quimica',
 						'cancelled': 0,
-						'id': 27
+						'id': 27,
+						'favorito': false
 					},
 					'status': 200
 				};
@@ -366,6 +367,16 @@ export function makeServer({ environment = 'test' } = {}) {
 				};
 			});
 			this.delete(`${global.host}/courses/collaborators/remove`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/courses/favorites`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.delete(`${global.host}/courses/favorites/remove`, () => {
 				return {
 					'status': 200
 				};
