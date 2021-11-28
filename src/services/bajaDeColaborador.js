@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 export async function bajaDeColaborador(idCurso, idColaborador) {
 	const token = await SecureStore.getItemAsync('secure_token');
 
-	return fetch(`${global.host}/courses/collaborators`, {
+	return fetch(`${global.host}/courses/collaborators/remove`, {
 		method: 'DELETE',
 		headers: {
 			Accept: 'application/json',

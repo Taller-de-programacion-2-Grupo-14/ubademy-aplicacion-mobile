@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 export async function misColaboraciones() {
 	const token = await SecureStore.getItemAsync('secure_token');
 
-	return fetch(`${global.host}/courses/colaboraciones`, {
+	return fetch(`${global.host}/courses/collaborations`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

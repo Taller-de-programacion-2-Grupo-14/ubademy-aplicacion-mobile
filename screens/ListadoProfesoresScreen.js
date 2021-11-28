@@ -19,7 +19,7 @@ import {
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-import { obtenerProfesores } from '../src/services/obtenerProfesores';
+import { obtenerAlumnos } from '../src/services/obtenerAlumnos';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { bajaDeColaborador } from '../src/services/bajaDeColaborador';
@@ -90,7 +90,7 @@ function ListadoProfesoresScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerProfesores(String(route.params), nombre, apellido)
+			obtenerAlumnos(String(route.params), nombre, apellido, false)
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
@@ -111,7 +111,7 @@ function ListadoProfesoresScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		obtenerProfesores(String(route.params), nombre, apellido)
+		obtenerAlumnos(String(route.params), nombre, apellido, false)
 			.then((response) => response.json())
 			.then((json) => {
 				setProfesores(json.message);

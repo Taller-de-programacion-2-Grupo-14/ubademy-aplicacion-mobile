@@ -52,7 +52,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerAlumnos(String(route.params), nombre, apellido)
+			obtenerAlumnos(String(route.params), nombre, apellido, true)
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);

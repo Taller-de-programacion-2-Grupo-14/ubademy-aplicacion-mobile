@@ -103,7 +103,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/favoritos`, () => {
+			this.get(`${global.host}/favorites`, () => {
 				return {
 					'message':[
 						{
@@ -292,26 +292,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/courses/subscribers/:id`, () => {
-				return [
-					{
-						'id': '1',
-						'apellido': 'Pacino',
-						'nombre': 'Al'
-					},
-					{
-						'id': '2',
-						'apellido': 'Cameron',
-						'nombre': 'James'
-					},
-					{
-						'id': '3',
-						'apellido': 'Tarantino',
-						'nombre': 'Quentin'
-					}
-				];
-			});
-			this.get(`${global.host}/courses/profesores/:id`, () => {
+			this.get(`${global.host}/courses/users/:id`, () => {
 				return {
 					'message':[
 						{
@@ -342,7 +323,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/courses/colaboraciones`, () => {
+			this.get(`${global.host}/courses/collaborations`, () => {
 				return {
 					'message':[
 						{
@@ -363,7 +344,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/courses/historial`, () => {
+			this.get(`${global.host}/courses/historical`, () => {
 				return {
 					'message':[
 						{
@@ -384,7 +365,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.delete(`${global.host}/courses/collaborators`, () => {
+			this.delete(`${global.host}/courses/collaborators/remove`, () => {
 				return {
 					'status': 200
 				};

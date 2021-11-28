@@ -17,7 +17,8 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-import { bajaColaborador } from '../src/services/bajaColaborador';
+import { bajaDeColaborador } from '../src/services/bajaDeColaborador';
+import { obtenerUsuario } from '../src/services/obtenerUsuario';
 
 MiCursoColaboradorScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -29,6 +30,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [miId, setMiId] = React.useState(0);
 
 	const baja = () =>
 		Alert.alert(
@@ -41,7 +43,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 				},
 				{ text: 'OK', style: 'destructive',
 					onPress: () => {
-						bajaColaborador(String(route.params.courseid))
+						bajaDeColaborador(String(route.params.courseid), miId)
 							.then((response) => response.json())
 							.then((json) => {
 								if (json.status === 200) {
@@ -61,7 +63,12 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setLoading(false);
+			obtenerUsuario()
+				.then(data => data.json())
+				.then(json => {
+					setLoading(false);
+					setMiId(json.user_id);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
