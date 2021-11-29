@@ -33,7 +33,7 @@ function HistoricoDeCursosScreen({ navigation }) {
 	const [error, setError] = React.useState(false);
 	const [showModalError, setShowModalError] = React.useState(false);
 	const isFocused = useIsFocused();
-	const [porDefecto, setPorDefecto] = React.useState('Todos');
+	const [estado, setEstado] = React.useState('Todos');
 
 	const renderItem = ({ item }) => (
 		<>
@@ -47,7 +47,7 @@ function HistoricoDeCursosScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			historialDeCursos()
+			historialDeCursos('')
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
@@ -68,7 +68,10 @@ function HistoricoDeCursosScreen({ navigation }) {
 	);
 
 	this.onSubmit = () => {
-		historialDeCursos()
+		if (estado=='Todos') {
+			setEstado('');
+		}
+		historialDeCursos(estado)
 			.then((response) => response.json())
 			.then((json) => {
 				setCursos(json.message);
@@ -117,10 +120,11 @@ function HistoricoDeCursosScreen({ navigation }) {
 									);
 								}}
 							>
-								<Menu.OptionGroup defaultValue={porDefecto} title="Cursos" type="radio">
-									<Menu.ItemOption onPress={() => {setPorDefecto('Todos'); this.onsubtmit;}} value="Todos">Todos</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setPorDefecto('En curso');this.onsubtmit;}} value="En curso">En curso</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setPorDefecto('Finalizados');this.onsubtmit;}} value="Finalizados">Finalizados</Menu.ItemOption>
+								<Menu.OptionGroup defaultValue={estado} title="Cursos" type="radio">
+									<Menu.ItemOption onPress={() => {setEstado('Todos'); this.onsubtmit;}} value="Todos">Todos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setEstado('approved');this.onsubtmit;}} value="approved">Aprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setEstado('failed');this.onsubtmit;}} value="failed">Desaprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setEstado('on_course');this.onsubtmit;}} value="on_course">En curso</Menu.ItemOption>
 								</Menu.OptionGroup>
 							</Menu>
 						</Box>

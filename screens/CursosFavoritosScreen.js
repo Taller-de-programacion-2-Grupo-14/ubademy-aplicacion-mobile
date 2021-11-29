@@ -1,10 +1,13 @@
 import React from 'react';
 import { obtenerFavoritos } from '../src/services/obtenerFavoritos';
 import { View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
 	Link,
+	Pressable,
+	Menu,
 	Text,
 	FlatList,
 	Modal,
@@ -17,6 +20,7 @@ import {
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 
 CursosFavoritosScreen.propTypes = {
@@ -28,7 +32,8 @@ function CursosFavoritosScreen({ navigation }) {
 	const [cursos, setCursos] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
-	const [suscripcion, setSuscripcion] = React.useState('');
+	const [suscripcion, setSuscripcion] = React.useState('Todos');
+	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => navigation.navigate('MiCursoFavoritoScreen', item) }>
@@ -54,7 +59,7 @@ function CursosFavoritosScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerFavoritos(suscripcion)
+			obtenerFavoritos('')
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
@@ -76,8 +81,20 @@ function CursosFavoritosScreen({ navigation }) {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
+
+	this.onSubmit = () => {
+		if (suscripcion=='Todos') {
+			setSuscripcion('');
+		}
+		obtenerFavoritos(suscripcion)
+			.then((response) => response.json())
+			.then((json) => {
+				setCursos(json.message);
+				setLoading(false);
+			});
+	};
 
 	return (
 		<NativeBaseProvider>
@@ -106,6 +123,25 @@ function CursosFavoritosScreen({ navigation }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
+						<Box style={{position: 'absolute', top: 20, right: 20}}>
+							<Menu
+								w="190"
+								trigger={(triggerProps) => {
+									return (
+										<Pressable accessibilityLabel="More options menu" {...triggerProps} >
+											<Icon name="more-vert" size={35} />
+										</Pressable>
+									);
+								}}
+							>
+								<Menu.OptionGroup defaultValue={suscripcion} title="Cursos" type="radio">
+									<Menu.ItemOption onPress={() => {setSuscripcion('Todos'); this.onsubtmit;}} value="Todos">Todos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setSuscripcion('Basico'); this.onsubtmit;}} value="Basico">Basico</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setSuscripcion('Estandar'); this.onsubtmit;}} value="Estandar">Estandar</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setSuscripcion('Premium'); this.onsubtmit;}} value="Premium">Premium</Menu.ItemOption>
+								</Menu.OptionGroup>
+							</Menu>
+						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								Elegir un curso

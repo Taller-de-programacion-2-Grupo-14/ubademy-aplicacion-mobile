@@ -125,7 +125,7 @@ function CondicionesScreen({ navigation, route }) {
 						</Modal>
 						<Box style={{top: 20, alignItems: 'flex-end'}}>
 							<Pressable onPress={() => this.corazon()} >
-								<Icon name={favorito ? "favorite" : "favorite-border"} size={35} color={favorito ? "red" : "black"} />
+								<Icon name={favorito ? 'favorite' : 'favorite-border'} size={35} color={favorito ? 'red' : 'black'} />
 							</Pressable>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
