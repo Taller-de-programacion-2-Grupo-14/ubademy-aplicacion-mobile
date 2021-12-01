@@ -1,0 +1,39 @@
+{
+    "project_info": {
+        "project_number": "7851518757",
+        "project_id": "uba-demy",
+        "storage_bucket": "uba-demy.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:7851518757:android:935e025151a31d01ba88cc",
+                "android_client_info": {
+                    "package_name": "com.ubademytest"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "7851518757-bi7ko9ptgqt0nq97kkkrtc2c6oh0n4ti.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyAzKkNliiUYWvqvC2ao6hQUl6-zeDS_Eek"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "7851518757-bi7ko9ptgqt0nq97kkkrtc2c6oh0n4ti.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
