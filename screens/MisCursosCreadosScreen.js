@@ -36,16 +36,16 @@ function MisCursosCreadosScreen({ navigation }) {
 		<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item);} }>
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
-					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
+					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
 						{item.type}
 					</Text>
 					<Spacer />
 				</HStack>
-				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.name}
 				</Heading>
 				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
             Ingresar
 					</Text>
 				</Flex>

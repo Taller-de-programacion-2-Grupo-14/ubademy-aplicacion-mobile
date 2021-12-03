@@ -13,14 +13,18 @@ import {
 	Text,
 	Divider,
 	Heading,
-	ScrollView,
-	Spinner
+	Spinner,
+	Link,
+	FlatList,
+	Flex
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import { cancelarCurso } from '../src/services/cancelarCurso';
 import { obtenerCurso } from '../src/services/obtenerCurso';
+import { obtenerExamenes } from '../src/services/obtenerExamenes';
+
 
 MiCursoCreadoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -34,6 +38,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [error, setError] = React.useState(false);
 	const [estado, setEstado] = React.useState('');
 	const [nombre, setNombre] = React.useState('');
+	const [examenes, setExamenes] = React.useState([]);
 	const isFocused = useIsFocused();
 
 	const cancelar = () =>
@@ -64,6 +69,21 @@ function MiCursoCreadoScreen({ navigation, route }) {
 			]
 		);
 
+	const renderItem = ({ item }) => (
+		<Link >
+			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
+					{item.nombre}
+				</Heading>
+				<Flex>
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+						Ingresar
+					</Text>
+				</Flex>
+			</Box>
+		</Link>
+	);
+
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
@@ -80,6 +100,16 @@ function MiCursoCreadoScreen({ navigation, route }) {
 						} else {
 							setEstado('Cancelado');
 						}
+					}
+				});
+			obtenerExamenes(String(route.params.id))
+				.then(data => data.json())
+				.then(json => {
+					console.log(json);
+					if (json.status === 503) {
+						setEstado('Indeterminado (por error 503)');
+					} else {
+						setExamenes(json.message);
 					}
 					setLoading(false);
 				});
@@ -98,12 +128,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
+					<>
 						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
@@ -149,14 +174,23 @@ function MiCursoCreadoScreen({ navigation, route }) {
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600">
+							<Heading size="2xl" color="coolGray.800" fontWeight="600">
 								{ nombre }
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600">
 								{'\n'}Estado: { estado }
 							</Heading>
+							<Divider my="5" />
+							<Heading size="xl" color="coolGray.800" fontWeight="600">
+								Exámenes
+							</Heading>
+							<FlatList
+								data={examenes}
+								renderItem={renderItem}
+								keyExtractor={item => String(item.id)}
+							/>
 						</Box>
-					</ScrollView>
+					</>
 			}
 		</NativeBaseProvider>
 	);

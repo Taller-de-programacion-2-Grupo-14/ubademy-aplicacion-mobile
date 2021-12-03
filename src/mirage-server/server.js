@@ -263,19 +263,21 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/my_subscriptions`, () => {
-				return [
-					{
-						'name': 'Flores',
-						'id': 3,
-						'type': 'Jardineria'
-					},
-					{
-						'name': 'Tortas',
-						'id': 4,
-						'type': 'Cocina'
-					}
-				];
+			this.get(`${global.host}/courses/my_subscriptions`, () => {
+				return {
+					'message':[
+						{
+							'name': 'Arboles',
+							'id': 1,
+							'type': 'Jardineria'
+						},
+						{
+							'name': 'Plantas carnivoras',
+							'id': 2,
+							'type': 'Jardineria'
+						}],
+					'status': 200
+				};
 			});
 			this.delete(`${global.host}/courses/subscription/:id`, () => {
 				return {
@@ -378,6 +380,36 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.delete(`${global.host}/courses/favorites/remove`, () => {
 				return {
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/exams/:id`, () => {
+				return {
+					'message':[
+						{
+							'id': 1,
+							'nombre': 'Parcial 1 - Termodinamica',
+							'questions': [
+								'¿Cual es el segundo principio de la termodinamica?',
+								'¿Tenet es horrible o solo muy mala?'
+							]
+						},
+						{
+							'id': 2,
+							'nombre': 'Parcial 2 - Electroquimica',
+							'questions': [
+								'¿Que gusto tiene la sal?',
+								'¿Cual es el sentido de la vida?'
+							]
+						},
+						{
+							'id': 3,
+							'nombre': 'Parcial 3 - Corrosion',
+							'questions': [
+								'¿Quien descubrio america?',
+								'¿Cuanto es 2+2?'
+							]
+						}],
 					'status': 200
 				};
 			});
