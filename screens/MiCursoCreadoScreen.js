@@ -150,7 +150,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{top: 20, alignItems: 'flex-end'}}>
+						<Box style={{position: 'absolute', top: 20, right: 20}}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -164,7 +164,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params);}} >Editar curso</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.id);}}>Listado de alumnos</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('ListadoProfesoresScreen', route.params.id);}}>Listado de profesores</Menu.Item>
-								<Menu.Item>Crear examen</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('CrearExamenScreen', route.params.id);}}>Crear examen</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('ABcolaboradorScreen', route.params.id);}}>Alta/Baja de colaborador</Menu.Item>
 								<Divider />
 								<Menu.Item onPress={() => {navigation.navigate('MiCursoInscriptoScreen', route.params);}} >Ver curso como estudiante</Menu.Item>
@@ -173,7 +173,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 							</Menu>
 						</Box>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
 							<Heading size="2xl" color="coolGray.800" fontWeight="600">
 								{ nombre }
 							</Heading>

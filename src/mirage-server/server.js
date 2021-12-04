@@ -447,6 +447,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.post(`${global.host}/exams/create`, () => {
+				return {
+					'status': 200
+				};
+			});
 		},
 	});
 

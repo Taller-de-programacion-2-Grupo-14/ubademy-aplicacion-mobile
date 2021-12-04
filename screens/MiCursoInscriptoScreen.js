@@ -125,7 +125,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{top: 20, alignItems: 'flex-end'}}>
+						<Box style={{position: 'absolute', top: 20, right: 20}}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -143,7 +143,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								}
 							</Menu>
 						</Box>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
 							<Heading size="2xl" color="coolGray.800" fontWeight="600">
 								{ route.params.name }
 							</Heading>
