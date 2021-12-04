@@ -187,9 +187,13 @@ function CondicionesScreen({ navigation, route }) {
 									<Text fontSize="sm" > { route.params.location } </Text>
 								</FormControl>
 							</VStack>
-							<Button mt="2" isDisabled={route.params.can_edit} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+							<Button mt="2" isDisabled={!route.params.can_subscribed} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 								Confirmar inscripción
 							</Button>
+							<Text color={route.params.can_subscribed ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}> {route.params.is_subscribed ? 'Usted ya está inscripto' :
+								route.params.can_edit ? 'Usted es el creador' : 'No tiene el nivel de suscrcripción adecuado'
+							}
+							</Text>
 						</Box>
 					</ScrollView>
 			}

@@ -71,7 +71,10 @@ export function makeServer({ environment = 'test' } = {}) {
 							'subscription': 'Premium',
 							'location': 'Obera',
 							'id': 5,
-							'estado': 'Vigente'
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': false,
+							'can_subscribed': false
 						},
 						{
 							'name': 'Organizacion de Datos',
@@ -84,7 +87,10 @@ export function makeServer({ environment = 'test' } = {}) {
 							'subscription': 'Premium',
 							'location': 'Obera',
 							'id': 6,
-							'estado': 'Vigente'
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': true,
+							'can_subscribed': false
 						},
 						{
 							'name': 'Sistemas Operativos',
@@ -97,7 +103,26 @@ export function makeServer({ environment = 'test' } = {}) {
 							'subscription': 'Premium',
 							'location': 'Obera',
 							'id': 7,
-							'estado': 'Vigente'
+							'estado': 'Vigente',
+							'can_edit': true,
+							'is_subscribed': false,
+							'can_subscribed': false
+						},
+						{
+							'name': 'Algoritmos y Programacion I',
+							'creator_first_name': 'Tony',
+							'creator_last_name': 'Montana',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 8,
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': false,
+							'can_subscribed': true
 						}
 					],
 					'status': 200
@@ -117,7 +142,10 @@ export function makeServer({ environment = 'test' } = {}) {
 							'subscription': 'Premium',
 							'location': 'Obera',
 							'id': 5,
-							'estado': 'Vigente'
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': false,
+							'can_subscribed': true
 						},
 						{
 							'name': 'Fisica Relativista',
@@ -130,7 +158,10 @@ export function makeServer({ environment = 'test' } = {}) {
 							'subscription': 'Premium',
 							'location': 'Obera',
 							'id': 6,
-							'estado': 'Vigente'
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': true,
+							'can_subscribed': false
 						},
 						{
 							'name': 'Fisica Cuantica',
@@ -143,7 +174,10 @@ export function makeServer({ environment = 'test' } = {}) {
 							'subscription': 'Premium',
 							'location': 'Obera',
 							'id': 7,
-							'estado': 'Vigente'
+							'estado': 'Vigente',
+							'can_edit': true,
+							'is_subscribed': false,
+							'can_subscribed': false
 						}
 					],
 					'status': 200
