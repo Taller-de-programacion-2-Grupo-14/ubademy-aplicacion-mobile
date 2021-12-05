@@ -152,7 +152,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 							<SearchIcon size="8" />
 						</Link>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center', top: 20 }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 							Listado de alumnos{'\n'}
 							</Heading>
 							<FlatList

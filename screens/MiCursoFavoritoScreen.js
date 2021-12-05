@@ -132,7 +132,7 @@ function MiCursoFavoritoScreen({ navigation, route }) {
 							</Pressable>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600" >
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold >
 								{ route.params.name }
 							</Heading>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">

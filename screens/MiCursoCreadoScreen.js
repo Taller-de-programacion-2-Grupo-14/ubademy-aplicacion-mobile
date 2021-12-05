@@ -174,7 +174,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
-							<Heading size="2xl" color="coolGray.800" fontWeight="600">
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								{ nombre }
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600">

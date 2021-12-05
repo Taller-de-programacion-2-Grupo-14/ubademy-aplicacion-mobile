@@ -107,7 +107,7 @@ function MisCursosCreadosScreen({ navigation }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
 								Cursos creados por mi
 							</Heading>
 							<FlatList

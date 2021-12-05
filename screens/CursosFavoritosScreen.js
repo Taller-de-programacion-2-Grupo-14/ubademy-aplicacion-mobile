@@ -143,7 +143,7 @@ function CursosFavoritosScreen({ navigation }) {
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								Elegir un curso
 							</Heading>
 							<FlatList

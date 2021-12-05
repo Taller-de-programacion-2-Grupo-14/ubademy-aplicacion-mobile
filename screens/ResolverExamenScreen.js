@@ -6,27 +6,27 @@ import {
 	Heading,
 	ScrollView,
 	Spinner,
-	FormControl,
-	Input,
 	VStack,
 	HStack,
+	FormControl,
+	Input,
 	Button,
 	Modal,
 	Text
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-import { crearExamen } from '../src/services/crearExamen';
+import { completarExamen } from '../src/services/completarExamen';
 import PropTypes from 'prop-types';
 
-CrearExamenScreen.propTypes = {
+ResolverExamenScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function CrearExamenScreen({ navigation, route }) {
+function ResolverExamenScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
-	const [nombre, setNombre] = React.useState('');
-	const [pregunta, setPregunta] = React.useState('');
+	const [respuesta, setRespuesta] = React.useState('');
+	const [respuestas, setRespuestas] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
@@ -43,15 +43,16 @@ function CrearExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		crearExamen(String(route.params), nombre, pregunta)
+		setRespuestas([respuesta]);
+		completarExamen(String(route.params.id), route.params.questions, respuestas, route.params.id_questions)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
 				if (json.status === 200) {
-					setMessage('¡Creación exitosa!');
+					setMessage('¡Examen enviado correctamente!');
 				} else {
 					setError(true);
-					setMessage('Error en la creación del exámen');
+					setMessage('Error en el enviado del exámen');
 				}
 				setShowModal(true);
 			});
@@ -93,20 +94,19 @@ function CrearExamenScreen({ navigation, route }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<VStack space={5}>
+							<VStack space={3} mt="5">
 								<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-									Crear exámen
+									Resolver Examen
+								</Heading>
+								<Heading size="lg" color="coolGray.800" fontWeight="600">
+									{route.params.questions[0]}
 								</Heading>
 								<FormControl>
-									<FormControl.Label>Ingrese el nombre del exámen</FormControl.Label>
-									<Input size="md" onChangeText={(nombre) => setNombre(nombre)} value={nombre} multiline={true} />
+									<FormControl.Label>Respuesta:</FormControl.Label>
+									<Input onChangeText={(respuesta) => setRespuesta(respuesta)} value={respuesta} multiline={true} />
 								</FormControl>
-								<FormControl>
-									<FormControl.Label>Ingrese la pregunta</FormControl.Label>
-									<Input size="md" onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true} />
-								</FormControl>
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-                  Crear
+								<Button isDisabled={route.params.verComoCreador ? true : false} mt="2" colorScheme="indigo" _text={{ color: 'white' }}  onPress={() => this.onSubmit()}>
+                  Terminar examen
 								</Button>
 							</VStack>
 						</Box>
@@ -124,4 +124,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default CrearExamenScreen;
+export default ResolverExamenScreen;

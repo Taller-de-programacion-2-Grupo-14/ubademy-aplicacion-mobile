@@ -107,8 +107,8 @@ function ABcolaboradorScreen({ navigation, route }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Alta/Baja de un colaborador
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+								Alta de un colaborador
 							</Heading>
 							<VStack space={3} mt="5">
 								<FormControl>

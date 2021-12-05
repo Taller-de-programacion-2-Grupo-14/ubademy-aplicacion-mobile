@@ -423,6 +423,10 @@ export function makeServer({ environment = 'test' } = {}) {
 						{
 							'id': 1,
 							'nombre': 'Parcial 1 - Termodinamica',
+							'id_questions': [
+								'q1e1',
+								'q2e1'
+							],
 							'questions': [
 								'¿Cual es el segundo principio de la termodinamica?',
 								'¿Tenet es horrible o solo muy mala?'
@@ -431,6 +435,10 @@ export function makeServer({ environment = 'test' } = {}) {
 						{
 							'id': 2,
 							'nombre': 'Parcial 2 - Electroquimica',
+							'id_questions': [
+								'q1e2',
+								'q2e2'
+							],
 							'questions': [
 								'¿Que gusto tiene la sal?',
 								'¿Cual es el sentido de la vida?'
@@ -439,6 +447,10 @@ export function makeServer({ environment = 'test' } = {}) {
 						{
 							'id': 3,
 							'nombre': 'Parcial 3 - Corrosion',
+							'id_questions': [
+								'q1e3',
+								'q2e3'
+							],
 							'questions': [
 								'¿Quien descubrio america?',
 								'¿Cuanto es 2+2?'
@@ -448,6 +460,11 @@ export function makeServer({ environment = 'test' } = {}) {
 				};
 			});
 			this.post(`${global.host}/exams/create`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/exams/view/:id`, () => {
 				return {
 					'status': 200
 				};

@@ -64,7 +64,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 		);
 
 	const renderItem = ({ item }) => (
-		<Link >
+		<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; navigation.navigate('ResolverExamenScreen', item);}}>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.nombre}
@@ -144,7 +144,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
-							<Heading size="2xl" color="coolGray.800" fontWeight="600">
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								{ route.params.name }
 							</Heading>
 							<Divider my="5" />
