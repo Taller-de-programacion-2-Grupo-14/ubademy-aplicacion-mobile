@@ -70,7 +70,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 		);
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => navigation.navigate('VerExamenScreen', item)}>
+		<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('VerExamenScreen', item);} }>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.nombre}

@@ -16,6 +16,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { publicarExamen } from '../src/services/publicarExamen';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 VerExamenScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -28,6 +29,7 @@ function VerExamenScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [mostrar, setMostrar] = useState(true);
 
 	const renderItem = ({ item }) => (
 		<>
@@ -40,6 +42,11 @@ function VerExamenScreen({ navigation, route }) {
 
 	useFocusEffect(
 		React.useCallback(() => {
+			if (route.params.verComoCreador) {
+				setMostrar(true);
+			} else {
+				setMostrar(false);
+			}
 			setPreguntas(route.params.questions);
 			setLoading(false);
 			return () => {
@@ -105,12 +112,18 @@ function VerExamenScreen({ navigation, route }) {
 									keyExtractor={(item, index) => index.toString()}
 								/>
 							</Box>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} >
-								Editar exámen
-							</Button>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()}>
-								Publicar
-							</Button>
+							{mostrar ?
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} >
+									Editar exámen
+								</Button> :
+								null
+							}
+							{mostrar ?
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
+									Publicar
+								</Button> :
+								null
+							}
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} >
 								Corregir
 							</Button>
