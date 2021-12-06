@@ -136,8 +136,8 @@ function CursosFavoritosScreen({ navigation }) {
 							>
 								<Menu.OptionGroup defaultValue={suscripcion} title="Cursos" type="radio">
 									<Menu.ItemOption onPress={() => {setSuscripcion('Todos'); this.onsubtmit;}} value="Todos">Todos</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setSuscripcion('Basico'); this.onsubtmit;}} value="Basico">Basico</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setSuscripcion('Estandar'); this.onsubtmit;}} value="Estandar">Estandar</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setSuscripcion('Basico'); this.onsubtmit;}} value="Basico">Básico</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setSuscripcion('Estandar'); this.onsubtmit;}} value="Estandar">Estándar</Menu.ItemOption>
 									<Menu.ItemOption onPress={() => {setSuscripcion('Premium'); this.onsubtmit;}} value="Premium">Premium</Menu.ItemOption>
 								</Menu.OptionGroup>
 							</Menu>

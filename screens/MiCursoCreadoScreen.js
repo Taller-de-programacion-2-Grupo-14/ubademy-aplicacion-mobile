@@ -70,7 +70,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 		);
 
 	const renderItem = ({ item }) => (
-		<Link >
+		<Link onPress={() => navigation.navigate('VerExamenScreen', item)}>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.nombre}
@@ -164,8 +164,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params);}} >Editar curso</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.id);}}>Listado de alumnos</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('ListadoProfesoresScreen', route.params.id);}}>Listado de profesores</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('CrearExamenScreen', route.params.id);}}>Crear examen</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('ABcolaboradorScreen', route.params.id);}}>Alta/Baja de colaborador</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('CrearExamenScreen', route.params.id);}}>Crear exámen</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('ABcolaboradorScreen', route.params.id);}}>Alta de colaborador</Menu.Item>
 								<Divider />
 								<Menu.Item onPress={() => {navigation.navigate('MiCursoInscriptoScreen', route.params);}} >Ver curso como estudiante</Menu.Item>
 								<Divider />

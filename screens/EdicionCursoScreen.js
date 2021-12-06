@@ -107,7 +107,7 @@ function EdicionCursoScreen({ navigation, route }) {
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Titulo
+                    Título
 									</FormControl.Label>
 									<Input onChangeText={(titulo) => setTitulo(titulo)} value={titulo} />
 								</FormControl>
@@ -115,7 +115,7 @@ function EdicionCursoScreen({ navigation, route }) {
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Descripcion
+                    Descripción
 									</FormControl.Label>
 									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} value={descripcion} />
 								</FormControl>
@@ -131,7 +131,7 @@ function EdicionCursoScreen({ navigation, route }) {
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Ubicacion
+                    Ubicación
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLocation(location)} value={location} />
 								</FormControl>
