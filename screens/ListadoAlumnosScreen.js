@@ -73,9 +73,10 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		obtenerAlumnos(String(route.params), nombre, apellido)
+		obtenerAlumnos(String(route.params), nombre, apellido, true)
 			.then((response) => response.json())
 			.then((json) => {
+				console.log(json);
 				setAlumnos(json.message);
 				setLoading(false);
 			});
@@ -117,7 +118,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 										</Button>
 										<Button
 											onPress={() => {
-												this.onSubmit,
+												this.onSubmit();
 												setShowModal(false);
 											}}
 										>

@@ -13,9 +13,9 @@ import {
 	Divider,
 	Heading,
 	Spinner,
-	Link,
-	FlatList,
-	Flex
+	//Link,
+	//FlatList,
+	//Flex
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -35,7 +35,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [miId, setMiId] = React.useState(0);
-	const [examenes, setExamenes] = React.useState([]);
+	//const [examenes, setExamenes] = React.useState([]);
 
 	const baja = () =>
 		Alert.alert(
@@ -65,20 +65,20 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 			]
 		);
 
-	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('VerExamenScreen', item);} }>
-			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
-				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.nombre}
-				</Heading>
-				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
-						Ingresar
-					</Text>
-				</Flex>
-			</Box>
-		</Link>
-	);
+	// const renderItem = ({ item }) => (
+	// 	<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('VerExamenScreen', item);} }>
+	// 		<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+	// 			<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
+	// 				{item.nombre}
+	// 			</Heading>
+	// 			<Flex>
+	// 				<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+	// 					Ingresar
+	// 				</Text>
+	// 			</Flex>
+	// 		</Box>
+	// 	</Link>
+	// );
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -92,7 +92,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 				.then(data => data.json())
 				.then(json => {
 					console.log(json);
-					setExamenes(json.message);
+					//setExamenes(json.message);
 					setLoading(false);
 				});
 			return () => {
@@ -155,11 +155,13 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
 								Exámenes
 							</Heading>
-							<FlatList
-								data={examenes}
-								renderItem={renderItem}
-								keyExtractor={item => String(item.id)}
-							/>
+							{
+								// <FlatList
+								// 	data={examenes}
+								// 	renderItem={renderItem}
+								// 	keyExtractor={item => String(item.id)}
+								// />
+							}
 						</Box>
 					</>
 			}

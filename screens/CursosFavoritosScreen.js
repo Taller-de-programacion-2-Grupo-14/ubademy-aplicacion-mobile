@@ -63,17 +63,12 @@ function CursosFavoritosScreen({ navigation }) {
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
-					if (json.status === 204) {
-						setMessage('Busqueda sin resultados');
+					if (json.status === 503){
+						setMessage('courses service is currently unavailable, please try later');
 						setShowModal(true);
 					} else {
-						if (json.status === 503){
-							setMessage('courses service is currently unavailable, please try later');
-							setShowModal(true);
-						} else {
-							//setCursos(json);
-							setCursos(json.message);
-						}
+						//setCursos(json);
+						setCursos(json.message);
 					}
 					setLoading(false);
 				});

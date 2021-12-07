@@ -128,7 +128,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/favorites`, () => {
+			this.get(`${global.host}/courses/favorites`, () => {
 				return {
 					'message':[
 						{

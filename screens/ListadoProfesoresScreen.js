@@ -155,7 +155,7 @@ function ListadoProfesoresScreen({ navigation, route }) {
 										</Button>
 										<Button
 											onPress={() => {
-												this.onSubmit,
+												this.onSubmit();
 												setShowModal(false);
 											}}
 										>
