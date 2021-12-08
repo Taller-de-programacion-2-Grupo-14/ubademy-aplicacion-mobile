@@ -287,7 +287,8 @@ export function makeServer({ environment = 'test' } = {}) {
 						{
 							'name': 'Algebra',
 							'id': 1,
-							'type': 'Matematica'
+							'type': 'Matematica',
+							'can_create': true
 						},
 						{
 							'name': 'Análisis Matemático III',
@@ -355,7 +356,8 @@ export function makeServer({ environment = 'test' } = {}) {
 						'name': 'Quimica',
 						'cancelled': 0,
 						'id': 27,
-						'favorito': false
+						'favorito': false,
+						'can_create': true,
 					},
 					'status': 200
 				};

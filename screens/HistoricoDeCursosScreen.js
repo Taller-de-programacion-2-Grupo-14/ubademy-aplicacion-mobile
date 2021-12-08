@@ -47,7 +47,7 @@ function HistoricoDeCursosScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			historialDeCursos('')
+			historialDeCursos(estado)
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
@@ -68,9 +68,6 @@ function HistoricoDeCursosScreen({ navigation }) {
 	);
 
 	this.onSubmit = () => {
-		if (estado=='Todos') {
-			setEstado('');
-		}
 		historialDeCursos(estado)
 			.then((response) => response.json())
 			.then((json) => {
@@ -121,10 +118,10 @@ function HistoricoDeCursosScreen({ navigation }) {
 								}}
 							>
 								<Menu.OptionGroup defaultValue={estado} title="Cursos" type="radio">
-									<Menu.ItemOption onPress={() => {setEstado('Todos'); this.onsubtmit;}} value="Todos">Todos</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setEstado('approved');this.onsubtmit;}} value="approved">Aprobados</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setEstado('failed');this.onsubtmit;}} value="failed">Desaprobados</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setEstado('on_course');this.onsubtmit;}} value="on_course">En curso</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setEstado('Todos'); this.onSubmit();}} value="Todos">Todos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setEstado('approved');this.onSubmit();}} value="approved">Aprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setEstado('failed');this.onSubmit();}} value="failed">Desaprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => {setEstado('on_course');this.onSubmit();}} value="on_course">En curso</Menu.ItemOption>
 								</Menu.OptionGroup>
 							</Menu>
 						</Box>

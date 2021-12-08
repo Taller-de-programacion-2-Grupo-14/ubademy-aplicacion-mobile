@@ -43,7 +43,7 @@ function CrearExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		crearExamen(String(route.params), nombre, pregunta)
+		crearExamen(String(route.params.id), nombre, pregunta)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -105,9 +105,12 @@ function CrearExamenScreen({ navigation, route }) {
 									<FormControl.Label>Ingrese la pregunta</FormControl.Label>
 									<Input size="md" onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true} />
 								</FormControl>
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+								<Button isDisabled={!route.params.can_create} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
                   Crear
 								</Button>
+								<Text color={route.params.can_create ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
+									Ha alcanzado el número máximo de exámenes para este curso
+								</Text>
 							</VStack>
 						</Box>
 					</ScrollView>
