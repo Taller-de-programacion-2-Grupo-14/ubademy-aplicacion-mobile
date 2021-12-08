@@ -36,7 +36,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	const [nombre, setNombre] = React.useState('');
 	const [apellido, setApellido] = React.useState('');
 	const [message, setMessage] = React.useState('');
-	const [error, setError] = React.useState(false);
+	const [bloqueado, setBloqueado] = React.useState(false);
 	const [showModalError, setShowModalError] = React.useState(false);
 	const isFocused = useIsFocused();
 
@@ -56,11 +56,21 @@ function ListadoAlumnosScreen({ navigation, route }) {
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
-					if (json.status === 503){
+					switch (json.status) {
+					case 503:
 						setMessage('courses service is currently unavailable, please try later');
-						setError(true);
 						setShowModalError(true);
-					} else {
+						break;
+					case 403:
+						setMessage('Usuario bloqueado');
+						setBloqueado(true);
+						setShowModalError(true);
+						break;
+					case 401:
+						setMessage('Token expirado');
+						setShowModalError(true);
+						break;
+					default:
 						setAlumnos(json.message);
 					}
 					setLoading(false);
@@ -128,7 +138,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Modal isOpen={showModalError} onClose={() => setShowModalError(false)} size="lg">
+						<Modal isOpen={showModalError} onClose={() => {if (bloqueado) {navigation.navigate('LoginScreen');} setShowModalError(false);}} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>
@@ -141,7 +151,8 @@ function ListadoAlumnosScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModalError(false) : navigation.goBack();
+											bloqueado ? navigation.navigate('LoginScreen') : navigation.goBack();
+											setShowModalError(false);
 										}}
 									>
 										Continuar
