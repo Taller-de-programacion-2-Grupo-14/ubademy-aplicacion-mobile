@@ -29,7 +29,6 @@ ListadoAlumnosScreen.propTypes = {
 };
 
 function ListadoAlumnosScreen({ navigation, route }) {
-//function ListadoAlumnosScreen({ route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [alumnos, setAlumnos] = React.useState([]);
 	const [showModal, setShowModal] = useState(false);

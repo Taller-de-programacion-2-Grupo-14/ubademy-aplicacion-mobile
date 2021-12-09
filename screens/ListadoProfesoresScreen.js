@@ -32,7 +32,6 @@ ListadoProfesoresScreen.propTypes = {
 
 
 function ListadoProfesoresScreen({ navigation, route }) {
-//function ListadoProfesoresScreen({ route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [profesores, setProfesores] = React.useState([]);
 	const [showModal, setShowModal] = useState(false);
@@ -157,6 +156,8 @@ function ListadoProfesoresScreen({ navigation, route }) {
 											onPress={() => {
 												this.onSubmit();
 												setShowModal(false);
+												setNombre('');
+												setApellido('');
 											}}
 										>
 										Buscar
