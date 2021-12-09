@@ -94,7 +94,7 @@ export default function LoginScreen({ navigation }) {
 						SecureStore.setItemAsync('secure_token', json.token);
 						console.log(json.token);
 						navigation.navigate('Home');
-					}	else {
+					} else {
 						if (json.status === 403) {
 							setMensaje('Usuario bloqueado');
 							setShowModal(true);
@@ -201,7 +201,7 @@ export default function LoginScreen({ navigation }) {
 								<Text fontSize="sm" color="muted.700" fontWeight={400}>
 									¿Usuario nuevo?{' '}
 								</Text>
-								<Link onPress={() => navigation.navigate('RegisterScreen')}
+								<Link onPress={() => navigation.navigate('RegisterScreen', { ubicacion: '' })}
 									_text={{
 										color: 'indigo.500',
 										fontWeight: 'medium',

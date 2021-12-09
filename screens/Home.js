@@ -3,6 +3,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import HomeScreen from './HomeScreen';
 import UserScreen from './UserScreen';
 import CursosScreen from './CursosScreen';
+import NotificationScreen from './NotificationScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeBaseProvider } from 'native-base';
 
@@ -39,6 +40,16 @@ export default function HomeApp() {
 						tabBarLabel: 'Cursos',
 						tabBarIcon: ({ focused }) => (
 							<MaterialCommunityIcons name={focused ? 'book-open-page-variant' : 'book-open-variant'} color='white' size={26} />
+						),
+					}}
+				/>
+				<Tab.Screen
+					name="Notificaciones"
+					component={NotificationScreen}
+					options={{
+						tabBarLabel: 'Notificaciones',
+						tabBarIcon: ({ focused }) => (
+							<MaterialCommunityIcons name={focused ? 'email-open-outline' : 'email-outline'} color='white' size={26} />
 						),
 					}}
 				/>
