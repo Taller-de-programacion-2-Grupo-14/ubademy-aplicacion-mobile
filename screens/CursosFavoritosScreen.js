@@ -56,10 +56,25 @@ function CursosFavoritosScreen({ navigation }) {
 		</Link>
 	);
 
+	function filtrar(filtro) {
+		setSuscripcion(filtro);
+		obtenerFavoritos(filtro)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				if (json.status === 503){
+					setMessage('courses service is currently unavailable, please try later');
+					setShowModal(true);
+				} else {
+					setCursos(json.message);
+				}
+			});
+	}
+
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerFavoritos('')
+			obtenerFavoritos('Todos')
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
@@ -78,18 +93,6 @@ function CursosFavoritosScreen({ navigation }) {
 			};
 		}, [isFocused])
 	);
-
-	this.onSubmit = () => {
-		if (suscripcion=='Todos') {
-			setSuscripcion('');
-		}
-		obtenerFavoritos(suscripcion)
-			.then((response) => response.json())
-			.then((json) => {
-				setCursos(json.message);
-				setLoading(false);
-			});
-	};
 
 	return (
 		<NativeBaseProvider>
@@ -130,10 +133,10 @@ function CursosFavoritosScreen({ navigation }) {
 								}}
 							>
 								<Menu.OptionGroup defaultValue={suscripcion} title="Cursos" type="radio">
-									<Menu.ItemOption onPress={() => {setSuscripcion('Todos'); this.onsubtmit;}} value="Todos">Todos</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setSuscripcion('Basico'); this.onsubtmit;}} value="Basico">Básico</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setSuscripcion('Estandar'); this.onsubtmit;}} value="Estandar">Estándar</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setSuscripcion('Premium'); this.onsubtmit;}} value="Premium">Premium</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Todos')} value="Todos">Todos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Basico')} value="Basico">Básico</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Estandar')} value="Estandar">Estándar</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Premium')} value="Premium">Premium</Menu.ItemOption>
 								</Menu.OptionGroup>
 							</Menu>
 						</Box>

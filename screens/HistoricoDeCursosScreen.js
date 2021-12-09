@@ -20,14 +20,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { historialDeCursos } from '../src/services/historialDeCursos';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
 HistoricoDeCursosScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
 function HistoricoDeCursosScreen({ navigation }) {
-//function HistoricoDeCursosScreen() {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
 	const [message, setMessage] = React.useState('');
@@ -126,10 +124,10 @@ function HistoricoDeCursosScreen({ navigation }) {
 								}}
 							>
 								<Menu.OptionGroup defaultValue={estado} title="Cursos" type="radio">
-									<Menu.ItemOption onPress={() => filtrar("Todos")} value="Todos">Todos</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => filtrar("aprobado")} value="aprobado">Aprobados</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => filtrar("desaprobado")} value="desaprobado">Desaprobados</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => filtrar("en curso")} value="en curso">En curso</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Todos')} value="Todos">Todos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('aprobado')} value="aprobado">Aprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('desaprobado')} value="desaprobado">Desaprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('en curso')} value="en curso">En curso</Menu.ItemOption>
 								</Menu.OptionGroup>
 							</Menu>
 						</Box>
