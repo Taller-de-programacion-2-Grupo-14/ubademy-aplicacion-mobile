@@ -3,11 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
-	Center,
 	Heading,
-	Spinner,
-	useTheme,
-	VStack
+	Spinner
 } from 'native-base';
 
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
@@ -17,7 +14,6 @@ import { useFocusEffect } from '@react-navigation/native';
 export default function HomeScreen() {
 	const [firstName, setFirstName] = React.useState('');
 	const [loading, setLoading] = React.useState(true);
-	const { colors } = useTheme();
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -44,24 +40,11 @@ export default function HomeScreen() {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-
-
-					<Center flex={1} px="3">
-						<Center mt="8" mb="4">
-							<Heading fontSize="xl"> Violet</Heading>
-						</Center>
-						<VStack flex="1">
-							{Object.keys(colors.violet).map((key, index) => {
-								if (index >= 1 && index <= 5)
-									return (
-										<Center py="4" bg={`violet.${key}`}>
-											{key}
-										</Center>
-									)
-							})}
-						</VStack>
-					</Center>
-
+					<Box safeArea flex={8} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
+						<Heading size="lg" fontWeight="600" color="coolGray.800" >
+                            Bienvenido {firstName}
+						</Heading>
+					</Box>
 			}
 		</NativeBaseProvider >
 	);
