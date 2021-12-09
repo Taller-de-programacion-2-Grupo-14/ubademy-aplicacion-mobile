@@ -22,5 +22,8 @@
       }
     }
   },
+  "android": {
+    "googleServicesFile": "./google-services.json"
+  },
   "name": "ubademyTest"
 }

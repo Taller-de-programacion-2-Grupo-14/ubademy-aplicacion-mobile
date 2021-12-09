@@ -46,7 +46,7 @@ export default function HomeScreen() {
 						</Heading>
 					</Box>
 			}
-		</NativeBaseProvider>
+		</NativeBaseProvider >
 	);
 }
 
