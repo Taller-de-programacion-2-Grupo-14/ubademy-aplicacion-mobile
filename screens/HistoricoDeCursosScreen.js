@@ -20,6 +20,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { historialDeCursos } from '../src/services/historialDeCursos';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 HistoricoDeCursosScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -38,11 +39,27 @@ function HistoricoDeCursosScreen({ navigation }) {
 	const renderItem = ({ item }) => (
 		<>
 			<Text bold fontSize="md">
-				{item.nombre}
+				{item.name}
 			</Text>
 			<Divider my="1" />
 		</>
 	);
+
+	function filtrar(filtro) {
+		setEstado(filtro);
+		historialDeCursos(filtro)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				if (json.status === 503){
+					setMessage('courses service is currently unavailable, please try later');
+					setError(true);
+					setShowModalError(true);
+				} else {
+					setCursos(json.message);
+				}
+			});
+	}
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -66,15 +83,6 @@ function HistoricoDeCursosScreen({ navigation }) {
 			};
 		}, [isFocused])
 	);
-
-	this.onSubmit = () => {
-		historialDeCursos(estado)
-			.then((response) => response.json())
-			.then((json) => {
-				setCursos(json.message);
-				setLoading(false);
-			});
-	};
 
 	return (
 
@@ -118,10 +126,10 @@ function HistoricoDeCursosScreen({ navigation }) {
 								}}
 							>
 								<Menu.OptionGroup defaultValue={estado} title="Cursos" type="radio">
-									<Menu.ItemOption onPress={() => {setEstado('Todos'); this.onSubmit();}} value="Todos">Todos</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setEstado('approved');this.onSubmit();}} value="approved">Aprobados</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setEstado('failed');this.onSubmit();}} value="failed">Desaprobados</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => {setEstado('on_course');this.onSubmit();}} value="on_course">En curso</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar("Todos")} value="Todos">Todos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar("aprobado")} value="aprobado">Aprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar("desaprobado")} value="desaprobado">Desaprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar("en curso")} value="en curso">En curso</Menu.ItemOption>
 								</Menu.OptionGroup>
 							</Menu>
 						</Box>

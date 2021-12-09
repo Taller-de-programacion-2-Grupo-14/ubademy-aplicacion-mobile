@@ -4,11 +4,11 @@ export async function obtenerAlumnos(idCursoElegido, nombre, apellido, suscripto
 	const token = await SecureStore.getItemAsync('secure_token');
 	var aEnviar = `${global.host}/courses/users/${idCursoElegido}?subscribers=${suscriptores}`;
 
-	if (nombre != '') {
+	if (nombre !== '') {
 		aEnviar = aEnviar + `&first_name=${nombre}`;
 	}
 
-	if (apellido != '') {
+	if (apellido !== '') {
 		aEnviar = aEnviar + `&last_name=${apellido}`;
 	}
 

@@ -388,17 +388,17 @@ export function makeServer({ environment = 'test' } = {}) {
 					'message':[
 						{
 							'id': 1,
-							'nombre': 'Pensamiento Cientifico',
+							'name': 'Pensamiento Cientifico',
 							'cancelado': 0
 						},
 						{
 							'id': 2,
-							'nombre': 'Sociedad y Estado',
+							'name': 'Sociedad y Estado',
 							'cancelado': 1
 						},
 						{
 							'id': 3,
-							'nombre': 'Fisica cuantica',
+							'name': 'Fisica cuantica',
 							'cancelado': 0
 						}],
 					'status': 200

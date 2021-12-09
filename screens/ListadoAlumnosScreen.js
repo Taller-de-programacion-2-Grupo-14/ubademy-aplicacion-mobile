@@ -83,6 +83,8 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
+		console.log(nombre);
+		console.log(apellido);
 		obtenerAlumnos(String(route.params), nombre, apellido, true)
 			.then((response) => response.json())
 			.then((json) => {
@@ -130,6 +132,8 @@ function ListadoAlumnosScreen({ navigation, route }) {
 											onPress={() => {
 												this.onSubmit();
 												setShowModal(false);
+												setNombre('');
+												setApellido('');
 											}}
 										>
 										Buscar

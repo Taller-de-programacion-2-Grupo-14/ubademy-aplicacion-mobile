@@ -124,7 +124,7 @@ export default function CrearCursoScreen({ navigation }) {
 								<FormControl isRequired>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Hashtags asociados
+										Hashtags asociados (ingrese las palabras separadas por una coma)
 									</FormControl.Label>
 									<Input onChangeText={(hashtags) => setHashtags(hashtags)} />
 								</FormControl>
