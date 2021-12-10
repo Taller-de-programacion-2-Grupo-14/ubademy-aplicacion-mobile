@@ -16,15 +16,15 @@ import {
 	Spacer,
 	Link
 } from 'native-base';
-import { misCursosCreados } from '../src/services/misCursosCreados';
+import { misColaboraciones } from '../src/services/misColaboraciones';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 
-MisCursosCreadosScreen.propTypes = {
+MisColaboracionesScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
-function MisCursosCreadosScreen({ navigation }) {
+function MisColaboracionesScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
@@ -33,8 +33,8 @@ function MisCursosCreadosScreen({ navigation }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => { item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item); }}>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
+		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoColaboradorScreen', item);} }>
+			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
 						{item.type}
@@ -46,7 +46,7 @@ function MisCursosCreadosScreen({ navigation }) {
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
-						Ingresar
+            Ingresar
 					</Text>
 				</Flex>
 			</Box>
@@ -56,26 +56,26 @@ function MisCursosCreadosScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			misCursosCreados()
+			misColaboraciones()
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
 					switch (json.status) {
-						case 503:
-							setMessage('courses service is currently unavailable, please try later');
-							setShowModal(true);
-							break;
-						case 403:
-							setMessage('Usuario bloqueado');
-							setBloqueado(true);
-							setShowModal(true);
-							break;
-						case 401:
-							setMessage('Token expirado');
-							setShowModal(true);
-							break;
-						default:
-							setCursos(json.message);
+					case 503:
+						setMessage('courses service is currently unavailable, please try later');
+						setShowModal(true);
+						break;
+					case 403:
+						setMessage('Usuario bloqueado');
+						setBloqueado(true);
+						setShowModal(true);
+						break;
+					case 401:
+						setMessage('Token expirado');
+						setShowModal(true);
+						break;
+					default:
+						setCursos(json.message);
 					}
 					setLoading(false);
 				});
@@ -95,7 +95,7 @@ function MisCursosCreadosScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<>
-						<Modal isOpen={showModal} onClose={() => { if (bloqueado) { navigation.navigate('LoginScreen'); } setShowModal(false); }} size="lg">
+						<Modal isOpen={showModal} onClose={() => {if (bloqueado) {navigation.navigate('LoginScreen');} setShowModal(false);}} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>
@@ -119,7 +119,7 @@ function MisCursosCreadosScreen({ navigation }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
-								Cursos creados por mi
+								Cursos en los que soy colaborador
 							</Heading>
 							<FlatList
 								data={cursos}
@@ -141,4 +141,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default MisCursosCreadosScreen;
+export default MisColaboracionesScreen;

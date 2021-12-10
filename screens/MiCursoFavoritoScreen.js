@@ -19,21 +19,20 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-import { obtenerCurso } from '../src/services/obtenerCurso';
 import { agregarAFavoritos } from '../src/services/agregarAFavoritos';
 import { eliminarDeFavoritos } from '../src/services/eliminarDeFavoritos';
 
-CondicionesScreen.propTypes = {
+MiCursoFavoritoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function CondicionesScreen({ navigation, route }) {
+function MiCursoFavoritoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [favorito, setFavorito] = React.useState(false);
+	const [favorito, setFavorito] = React.useState(true);
 	// const [descripcion, setDescripcion] = React.useState('');
 	// const [hashtags, setHashtags] = React.useState('');
 	// const [examenes, setExamenes] = React.useState('');
@@ -42,13 +41,17 @@ function CondicionesScreen({ navigation, route }) {
 
 	useFocusEffect(
 		React.useCallback(() => {
-			obtenerCurso(String(route.params.id))
-				.then(data => data.json())
-				.then(json => {
-					console.log(json);
-					setFavorito(json.message.favorito);
-					setLoading(false);
-				});
+			// Do something when the screen is focused
+			// obtenerCurso(route.params.id)
+			// 	.then(data => data.json())
+			// 	.then(json => {
+			setLoading(false);
+			// 		setDescripcion(json.description);
+			// 		setHashtags(json.hashtags);
+			// 		setExamenes(String(json.exams));
+			// 		setTipoDeCurso(json.type);
+			// 		setLocation(json.location);
+			// 	});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -115,7 +118,7 @@ function CondicionesScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModal(false) : navigation.navigate('BuscarScreen');
+											error ? setShowModal(false) : navigation.navigate('CursosFavoritosScreen');
 										}}
 									>
 										Continuar
@@ -123,14 +126,14 @@ function CondicionesScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{ top: 20, alignItems: 'flex-end' }}>
+						<Box style={{top: 20, alignItems: 'flex-end'}}>
 							<Pressable onPress={() => this.corazon()} >
 								<Icon name={favorito ? 'favorite' : 'favorite-border'} size={35} color={favorito ? 'red' : 'black'} />
 							</Pressable>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold >
-								{route.params.name}
+								{ route.params.name }
 							</Heading>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								{'\n'}Condiciones de la inscripción
@@ -142,55 +145,55 @@ function CondicionesScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Creador del curso:
 									</FormControl.Label>
-									<Text fontSize="sm" > {route.params.creator_first_name} {route.params.creator_last_name} </Text>
+									<Text fontSize="sm" > { route.params.creator_first_name } { route.params.creator_last_name } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Descripción:
 									</FormControl.Label>
-									<Text fontSize="sm" > {route.params.description} </Text>
+									<Text fontSize="sm" > { route.params.description } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Hashtags:
 									</FormControl.Label>
-									<Text fontSize="sm"> {route.params.hashtags} </Text>
+									<Text fontSize="sm"> { route.params.hashtags } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de curso:
 									</FormControl.Label>
-									<Text fontSize="sm" > {route.params.type} </Text>
+									<Text fontSize="sm" > { route.params.type } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Cantidad de exámenes:
 									</FormControl.Label>
-									<Text fontSize="sm" > {route.params.exams} </Text>
+									<Text fontSize="sm" > { route.params.exams } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de suscripción:
 									</FormControl.Label>
-									<Text fontSize="sm" > {route.params.subscription} </Text>
+									<Text fontSize="sm" > { route.params.subscription } </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Ubicación:
 									</FormControl.Label>
-									<Text fontSize="sm" > {route.params.location} </Text>
+									<Text fontSize="sm" > { route.params.location } </Text>
 								</FormControl>
 							</VStack>
 							<Button mt="2" isDisabled={!route.params.can_subscribe} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 								Confirmar inscripción
 							</Button>
-							<Text color={route.params.can_subscribe ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}> {route.params.is_subscribed ? 'Usted ya está inscripto' :
+							<Text color={route.params.can_subscribe ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}> {route.params.is_subscribed ? 'Usted ya está inscripto' :
 								route.params.can_edit ? 'Usted es el creador' : 'No tiene el nivel de suscrcripción adecuado'
 							}
 							</Text>
@@ -209,4 +212,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default CondicionesScreen;
+export default MiCursoFavoritoScreen;

@@ -108,7 +108,7 @@ export default function CrearCursoScreen({ navigation }) {
 								<FormControl isRequired>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Titulo
+										Título
 									</FormControl.Label>
 									<Input onChangeText={(titulo) => setTitulo(titulo)} />
 								</FormControl>
@@ -116,7 +116,7 @@ export default function CrearCursoScreen({ navigation }) {
 								<FormControl isRequired>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Descripcion
+										Descripción
 									</FormControl.Label>
 									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} />
 								</FormControl>
@@ -124,13 +124,15 @@ export default function CrearCursoScreen({ navigation }) {
 								<FormControl isRequired>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Hashtags asociados
+										Hashtags asociados (ingrese las palabras separadas por una coma)
 									</FormControl.Label>
 									<Input onChangeText={(hashtags) => setHashtags(hashtags)} />
 								</FormControl>
 
 								<FormControl isRequired>
-									<FormControl.Label>Tipo de curso</FormControl.Label>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Tipo de curso</FormControl.Label>
 									<Select
 										selectedValue={tipo}
 										minWidth="200"
@@ -162,7 +164,9 @@ export default function CrearCursoScreen({ navigation }) {
 								</FormControl>
 
 								<FormControl isRequired>
-									<FormControl.Label>Tipo de suscripción</FormControl.Label>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Tipo de suscripción</FormControl.Label>
 									<Select
 										selectedValue={suscripcion}
 										minWidth="200"
@@ -187,7 +191,7 @@ export default function CrearCursoScreen({ navigation }) {
 								<FormControl isRequired>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Ubicacion
+										Ubicación
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLocation(location)} />
 								</FormControl>

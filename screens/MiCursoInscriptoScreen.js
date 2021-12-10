@@ -5,24 +5,23 @@ import {
 	Pressable,
 	Menu,
 	Box,
+	Button,
 	HStack,
 	VStack,
 	Modal,
 	Text,
-	Button,
+	Divider,
 	Heading,
-	ScrollView,
 	Spinner,
-	AspectRatio,
-	Image,
-	Center,
-	Stack,
-
+	//Link,
+	//FlatList,
+	//Flex
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import { desinscripcionCurso } from '../src/services/desinscripcionCurso';
+import { obtenerExamenes } from '../src/services/obtenerExamenes';
 
 MiCursoInscriptoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -34,6 +33,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	//const [examenes, setExamenes] = React.useState([]);
 
 	const desinscribirse = () =>
 		Alert.alert(
@@ -64,10 +64,31 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 			]
 		);
 
+	// const renderItem = ({ item }) => (
+	// 	<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; navigation.navigate('ResolverExamenScreen', item);}}>
+	// 		<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+	// 			<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
+	// 				{item.nombre}
+	// 			</Heading>
+	// 			<Flex>
+	// 				<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+	// 					Ingresar
+	// 				</Text>
+	// 			</Flex>
+	// 		</Box>
+	// 	</Link>
+	// );
+
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setLoading(false);
+			obtenerExamenes(String(route.params.id))
+				.then(data => data.json())
+				.then(json => {
+					console.log(json);
+					//setExamenes(json.message);
+					setLoading(false);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -83,12 +104,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
+					<>
 						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
@@ -110,7 +126,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{ top: 20, alignItems: 'flex-end' }}>
+						<Box style={{ position: 'absolute', top: 20, right: 20 }}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -128,91 +144,23 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								}
 							</Menu>
 						</Box>
-						<Box
-							maxW="80"
-							rounded="lg"
-							overflow="hidden"
-							borderColor="coolGray.200"
-							borderWidth="1"
-							_dark={{
-								borderColor: 'coolGray.600',
-								backgroundColor: 'gray.700',
-							}}
-							_web={{
-								shadow: 2,
-								borderWidth: 0,
-							}}
-							_light={{
-								backgroundColor: 'gray.50',
-							}}
-						>
-							<Box>
-								<AspectRatio w="100%" ratio={16 / 9}>
-									<Image
-										source={{
-											uri: 'https://besthqwallpapers.com/Uploads/13-1-2021/151483/thumb2-math-blackboard-texture-background-with-geometric-shapes-math-background-math-texture-geometric-lines-shapes-texture.jpg',
-
-										}}
-										alt="image"
-									/>
-								</AspectRatio>
-								<Center
-									bg="violet.500"
-									_dark={{
-										bg: 'violet.400',
-									}}
-									_text={{
-										color: 'warmGray.50',
-										fontWeight: '700',
-										fontSize: 'xs',
-									}}
-									position="absolute"
-									bottom="0"
-									px="3"
-									py="1.5"
-								>
-									{route.params.cancelled == 0 ? 'Activo' : 'Cancelado'}
-								</Center>
-							</Box>
-							<Stack p="4" space={3}>
-								<Stack space={2}>
-									<Heading size="md" ml="-1">
-										{route.params.name}
-									</Heading>
-									<Text
-										fontSize="xs"
-										_light={{
-											color: 'violet.500',
-										}}
-										_dark={{
-											color: 'violet.400',
-										}}
-										fontWeight="500"
-										ml="-0.5"
-										mt="-1"
-									>
-										{route.params.type}
-									</Text>
-								</Stack>
-								<Text fontWeight="400">
-									{route.params.description}
-								</Text>
-								<HStack alignItems="center" space={4} justifyContent="space-between">
-									<HStack alignItems="center">
-										<Text
-											color="coolGray.600"
-											_dark={{
-												color: 'warmGray.200'
-											}}
-											fontWeight="400"
-										>
-											6 mins ago
-										</Text>
-									</HStack>
-								</HStack>
-							</Stack>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+								{route.params.name}
+							</Heading>
+							<Divider my="5" />
+							<Heading size="xl" color="coolGray.800" fontWeight="600">
+								Exámenes
+							</Heading>
+							{
+								// <FlatList
+								// 	data={examenes}
+								// 	renderItem={renderItem}
+								// 	keyExtractor={item => String(item.id)}
+								// />
+							}
 						</Box>
-					</ScrollView>
+					</>
 			}
 		</NativeBaseProvider>
 	);

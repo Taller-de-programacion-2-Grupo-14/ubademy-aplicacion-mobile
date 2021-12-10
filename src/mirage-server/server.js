@@ -58,44 +58,130 @@ export function makeServer({ environment = 'test' } = {}) {
 				};
 			});
 			this.get(`${global.host}/courses`, () => {
-				return [
-					{
-						'name': 'Taller',
-						'creator_name': 'Agustin',
-						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
-						'hashtags': 'Python, Sarasa',
-						'type': 'Programación',
-						'exams': 3,
-						'subscription': 'Premium',
-						'location': 'Obera',
-						'id': 5,
-						'estado': 'Vigente'
-					},
-					{
-						'name': 'Organizacion de Datos',
-						'creator_name': 'Luis',
-						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
-						'hashtags': 'Python, Sarasa',
-						'type': 'Programación',
-						'exams': 3,
-						'subscription': 'Premium',
-						'location': 'Obera',
-						'id': 6,
-						'estado': 'Vigente'
-					},
-					{
-						'name': 'Sistemas Operativos',
-						'creator_name': 'Clua',
-						'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
-						'hashtags': 'Python, Sarasa',
-						'type': 'Programación',
-						'exams': 3,
-						'subscription': 'Premium',
-						'location': 'Obera',
-						'id': 7,
-						'estado': 'Vigente'
-					}
-				];
+				return {
+					'message': [
+						{
+							'name': 'Taller',
+							'creator_first_name': 'Franco',
+							'creator_last_name': 'Armani',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 5,
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': false,
+							'can_subscribed': false
+						},
+						{
+							'name': 'Organizacion de Datos',
+							'creator_first_name': 'Luis',
+							'creator_last_name': 'Argerich',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 6,
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': true,
+							'can_subscribed': false
+						},
+						{
+							'name': 'Sistemas Operativos',
+							'creator_first_name': 'Osvaldo',
+							'creator_last_name': 'Clua',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 7,
+							'estado': 'Vigente',
+							'can_edit': true,
+							'is_subscribed': false,
+							'can_subscribed': false
+						},
+						{
+							'name': 'Algoritmos y Programacion I',
+							'creator_first_name': 'Tony',
+							'creator_last_name': 'Montana',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 8,
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': false,
+							'can_subscribed': true
+						}
+					],
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/courses/favorites`, () => {
+				return {
+					'message': [
+						{
+							'name': 'Fisica Newtoniana',
+							'creator_first_name': 'Franco',
+							'creator_last_name': 'Armani',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 5,
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': false,
+							'can_subscribed': true
+						},
+						{
+							'name': 'Fisica Relativista',
+							'creator_first_name': 'Luis',
+							'creator_last_name': 'Argerich',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 6,
+							'estado': 'Vigente',
+							'can_edit': false,
+							'is_subscribed': true,
+							'can_subscribed': false
+						},
+						{
+							'name': 'Fisica Cuantica',
+							'creator_first_name': 'Osvaldo',
+							'creator_last_name': 'Clua',
+							'description': 'Van a codear muchas cosas en python y van a ver que es alto lenguaje',
+							'hashtags': 'Python, Sarasa',
+							'type': 'Programación',
+							'exams': 3,
+							'subscription': 'Premium',
+							'location': 'Obera',
+							'id': 7,
+							'estado': 'Vigente',
+							'can_edit': true,
+							'is_subscribed': false,
+							'can_subscribed': false
+						}
+					],
+					'status': 200
+				};
 			});
 			this.get(`${global.host}/courses/1`, () => {
 				return {
@@ -195,33 +281,38 @@ export function makeServer({ environment = 'test' } = {}) {
 					'estado': 'Vigente'
 				};
 			});
-			this.get(`${global.host}/my_courses`, () => {
-				return [
-					{
-						'name': 'Algebra',
-						'id': 1,
-						'type': 'Matematica'
-					},
-					{
-						'name': 'Análisis Matemático III',
-						'id': 2,
-						'type': 'Matematica'
-					}
-				];
+			this.get(`${global.host}/courses/my_courses`, () => {
+				return {
+					'message': [
+						{
+							'name': 'Algebra',
+							'id': 1,
+							'type': 'Matematica',
+							'can_create': true
+						},
+						{
+							'name': 'Análisis Matemático III',
+							'id': 2,
+							'type': 'Matematica'
+						}],
+					'status': 200
+				};
 			});
-			this.get(`${global.host}/my_subscriptions`, () => {
-				return [
-					{
-						'name': 'Flores',
-						'id': 3,
-						'type': 'Jardineria'
-					},
-					{
-						'name': 'Tortas',
-						'id': 4,
-						'type': 'Cocina'
-					}
-				];
+			this.get(`${global.host}/courses/my_subscriptions`, () => {
+				return {
+					'message': [
+						{
+							'name': 'Arboles',
+							'id': 1,
+							'type': 'Jardineria'
+						},
+						{
+							'name': 'Plantas carnivoras',
+							'id': 2,
+							'type': 'Jardineria'
+						}],
+					'status': 200
+				};
 			});
 			this.delete(`${global.host}/courses/subscription/:id`, () => {
 				return {
@@ -238,24 +329,152 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/courses/subscribers/:id`, () => {
-				return [
-					{
-						'id': '1',
-						'apellido': 'Pacino',
-						'nombre': 'Al'
+			this.get(`${global.host}/courses/users/:id`, () => {
+				return {
+					'message': [
+						{
+							'user_id': 1,
+							'last_name': 'Pacino',
+							'first_name': 'Al'
+						},
+						{
+							'user_id': 2,
+							'last_name': 'Cameron',
+							'first_name': 'James'
+						},
+						{
+							'user_id': 3,
+							'last_name': 'Tarantino',
+							'first_name': 'Quentin'
+						}],
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/courses/:id/view`, () => {
+				return {
+					'message': {
+						'name': 'Quimica',
+						'cancelled': 0,
+						'id': 27,
+						'favorito': false,
+						'can_create': true,
 					},
-					{
-						'id': '2',
-						'apellido': 'Cameron',
-						'nombre': 'James'
-					},
-					{
-						'id': '3',
-						'apellido': 'Tarantino',
-						'nombre': 'Quentin'
-					}
-				];
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/courses/collaborations`, () => {
+				return {
+					'message': [
+						{
+							'name': 'Empanadas',
+							'id': 5,
+							'type': 'Cocina'
+						},
+						{
+							'name': 'Pizzas',
+							'id': 6,
+							'type': 'Cocina'
+						}],
+					'status': 200
+				};
+			});
+			this.delete(`${global.host}/courses/colaborador/:id`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/courses/historical`, () => {
+				return {
+					'message': [
+						{
+							'id': 1,
+							'name': 'Pensamiento Cientifico',
+							'cancelado': 0
+						},
+						{
+							'id': 2,
+							'name': 'Sociedad y Estado',
+							'cancelado': 1
+						},
+						{
+							'id': 3,
+							'name': 'Fisica cuantica',
+							'cancelado': 0
+						}],
+					'status': 200
+				};
+			});
+			this.delete(`${global.host}/courses/collaborators/remove`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/courses/favorites`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.delete(`${global.host}/courses/favorites/remove`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/exams/:id`, () => {
+				return {
+					'message': [
+						{
+							'id': 1,
+							'nombre': 'Parcial 1 - Termodinamica',
+							'id_questions': [
+								'q1e1',
+								'q2e1'
+							],
+							'questions': [
+								'¿Cual es el segundo principio de la termodinamica?',
+								'¿Tenet es horrible o solo muy mala?'
+							]
+						},
+						{
+							'id': 2,
+							'nombre': 'Parcial 2 - Electroquimica',
+							'id_questions': [
+								'q1e2',
+								'q2e2'
+							],
+							'questions': [
+								'¿Que gusto tiene la sal?',
+								'¿Cual es el sentido de la vida?'
+							]
+						},
+						{
+							'id': 3,
+							'nombre': 'Parcial 3 - Corrosion',
+							'id_questions': [
+								'q1e3',
+								'q2e3'
+							],
+							'questions': [
+								'¿Quien descubrio america?',
+								'¿Cuanto es 2+2?'
+							]
+						}],
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/exams/create`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/exams/view/:id`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/exams/publicar/:id`, () => {
+				return {
+					'status': 200
+				};
 			});
 		},
 	});

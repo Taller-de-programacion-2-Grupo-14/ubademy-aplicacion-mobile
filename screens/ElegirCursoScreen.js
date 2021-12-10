@@ -31,19 +31,19 @@ function ElegirCursoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => navigation.navigate('CondicionesScreen', item) }>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+		<Link onPress={() => navigation.navigate('CondicionesScreen', item)}>
+			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
 				<HStack alignItems="flex-start">
-					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
+					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
 						{item.subscription}
 					</Text>
 					<Spacer />
 				</HStack>
-				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.name}
 				</Heading>
 				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
 						Ver condiciones
 					</Text>
 				</Flex>
@@ -62,7 +62,7 @@ function ElegirCursoScreen({ navigation, route }) {
 						setMessage('Busqueda sin resultados');
 						setShowModal(true);
 					} else {
-						if (json.status === 503){
+						if (json.status === 503) {
 							setMessage('courses service is currently unavailable, please try later');
 							setShowModal(true);
 						} else {
@@ -107,7 +107,7 @@ function ElegirCursoScreen({ navigation, route }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								Elegir un curso
 							</Heading>
 							<FlatList

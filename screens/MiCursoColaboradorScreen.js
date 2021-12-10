@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Pressable,
@@ -21,47 +20,43 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-import { cancelarCurso } from '../src/services/cancelarCurso';
-import { obtenerCurso } from '../src/services/obtenerCurso';
+import { bajaDeColaborador } from '../src/services/bajaDeColaborador';
+import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import { obtenerExamenes } from '../src/services/obtenerExamenes';
 
-
-MiCursoCreadoScreen.propTypes = {
+MiCursoColaboradorScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function MiCursoCreadoScreen({ navigation, route }) {
+function MiCursoColaboradorScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [estado, setEstado] = React.useState('');
-	const [nombre, setNombre] = React.useState('');
+	const [miId, setMiId] = React.useState(0);
 	//const [examenes, setExamenes] = React.useState([]);
-	const isFocused = useIsFocused();
 
-	const cancelar = () =>
+	const baja = () =>
 		Alert.alert(
-			'Cancelar curso',
-			'¿Está seguro que desea cancelar a este curso?',
+			'Darse de baja',
+			'Ya no podrá corregir exámenes ni responder consultas en este curso.\n¿Está seguro que desea darse de baja?',
 			[
 				{
-					text: 'No',
+					text: 'Cancelar',
 					style: 'cancel'
 				},
-				{
-					text: 'Si', style: 'destructive',
+				{ text: 'OK', style: 'destructive',
 					onPress: () => {
-						cancelarCurso(String(route.params.id))
+						bajaDeColaborador(String(route.params.courseid), miId)
 							.then((response) => response.json())
 							.then((json) => {
 								if (json.status === 200) {
-									setMessage('Cancelación exitosa');
+									setMessage('Baja exitosa');
 									setShowModal(true);
 								} else {
 									setError(true);
-									setMessage('Error en la cancelación');
+									setMessage('Error al darse de baja');
 									setShowModal(true);
 								}
 							});
@@ -71,7 +66,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 		);
 
 	// const renderItem = ({ item }) => (
-	// 	<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('VerExamenScreen', item);} }>
+	// 	<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('VerExamenScreen', item);} }>
 	// 		<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 	// 			<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 	// 				{item.nombre}
@@ -88,37 +83,23 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerCurso(String(route.params.id))
+			obtenerUsuario()
 				.then(data => data.json())
 				.then(json => {
-					console.log(json);
-					if (json.status === 503) {
-						setEstado('Indeterminado (por error 503)');
-					} else {
-						setNombre(json.message.name);
-						if (json.message.cancelled == 0) {
-							setEstado('Vigente');
-						} else {
-							setEstado('Cancelado');
-						}
-					}
+					setMiId(json.user_id);
 				});
 			obtenerExamenes(String(route.params.id))
 				.then(data => data.json())
 				.then(json => {
 					console.log(json);
-					if (json.status === 503) {
-						setEstado('Indeterminado (por error 503)');
-					} else {
-						//setExamenes(json.message);
-					}
+					//setExamenes(json.message);
 					setLoading(false);
 				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [isFocused])
+		}, [])
 	);
 
 	return (
@@ -151,7 +132,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{ position: 'absolute', top: 20, right: 20 }}>
+						<Box style={{position: 'absolute', top: 20, right: 20}}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -162,24 +143,13 @@ function MiCursoCreadoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item onPress={() => { navigation.navigate('EdicionCursoScreen', route.params); }} >Editar curso</Menu.Item>
-								<Menu.Item onPress={() => { navigation.navigate('ListadoAlumnosScreen', route.params.id); }}>Listado de alumnos</Menu.Item>
-								<Menu.Item onPress={() => { navigation.navigate('ListadoProfesoresScreen', route.params.id); }}>Listado de profesores</Menu.Item>
-								<Menu.Item onPress={() => { navigation.navigate('CrearExamenScreen', route.params); }}>Crear exámen</Menu.Item>
-								<Menu.Item onPress={() => { navigation.navigate('ABcolaboradorScreen', route.params.id); }}>Alta de colaborador</Menu.Item>
-								<Divider />
-								<Menu.Item onPress={() => { navigation.navigate('MiCursoInscriptoScreen', route.params); }} >Ver curso como estudiante</Menu.Item>
-								<Divider />
-								<Menu.Item onPress={cancelar} >Cancelar curso</Menu.Item>
-								<Menu.Item onPress={() => { navigation.navigate('MisCursosScreen'); }} >Salir del curso</Menu.Item>
+								<Menu.Item onPress={baja} >Darse de baja del curso</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{nombre}
-							</Heading>
-							<Heading size="md" color="coolGray.800" fontWeight="600">
-								{'\n'}Estado: {estado}
+								{ route.params.name }
 							</Heading>
 							<Divider my="5" />
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
@@ -207,4 +177,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default MiCursoCreadoScreen;
+export default MiCursoColaboradorScreen;

@@ -26,7 +26,7 @@ function BuscarScreen({ navigation }) {
 	const [tipo, setTipo] = React.useState('');
 	const [suscripcion, setSuscripcion] = React.useState('');
 	const [textoLibre, setTextoLibre] = React.useState('');
-	const busqueda = {tipo:'', suscripcion:'', textoLibre:''};
+	const busqueda = { tipo: '', suscripcion: '', textoLibre: '' };
 
 	const isFocused = useIsFocused();
 
@@ -56,8 +56,8 @@ function BuscarScreen({ navigation }) {
 						}}
 					>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Busqueda de curso
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+								Búsqueda de curso
 							</Heading>
 							<VStack space={3} mt="5">
 								<FormControl>
@@ -107,15 +107,16 @@ function BuscarScreen({ navigation }) {
 									<FormControl.Label>Filtrar por texto libre</FormControl.Label>
 									<Input onChangeText={(textoLibre) => setTextoLibre(textoLibre)} value={textoLibre} />
 								</FormControl>
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}
+									onPress={() => {
+										busqueda.tipo = tipo;
+										busqueda.suscripcion = suscripcion;
+										busqueda.textoLibre = textoLibre;
+										navigation.navigate('ElegirCursoScreen', busqueda);
+									}} >
+									Buscar
+								</Button>
 							</VStack>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}
-								onPress={() => {
-									busqueda.tipo = tipo;
-									busqueda.suscripcion = suscripcion;
-									busqueda.textoLibre = textoLibre;
-									navigation.navigate('ElegirCursoScreen', busqueda);}} >
-								Buscar
-							</Button>
 						</Box>
 					</ScrollView>
 			}

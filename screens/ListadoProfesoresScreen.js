@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
@@ -22,55 +22,83 @@ import { useFocusEffect } from '@react-navigation/native';
 import { obtenerAlumnos } from '../src/services/obtenerAlumnos';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { bajaDeColaborador } from '../src/services/bajaDeColaborador';
 
-ListadoAlumnosScreen.propTypes = {
+ListadoProfesoresScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function ListadoAlumnosScreen({ navigation, route }) {
+
+
+function ListadoProfesoresScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
-	const [alumnos, setAlumnos] = React.useState([]);
+	const [profesores, setProfesores] = React.useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [nombre, setNombre] = React.useState('');
 	const [apellido, setApellido] = React.useState('');
 	const [message, setMessage] = React.useState('');
-	const [bloqueado, setBloqueado] = React.useState(false);
+	const [error, setError] = React.useState(false);
 	const [showModalError, setShowModalError] = React.useState(false);
 	const isFocused = useIsFocused();
 
+	function baja(nombreAEliminar, idColaboradorAEliminar) {
+		Alert.alert(
+			'Baja de colaborador',
+			'¿Está seguro que desea dar de baja a ' + nombreAEliminar + '?',
+			[
+				{
+					text: 'No',
+					style: 'cancel'
+				},
+				{ text: 'Si', style: 'destructive',
+					onPress: () => {
+						bajaDeColaborador(String(route.params), idColaboradorAEliminar)
+							.then((response) => response.json())
+							.then((json) => {
+								if (json.status === 200) {
+									setMessage('Baja exitosa');
+									setShowModalError(true);
+								} else {
+									setError(true);
+									setMessage('Error en la baja');
+									setShowModalError(true);
+								}
+							});
+					}
+				}
+			]
+		);
+	}
+
 	const renderItem = ({ item }) => (
-		<>
-			<Text bold fontSize="md">
-				{item.last_name}, {item.first_name}
-			</Text>
-			<Divider my="1" />
-		</>
+		<Box safeArea flex={1} w="90%" mx="auto" py="3" style={{ justifyContent: 'center', top: 20 }}>
+			<View style={{flexDirection:'row'}}>
+				<Text bold fontSize="md">
+					{item.last_name}, {item.first_name}
+				</Text>
+				<Button colorScheme="red" _text={{ color: 'white' }} style={{ position: 'absolute', right: 20, top: -6}}
+					onPress={() => baja(item.first_name + ' ' + item.last_name, item.user_id)} >
+					Dar de baja
+				</Button>
+			</View>
+			<Divider my="3" />
+		</Box>
 	);
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerAlumnos(String(route.params), nombre, apellido, true)
+			obtenerAlumnos(String(route.params), nombre, apellido, false)
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
-					switch (json.status) {
-						case 503:
-							setMessage('courses service is currently unavailable, please try later');
-							setShowModalError(true);
-							break;
-						case 403:
-							setMessage('Usuario bloqueado');
-							setBloqueado(true);
-							setShowModalError(true);
-							break;
-						case 401:
-							setMessage('Token expirado');
-							setShowModalError(true);
-							break;
-						default:
-							setAlumnos(json.message);
+					if (json.status === 503){
+						setMessage('courses service is currently unavailable, please try later');
+						setError(true);
+						setShowModalError(true);
+					} else {
+						setProfesores(json.message);
 					}
 					setLoading(false);
 				});
@@ -82,13 +110,10 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		console.log(nombre);
-		console.log(apellido);
-		obtenerAlumnos(String(route.params), nombre, apellido, true)
+		obtenerAlumnos(String(route.params), nombre, apellido, false)
 			.then((response) => response.json())
 			.then((json) => {
-				console.log(json);
-				setAlumnos(json.message);
+				setProfesores(json.message);
 				setLoading(false);
 			});
 	};
@@ -125,7 +150,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 												setShowModal(false);
 											}}
 										>
-											Cancelar
+										Cancelar
 										</Button>
 										<Button
 											onPress={() => {
@@ -135,13 +160,13 @@ function ListadoAlumnosScreen({ navigation, route }) {
 												setApellido('');
 											}}
 										>
-											Buscar
+										Buscar
 										</Button>
 									</Button.Group>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Modal isOpen={showModalError} onClose={() => { if (bloqueado) { navigation.navigate('LoginScreen'); } setShowModalError(false); }} size="lg">
+						<Modal isOpen={showModalError} onClose={() => setShowModalError(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>
@@ -154,8 +179,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											bloqueado ? navigation.navigate('LoginScreen') : navigation.goBack();
-											setShowModalError(false);
+											error ? setShowModalError(false) : navigation.goBack();
 										}}
 									>
 										Continuar
@@ -168,10 +192,10 @@ function ListadoAlumnosScreen({ navigation, route }) {
 						</Link>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center', top: 20 }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								Listado de alumnos{'\n'}
+							Listado de profesores{'\n'}
 							</Heading>
 							<FlatList
-								data={alumnos}
+								data={profesores}
 								renderItem={renderItem}
 								keyExtractor={item => String(item.user_id)}
 							/>
@@ -190,4 +214,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default ListadoAlumnosScreen;
+export default ListadoProfesoresScreen;
