@@ -362,7 +362,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/courses/collaborations`, () => {
+			this.get(`${global.host}/courses/my_collaborations`, () => {
 				return {
 					'message': [
 						{

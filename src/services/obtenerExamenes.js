@@ -1,9 +1,16 @@
 import * as SecureStore from 'expo-secure-store';
 
-export async function obtenerExamenes(idCurso) {
+export async function obtenerExamenes(idCurso, nombreExamen) {
 	const token = await SecureStore.getItemAsync('secure_token');
+	var aEnviar;
 
-	return fetch(`${global.host}/exams/${idCurso}`, {
+	if (nombreExamen == '') {
+		aEnviar = `${global.host}/exams/${idCurso}`;
+	} else {
+		aEnviar = `${global.host}/exams/${idCurso}?name=${nombreExamen}`;
+	}
+
+	return fetch(`${aEnviar}`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

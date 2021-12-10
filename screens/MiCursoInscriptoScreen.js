@@ -13,9 +13,9 @@ import {
 	Divider,
 	Heading,
 	Spinner,
-	//Link,
-	//FlatList,
-	//Flex
+	Link,
+	FlatList,
+	Flex
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -33,7 +33,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	//const [examenes, setExamenes] = React.useState([]);
+	const [examenes, setExamenes] = React.useState([]);
 
 	const desinscribirse = () =>
 		Alert.alert(
@@ -64,20 +64,20 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 			]
 		);
 
-	// const renderItem = ({ item }) => (
-	// 	<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; navigation.navigate('ResolverExamenScreen', item);}}>
-	// 		<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
-	// 			<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-	// 				{item.nombre}
-	// 			</Heading>
-	// 			<Flex>
-	// 				<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
-	// 					Ingresar
-	// 				</Text>
-	// 			</Flex>
-	// 		</Box>
-	// 	</Link>
-	// );
+	const renderItem = ({ item }) => (
+		<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; navigation.navigate('ResolverExamenScreen', item);}}>
+			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
+					{item.nombre}
+				</Heading>
+				<Flex>
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+						Ingresar
+					</Text>
+				</Flex>
+			</Box>
+		</Link>
+	);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -86,7 +86,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 				.then(data => data.json())
 				.then(json => {
 					console.log(json);
-					//setExamenes(json.message);
+					setExamenes(json.message);
 					setLoading(false);
 				});
 			return () => {
@@ -152,13 +152,11 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
 								Exámenes
 							</Heading>
-							{
-								// <FlatList
-								// 	data={examenes}
-								// 	renderItem={renderItem}
-								// 	keyExtractor={item => String(item.id)}
-								// />
-							}
+							<FlatList
+								data={examenes}
+								renderItem={renderItem}
+								keyExtractor={item => String(item.id)}
+							/>
 						</Box>
 					</>
 			}
