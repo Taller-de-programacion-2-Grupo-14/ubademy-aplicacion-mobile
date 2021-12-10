@@ -20,25 +20,27 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-import { desinscripcionCurso } from '../src/services/desinscripcionCurso';
+import { bajaDeColaborador } from '../src/services/bajaDeColaborador';
+import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import { obtenerExamenes } from '../src/services/obtenerExamenes';
 
-MiCursoInscriptoScreen.propTypes = {
+MiCursoColaboradorScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function MiCursoInscriptoScreen({ navigation, route }) {
+function MiCursoColaboradorScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [miId, setMiId] = React.useState(0);
 	//const [examenes, setExamenes] = React.useState([]);
 
-	const desinscribirse = () =>
+	const baja = () =>
 		Alert.alert(
-			'Desinscripción',
-			'Ya no podrá rendir exámenes ni ver el contenido del curso.\n¿Está seguro que desea desinscribirse de este curso?',
+			'Darse de baja',
+			'Ya no podrá corregir exámenes ni responder consultas en este curso.\n¿Está seguro que desea darse de baja?',
 			[
 				{
 					text: 'Cancelar',
@@ -46,15 +48,15 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 				},
 				{ text: 'OK', style: 'destructive',
 					onPress: () => {
-						desinscripcionCurso(String(route.params.courseid))
+						bajaDeColaborador(String(route.params.courseid), miId)
 							.then((response) => response.json())
 							.then((json) => {
 								if (json.status === 200) {
-									setMessage('Desincripción exitosa');
+									setMessage('Baja exitosa');
 									setShowModal(true);
 								} else {
 									setError(true);
-									setMessage('Error al desinscribirse');
+									setMessage('Error al darse de baja');
 									setShowModal(true);
 								}
 							});
@@ -64,7 +66,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 		);
 
 	// const renderItem = ({ item }) => (
-	// 	<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; navigation.navigate('ResolverExamenScreen', item);}}>
+	// 	<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('VerExamenScreen', item);} }>
 	// 		<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 	// 			<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 	// 				{item.nombre}
@@ -81,6 +83,11 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			obtenerUsuario()
+				.then(data => data.json())
+				.then(json => {
+					setMiId(json.user_id);
+				});
 			obtenerExamenes(String(route.params.id))
 				.then(data => data.json())
 				.then(json => {
@@ -136,11 +143,8 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
-								{ route.params.verComoCreador ?
-									<Menu.Item onPress={() => {navigation.goBack();}} >Ver curso como creador</Menu.Item> :
-									<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
-								}
+								<Menu.Item onPress={baja} >Darse de baja del curso</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
@@ -173,4 +177,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default MiCursoInscriptoScreen;
+export default MiCursoColaboradorScreen;

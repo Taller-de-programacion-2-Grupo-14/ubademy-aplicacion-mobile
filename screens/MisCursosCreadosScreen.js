@@ -29,23 +29,23 @@ function MisCursosCreadosScreen({ navigation }) {
 	const [cursos, setCursos] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
-	const [error, setError] = React.useState(false);
+	const [bloqueado, setBloqueado] = React.useState(false);
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item);} }>
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
-					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
+					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
 						{item.type}
 					</Text>
 					<Spacer />
 				</HStack>
-				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg">
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.name}
 				</Heading>
 				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
             Ingresar
 					</Text>
 				</Flex>
@@ -60,11 +60,21 @@ function MisCursosCreadosScreen({ navigation }) {
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
-					if (json.status === 503) {
+					switch (json.status) {
+					case 503:
 						setMessage('courses service is currently unavailable, please try later');
-						setError(true);
 						setShowModal(true);
-					} else {
+						break;
+					case 403:
+						setMessage('Usuario bloqueado');
+						setBloqueado(true);
+						setShowModal(true);
+						break;
+					case 401:
+						setMessage('Token expirado');
+						setShowModal(true);
+						break;
+					default:
 						setCursos(json.message);
 					}
 					setLoading(false);
@@ -85,7 +95,7 @@ function MisCursosCreadosScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<>
-						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+						<Modal isOpen={showModal} onClose={() => {if (bloqueado) {navigation.navigate('LoginScreen');} setShowModal(false);}} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>
@@ -98,7 +108,8 @@ function MisCursosCreadosScreen({ navigation }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModal(false) : navigation.goBack();
+											bloqueado ? navigation.navigate('LoginScreen') : navigation.goBack();
+											setShowModal(false);
 										}}
 									>
 										Continuar
@@ -107,7 +118,7 @@ function MisCursosCreadosScreen({ navigation }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
 								Cursos creados por mi
 							</Heading>
 							<FlatList

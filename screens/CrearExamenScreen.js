@@ -5,41 +5,35 @@ import {
 	Box,
 	Heading,
 	ScrollView,
-	Text,
-	Input,
 	Spinner,
 	FormControl,
-	HStack,
+	Input,
 	VStack,
+	HStack,
+	Button,
 	Modal,
-	Button
+	Text
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import { crearExamen } from '../src/services/crearExamen';
 import PropTypes from 'prop-types';
-import { editarCurso } from '../src/services/editarCurso';
 
-EdicionCursoScreen.propTypes = {
+CrearExamenScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function EdicionCursoScreen({ navigation, route }) {
+function CrearExamenScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
+	const [nombre, setNombre] = React.useState('');
+	const [pregunta, setPregunta] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [titulo, setTitulo] = React.useState('');
-	const [descripcion, setDescripcion] = React.useState('');
-	const [hashtags, setHashtags] = React.useState('');
-	const [location, setLocation] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setTitulo(route.params.name);
-			setDescripcion(route.params.description);
-			setHashtags(route.params.hashtags);
-			setLocation(route.params.location);
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -49,17 +43,17 @@ function EdicionCursoScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		editarCurso(String(route.params.id), titulo, descripcion, hashtags, location)
+		crearExamen(String(route.params.id), nombre, pregunta)
 			.then((response) => response.json())
 			.then((json) => {
+				console.log(json);
 				if (json.status === 200) {
-					setShowModal(true);
-					setMessage('Datos actualizados');
+					setMessage('¡Creación exitosa!');
 				} else {
 					setError(true);
-					setShowModal(true);
-					setMessage('Ha ocurrido un error');
+					setMessage('Error en la creación del exámen');
 				}
+				setShowModal(true);
 			});
 	};
 
@@ -90,8 +84,7 @@ function EdicionCursoScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											setShowModal(false);
-											if (!error) navigation.goBack();
+											error ? setShowModal(false) : navigation.goBack();
 										}}
 									>
                     Continuar
@@ -100,45 +93,24 @@ function EdicionCursoScreen({ navigation, route }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-                Editar curso
-							</Heading>
-							<VStack space={3} mt="5">
+							<VStack space={5}>
+								<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+									Crear exámen
+								</Heading>
 								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Título
-									</FormControl.Label>
-									<Input onChangeText={(titulo) => setTitulo(titulo)} value={titulo} />
+									<FormControl.Label>Ingrese el nombre del exámen</FormControl.Label>
+									<Input size="md" onChangeText={(nombre) => setNombre(nombre)} value={nombre} multiline={true} />
 								</FormControl>
-
 								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Descripción
-									</FormControl.Label>
-									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} value={descripcion} />
+									<FormControl.Label>Ingrese la pregunta</FormControl.Label>
+									<Input size="md" onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true} />
 								</FormControl>
-
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Hashtags asociados
-									</FormControl.Label>
-									<Input onChangeText={(hashtags) => setHashtags(hashtags)} value={hashtags} />
-								</FormControl>
-
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Ubicación
-									</FormControl.Label>
-									<Input onChangeText={(location) => setLocation(location)} value={location} />
-								</FormControl>
-
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-                  Confirmar
+								<Button isDisabled={!route.params.can_create} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+                  Crear
 								</Button>
+								<Text color={route.params.can_create ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
+									Ha alcanzado el número máximo de exámenes para este curso
+								</Text>
 							</VStack>
 						</Box>
 					</ScrollView>
@@ -155,4 +127,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default EdicionCursoScreen;
+export default CrearExamenScreen;

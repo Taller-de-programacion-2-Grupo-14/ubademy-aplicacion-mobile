@@ -13,14 +13,18 @@ import {
 	Text,
 	Divider,
 	Heading,
-	ScrollView,
-	Spinner
+	Spinner,
+	//Link,
+	//FlatList,
+	//Flex
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import { cancelarCurso } from '../src/services/cancelarCurso';
 import { obtenerCurso } from '../src/services/obtenerCurso';
+import { obtenerExamenes } from '../src/services/obtenerExamenes';
+
 
 MiCursoCreadoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -33,6 +37,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [estado, setEstado] = React.useState('');
+	const [nombre, setNombre] = React.useState('');
+	//const [examenes, setExamenes] = React.useState([]);
 	const isFocused = useIsFocused();
 
 	const cancelar = () =>
@@ -63,6 +69,21 @@ function MiCursoCreadoScreen({ navigation, route }) {
 			]
 		);
 
+	// const renderItem = ({ item }) => (
+	// 	<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('VerExamenScreen', item);} }>
+	// 		<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+	// 			<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
+	// 				{item.nombre}
+	// 			</Heading>
+	// 			<Flex>
+	// 				<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+	// 					Ingresar
+	// 				</Text>
+	// 			</Flex>
+	// 		</Box>
+	// 	</Link>
+	// );
+
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
@@ -73,11 +94,22 @@ function MiCursoCreadoScreen({ navigation, route }) {
 					if (json.status === 503) {
 						setEstado('Indeterminado (por error 503)');
 					} else {
+						setNombre(json.message.name);
 						if (json.message.cancelled == 0){
 							setEstado('Vigente');
 						} else {
 							setEstado('Cancelado');
 						}
+					}
+				});
+			obtenerExamenes(String(route.params.id))
+				.then(data => data.json())
+				.then(json => {
+					console.log(json);
+					if (json.status === 503) {
+						setEstado('Indeterminado (por error 503)');
+					} else {
+						//setExamenes(json.message);
 					}
 					setLoading(false);
 				});
@@ -96,12 +128,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
+					<>
 						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
@@ -123,7 +150,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{top: 20, alignItems: 'flex-end'}}>
+						<Box style={{position: 'absolute', top: 20, right: 20}}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -136,7 +163,9 @@ function MiCursoCreadoScreen({ navigation, route }) {
 							>
 								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params);}} >Editar curso</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.id);}}>Listado de alumnos</Menu.Item>
-								<Menu.Item>Crear examen</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('ListadoProfesoresScreen', route.params.id);}}>Listado de profesores</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('CrearExamenScreen', route.params);}}>Crear exámen</Menu.Item>
+								<Menu.Item onPress={() => {navigation.navigate('ABcolaboradorScreen', route.params.id);}}>Alta de colaborador</Menu.Item>
 								<Divider />
 								<Menu.Item onPress={() => {navigation.navigate('MiCursoInscriptoScreen', route.params);}} >Ver curso como estudiante</Menu.Item>
 								<Divider />
@@ -144,15 +173,26 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 							</Menu>
 						</Box>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								{ route.params.name }
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+								{ nombre }
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600">
 								{'\n'}Estado: { estado }
 							</Heading>
+							<Divider my="5" />
+							<Heading size="xl" color="coolGray.800" fontWeight="600">
+								Exámenes
+							</Heading>
+							{
+								// <FlatList
+								// 	data={examenes}
+								// 	renderItem={renderItem}
+								// 	keyExtractor={item => String(item.id)}
+								// />
+							}
 						</Box>
-					</ScrollView>
+					</>
 			}
 		</NativeBaseProvider>
 	);

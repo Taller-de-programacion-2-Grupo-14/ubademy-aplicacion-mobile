@@ -16,15 +16,15 @@ import {
 	Spacer,
 	Link
 } from 'native-base';
-import { misCursosInscriptos } from '../src/services/misCursosInscriptos';
+import { misColaboraciones } from '../src/services/misColaboraciones';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 
-MisCursosInscriptosScreen.propTypes = {
+MisColaboracionesScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
-function MisCursosInscriptosScreen({ navigation }) {
+function MisColaboracionesScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
@@ -33,7 +33,7 @@ function MisCursosInscriptosScreen({ navigation }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoInscriptoScreen', item);} }>
+		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoColaboradorScreen', item);} }>
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
@@ -56,7 +56,7 @@ function MisCursosInscriptosScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			misCursosInscriptos()
+			misColaboraciones()
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
@@ -119,7 +119,7 @@ function MisCursosInscriptosScreen({ navigation }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
-								Cursos en los que estoy inscripto
+								Cursos en los que soy colaborador
 							</Heading>
 							<FlatList
 								data={cursos}
@@ -141,4 +141,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default MisCursosInscriptosScreen;
+export default MisColaboracionesScreen;

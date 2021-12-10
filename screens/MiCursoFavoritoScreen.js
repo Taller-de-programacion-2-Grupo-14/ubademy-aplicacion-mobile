@@ -19,21 +19,20 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-import { obtenerCurso } from '../src/services/obtenerCurso';
 import { agregarAFavoritos } from '../src/services/agregarAFavoritos';
 import { eliminarDeFavoritos } from '../src/services/eliminarDeFavoritos';
 
-CondicionesScreen.propTypes = {
+MiCursoFavoritoScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function CondicionesScreen({ navigation, route }) {
+function MiCursoFavoritoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [favorito, setFavorito] = React.useState(false);
+	const [favorito, setFavorito] = React.useState(true);
 	// const [descripcion, setDescripcion] = React.useState('');
 	// const [hashtags, setHashtags] = React.useState('');
 	// const [examenes, setExamenes] = React.useState('');
@@ -42,13 +41,17 @@ function CondicionesScreen({ navigation, route }) {
 
 	useFocusEffect(
 		React.useCallback(() => {
-			obtenerCurso(String(route.params.id))
-				.then(data => data.json())
-				.then(json => {
-					console.log(json);
-					setFavorito(json.message.favorito);
-					setLoading(false);
-				});
+			// Do something when the screen is focused
+			// obtenerCurso(route.params.id)
+			// 	.then(data => data.json())
+			// 	.then(json => {
+			setLoading(false);
+			// 		setDescripcion(json.description);
+			// 		setHashtags(json.hashtags);
+			// 		setExamenes(String(json.exams));
+			// 		setTipoDeCurso(json.type);
+			// 		setLocation(json.location);
+			// 	});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -115,7 +118,7 @@ function CondicionesScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModal(false) : navigation.navigate('BuscarScreen');
+											error ? setShowModal(false) : navigation.navigate('CursosFavoritosScreen');
 										}}
 									>
 										Continuar
@@ -209,4 +212,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default CondicionesScreen;
+export default MiCursoFavoritoScreen;

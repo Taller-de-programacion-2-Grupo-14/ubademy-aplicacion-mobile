@@ -1,43 +1,46 @@
 import React from 'react';
+import { obtenerFavoritos } from '../src/services/obtenerFavoritos';
 import { View, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
-	Heading,
-	Spinner,
+	Link,
+	Pressable,
+	Menu,
+	Text,
+	FlatList,
 	Modal,
 	VStack,
 	Button,
-	Text,
-	Flex,
-	FlatList,
 	HStack,
 	Spacer,
-	Link
+	Flex,
+	Heading,
+	Spinner
 } from 'native-base';
-import { misCursosInscriptos } from '../src/services/misCursosInscriptos';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 
-MisCursosInscriptosScreen.propTypes = {
+CursosFavoritosScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
-function MisCursosInscriptosScreen({ navigation }) {
+function CursosFavoritosScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [cursos, setCursos] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
-	const [bloqueado, setBloqueado] = React.useState(false);
+	const [suscripcion, setSuscripcion] = React.useState('Todos');
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoInscriptoScreen', item);} }>
+		<Link onPress={() => navigation.navigate('MiCursoFavoritoScreen', item) }>
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
-						{item.type}
+						{item.subscription}
 					</Text>
 					<Spacer />
 				</HStack>
@@ -46,35 +49,40 @@ function MisCursosInscriptosScreen({ navigation }) {
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
-            Ingresar
+						Ver condiciones
 					</Text>
 				</Flex>
 			</Box>
 		</Link>
 	);
 
+	function filtrar(filtro) {
+		setSuscripcion(filtro);
+		obtenerFavoritos(filtro)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				if (json.status === 503){
+					setMessage('courses service is currently unavailable, please try later');
+					setShowModal(true);
+				} else {
+					setCursos(json.message);
+				}
+			});
+	}
+
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			misCursosInscriptos()
+			obtenerFavoritos('Todos')
 				.then((response) => response.json())
 				.then((json) => {
 					console.log(json);
-					switch (json.status) {
-					case 503:
+					if (json.status === 503){
 						setMessage('courses service is currently unavailable, please try later');
 						setShowModal(true);
-						break;
-					case 403:
-						setMessage('Usuario bloqueado');
-						setBloqueado(true);
-						setShowModal(true);
-						break;
-					case 401:
-						setMessage('Token expirado');
-						setShowModal(true);
-						break;
-					default:
+					} else {
+						//setCursos(json);
 						setCursos(json.message);
 					}
 					setLoading(false);
@@ -87,7 +95,6 @@ function MisCursosInscriptosScreen({ navigation }) {
 	);
 
 	return (
-
 		<NativeBaseProvider>
 			{
 				loading ?
@@ -95,7 +102,7 @@ function MisCursosInscriptosScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<>
-						<Modal isOpen={showModal} onClose={() => {if (bloqueado) {navigation.navigate('LoginScreen');} setShowModal(false);}} size="lg">
+						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>
@@ -107,19 +114,35 @@ function MisCursosInscriptosScreen({ navigation }) {
 								<Modal.Footer>
 									<Button colorScheme="indigo"
 										flex="1"
-										onPress={() => {
-											bloqueado ? navigation.navigate('LoginScreen') : navigation.goBack();
-											setShowModal(false);
-										}}
+										onPress={() => { setShowModal(false); navigation.goBack(); }}
 									>
 										Continuar
 									</Button>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
+						<Box style={{position: 'absolute', top: 20, right: 20}}>
+							<Menu
+								w="190"
+								trigger={(triggerProps) => {
+									return (
+										<Pressable accessibilityLabel="More options menu" {...triggerProps} >
+											<Icon name="more-vert" size={35} />
+										</Pressable>
+									);
+								}}
+							>
+								<Menu.OptionGroup defaultValue={suscripcion} title="Cursos" type="radio">
+									<Menu.ItemOption onPress={() => filtrar('Todos')} value="Todos">Todos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Basico')} value="Basico">Básico</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Estandar')} value="Estandar">Estándar</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('Premium')} value="Premium">Premium</Menu.ItemOption>
+								</Menu.OptionGroup>
+							</Menu>
+						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
-								Cursos en los que estoy inscripto
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+								Elegir un curso
 							</Heading>
 							<FlatList
 								data={cursos}
@@ -141,4 +164,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default MisCursosInscriptosScreen;
+export default CursosFavoritosScreen;
