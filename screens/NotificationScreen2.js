@@ -19,7 +19,6 @@ export default function App() {
 
     useEffect(() => {
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             setNotification(notification);
         });
@@ -69,6 +68,7 @@ async function schedulePushNotification() {
 }
 
 async function registerForPushNotificationsAsync() {
+    console.log('en register for push notific');
     let token;
     if (Constants.isDevice) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();

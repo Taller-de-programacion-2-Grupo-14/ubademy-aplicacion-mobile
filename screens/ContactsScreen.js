@@ -15,7 +15,9 @@ import {
     Avatar,
     VStack,
     Spacer,
-    Spinner
+    Spinner,
+    Modal,
+    Button
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
@@ -26,11 +28,12 @@ export default function Contactscreen() {
     const isFocused = useIsFocused();
     const [loading, setLoading] = React.useState(true);
     const [users, setUsers] = React.useState({});
+    const [showModal, setShowModal] = React.useState(false);
     Moment.locale('es');
     useFocusEffect(
         React.useCallback(() => {
             // Do something when the screen is focused
-            obtenerUsuarios()
+            obtenerUsuarios(false)
                 .then(data => data.json())
                 .then(json => {
                     setLoading(false);
@@ -40,8 +43,9 @@ export default function Contactscreen() {
             return () => {
                 // Do something when the screen is unfocused
                 // Useful for cleanup functions
+                setUsers([]);
             };
-        }, [isFocused])
+        }, [isFocused], setUsers)
     );
 
     return (
@@ -71,6 +75,7 @@ function Basic({ listData }) {
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
         }
+        console.log('en close row');
     };
 
     const onRowDidOpen = (rowKey) => {
@@ -78,6 +83,7 @@ function Basic({ listData }) {
     };
 
     const renderItem = ({ item }) => (
+
         < Box >
             <Pressable onPress={() => console.log('You touched me')} bg="white">
                 <Box
@@ -86,7 +92,9 @@ function Basic({ listData }) {
                     py="2"
                 >
                     <HStack alignItems="center" space={3}>
-                        <Avatar size="48px" source={{ uri: item.photo_url }} />
+                        {(item.photo_url == '' || item.photo_url == null || item.photo_url == 'undefined') ? (<Avatar bg="indigo.500" size="48px" >{item.first_name.charAt(0).toUpperCase()}</Avatar>) :
+                            <Avatar size="48px" source={{ uri: item.photo_url }} />
+                        }
                         <VStack>
                             <Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
                                 {item.first_name} {item.last_name}
@@ -98,16 +106,17 @@ function Basic({ listData }) {
                                 Se registro el
                             </Text>
                             <Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-                                {Moment(item.created_at).format('d MMM')}
+                                {Moment(item.created_at).format('d MMM YYYY')}
                             </Text>
                         </VStack>
                     </HStack>
                 </Box>
             </Pressable>
         </Box >
+
     );
 
-    const renderHiddenItem = (data, rowMap) => (
+    const renderHiddenItem = (data, rowMap, setShowModal) => (
         <HStack flex="1" pl="2">
             <Pressable
                 w="70"
@@ -122,11 +131,12 @@ function Basic({ listData }) {
                     <Icon
                         as={<Entypo name="dots-three-horizontal" />}
                         size="xs"
-                        color="coolGray.800"
+                        color="coolGray.800" onPress={() => setShowModal(false)}
                     />
-                    <Text fontSize="xs" fontWeight="medium" color="coolGray.800">
-                        Mas
+                    <Text fontSize="xs" fontWeight="medium" color="coolGray.800" onPress={() => setShowModal(false)}>
+                        Ver
                     </Text>
+
                 </VStack>
             </Pressable>
             <Pressable
@@ -138,10 +148,10 @@ function Basic({ listData }) {
                     opacity: 0.5,
                 }}>
                 <VStack alignItems="center" space={2}>
-                    <Icon as={<MaterialIcons name="message" />} color="white" size="xs" />
                     <Text color="white" fontSize="xs" fontWeight="medium">
-                        Chat
+                        Enviar
                     </Text>
+                    <Icon as={<MaterialIcons name="message" />} color="white" size="xs" />
                 </VStack>
             </Pressable>
         </HStack>
@@ -158,6 +168,7 @@ function Basic({ listData }) {
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
                 onRowDidOpen={onRowDidOpen}
+                keyExtractor={(item, index) => index.toString()}
             />
         </Box>
     );

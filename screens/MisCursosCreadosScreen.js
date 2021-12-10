@@ -33,8 +33,8 @@ function MisCursosCreadosScreen({ navigation }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item);} }>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+		<Link onPress={() => { item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item); }}>
+			<Box bg='indigo.500' p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium">
 						{item.type}
@@ -46,7 +46,7 @@ function MisCursosCreadosScreen({ navigation }) {
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
-            Ingresar
+						Ingresar
 					</Text>
 				</Flex>
 			</Box>
@@ -110,15 +110,22 @@ function MisCursosCreadosScreen({ navigation }) {
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								Cursos creados por mi
 							</Heading>
-							<FlatList
-								data={cursos}
-								renderItem={renderItem}
-								keyExtractor={item => String(item.id)}
-							/>
+							{cursos.length === 0 ?
+								<Heading size="sm" color="coolGray.800" fontWeight="600">
+									No has creado ningun curso aun
+								</Heading>
+								:
+								<FlatList
+									data={cursos}
+									renderItem={renderItem}
+									keyExtractor={item => String(item.id)}
+
+								/>
+							}
 						</Box>
 					</>
 			}
-		</NativeBaseProvider>
+		</NativeBaseProvider >
 	);
 }
 

@@ -3,7 +3,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import HomeScreen from './HomeScreen';
 import UserScreen from './UserScreen';
 import CursosScreen from './CursosScreen';
-import NotificationScreen from './NotificationScreen';
+import NotificationScreen from './NotificationScreen2';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeBaseProvider } from 'native-base';
 

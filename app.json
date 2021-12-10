@@ -6,6 +6,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#ffffff"
+        }
+      ]
+    ],
     "extra": {
       "firebase": {
         "apiKey": "AIzaSyDwIvk2Tez8cmHmKfyBAUJznhYV1kxSmUo",

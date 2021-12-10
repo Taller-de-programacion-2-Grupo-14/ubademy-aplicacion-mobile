@@ -12,7 +12,12 @@ import {
 	Button,
 	Heading,
 	ScrollView,
-	Spinner
+	Spinner,
+	AspectRatio,
+	Image,
+	Center,
+	Stack,
+
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -39,7 +44,8 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 					text: 'Cancelar',
 					style: 'cancel'
 				},
-				{ text: 'OK', style: 'destructive',
+				{
+					text: 'OK', style: 'destructive',
 					onPress: () => {
 						desinscripcionCurso(String(route.params.courseid))
 							.then((response) => response.json())
@@ -104,7 +110,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{top: 20, alignItems: 'flex-end'}}>
+						<Box style={{ top: 20, alignItems: 'flex-end' }}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -116,16 +122,95 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								}}
 							>
 								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
-								{ route.params.verComoCreador ?
-									<Menu.Item onPress={() => {navigation.goBack();}} >Ver curso como creador</Menu.Item> :
-									<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
+								{route.params.verComoCreador ?
+									<Menu.Item onPress={() => { navigation.goBack(); }} >Ver curso como creador</Menu.Item> :
+									<Menu.Item onPress={() => { navigation.navigate('MisCursosScreen'); }} >Salir del curso</Menu.Item>
 								}
 							</Menu>
 						</Box>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								{ route.params.name }
-							</Heading>
+						<Box
+							maxW="80"
+							rounded="lg"
+							overflow="hidden"
+							borderColor="coolGray.200"
+							borderWidth="1"
+							_dark={{
+								borderColor: 'coolGray.600',
+								backgroundColor: 'gray.700',
+							}}
+							_web={{
+								shadow: 2,
+								borderWidth: 0,
+							}}
+							_light={{
+								backgroundColor: 'gray.50',
+							}}
+						>
+							<Box>
+								<AspectRatio w="100%" ratio={16 / 9}>
+									<Image
+										source={{
+											uri: 'https://besthqwallpapers.com/Uploads/13-1-2021/151483/thumb2-math-blackboard-texture-background-with-geometric-shapes-math-background-math-texture-geometric-lines-shapes-texture.jpg',
+
+										}}
+										alt="image"
+									/>
+								</AspectRatio>
+								<Center
+									bg="violet.500"
+									_dark={{
+										bg: 'violet.400',
+									}}
+									_text={{
+										color: 'warmGray.50',
+										fontWeight: '700',
+										fontSize: 'xs',
+									}}
+									position="absolute"
+									bottom="0"
+									px="3"
+									py="1.5"
+								>
+									{route.params.cancelled == 0 ? 'Activo' : 'Cancelado'}
+								</Center>
+							</Box>
+							<Stack p="4" space={3}>
+								<Stack space={2}>
+									<Heading size="md" ml="-1">
+										{route.params.name}
+									</Heading>
+									<Text
+										fontSize="xs"
+										_light={{
+											color: 'violet.500',
+										}}
+										_dark={{
+											color: 'violet.400',
+										}}
+										fontWeight="500"
+										ml="-0.5"
+										mt="-1"
+									>
+										{route.params.type}
+									</Text>
+								</Stack>
+								<Text fontWeight="400">
+									{route.params.description}
+								</Text>
+								<HStack alignItems="center" space={4} justifyContent="space-between">
+									<HStack alignItems="center">
+										<Text
+											color="coolGray.600"
+											_dark={{
+												color: 'warmGray.200'
+											}}
+											fontWeight="400"
+										>
+											6 mins ago
+										</Text>
+									</HStack>
+								</HStack>
+							</Stack>
 						</Box>
 					</ScrollView>
 			}
