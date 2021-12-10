@@ -20,6 +20,8 @@ const ENV = {
 	}
 };
 
+const GOOGLE_PLACES_API_KEY = 'AIzaSyCQSjz81wWuE8r6wh7O_dM--76bg3Z6np4';
+
 const getEnvVars = (env = Constants.manifest.releaseChannel) => {
 	// What is __DEV__ ?
 	// This variable is set to true when react-native is running in Dev mode.
@@ -32,6 +34,10 @@ const getEnvVars = (env = Constants.manifest.releaseChannel) => {
 	} else if (env === 'prod') {
 		return ENV.prod;
 	}
+};
+
+export const getGoogleAPIKey = () => {
+	return GOOGLE_PLACES_API_KEY;
 };
 
 export default getEnvVars;
