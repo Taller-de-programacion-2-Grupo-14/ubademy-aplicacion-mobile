@@ -5,24 +5,21 @@ import {
 	Text,
 	Pressable,
 	Heading,
-	IconButton,
 	Icon,
 	HStack,
-	Avatar,
 	VStack,
 	Spacer,
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
+import { MaterialIcons, Entypo } from '@expo/vector-icons';
 
 export default function MessagesScreen() {
-	const [mode, setMode] = useState('Basic');
 
 	return (
 		<NativeBaseProvider>
 			<Box bg="white" flex="1" safeAreaTop>
 				<Heading p="4" pb="3" size="lg">
-                    Inbox
+					Inbox
 				</Heading>
 				<Basic />
 			</Box>
@@ -38,7 +35,7 @@ function Basic() {
 			timeStamp: '12:47 PM',
 			recentText: 'Good Day!',
 			avatarUrl:
-                'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+				'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
 		},
 		{
 			id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
@@ -46,7 +43,7 @@ function Basic() {
 			timeStamp: '11:11 PM',
 			recentText: 'Cheer up, there!',
 			avatarUrl:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU',
+				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU',
 		},
 		{
 			id: '58694a0f-3da1-471f-bd96-145571e29d72',
@@ -61,7 +58,7 @@ function Basic() {
 			timeStamp: '8:56 PM',
 			recentText: 'All the best',
 			avatarUrl:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU',
+				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU',
 		},
 		{
 			id: '28694a0f-3da1-471f-bd96-142456e29d72',
@@ -69,7 +66,7 @@ function Basic() {
 			timeStamp: '12:47 PM',
 			recentText: 'I will call today.',
 			avatarUrl:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU',
+				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU',
 		},
 	];
 
@@ -137,7 +134,7 @@ function Basic() {
 						color="coolGray.800"
 					/>
 					<Text fontSize="xs" fontWeight="medium" color="coolGray.800">
-                        More
+						More
 					</Text>
 				</VStack>
 			</Pressable>
@@ -152,7 +149,7 @@ function Basic() {
 				<VStack alignItems="center" space={2}>
 					<Icon as={<MaterialIcons name="delete" />} color="white" size="xs" />
 					<Text color="white" fontSize="xs" fontWeight="medium">
-                        Delete
+						Delete
 					</Text>
 				</VStack>
 			</Pressable>

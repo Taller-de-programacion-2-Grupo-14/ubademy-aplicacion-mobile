@@ -86,6 +86,7 @@ export default function LoginScreen({ navigation }) {
 		});
 
 		if (isFormValid() == true) {
+			setLoading(true);
 			login(email, password)
 				.then((response) => response.json())
 				.then((json) => {
@@ -93,19 +94,23 @@ export default function LoginScreen({ navigation }) {
 					if (json.status === 200) {
 						SecureStore.setItemAsync('secure_token', json.token);
 						console.log(json.token);
+						setLoading(false);
 						navigation.navigate('Home');
 					} else {
 						if (json.status === 403) {
 							setMensaje('Usuario bloqueado');
+							setLoading(false);
 							setShowModal(true);
 						} else {
 							setMensaje('Usuario o contraseña invalidos');
+							setLoading(false);
 							setShowModal(true);
 							console.log('email o contrasenia invalidos');
 						}
 					}
 				})
 				.catch((error) => {
+					setLoading(false);
 					console.error(error);
 				});
 		}

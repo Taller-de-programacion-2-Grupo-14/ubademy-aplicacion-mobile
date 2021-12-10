@@ -61,21 +61,21 @@ function MisCursosCreadosScreen({ navigation }) {
 				.then((json) => {
 					console.log(json);
 					switch (json.status) {
-						case 503:
-							setMessage('courses service is currently unavailable, please try later');
-							setShowModal(true);
-							break;
-						case 403:
-							setMessage('Usuario bloqueado');
-							setBloqueado(true);
-							setShowModal(true);
-							break;
-						case 401:
-							setMessage('Token expirado');
-							setShowModal(true);
-							break;
-						default:
-							setCursos(json.message);
+					case 503:
+						setMessage('courses service is currently unavailable, please try later');
+						setShowModal(true);
+						break;
+					case 403:
+						setMessage('Usuario bloqueado');
+						setBloqueado(true);
+						setShowModal(true);
+						break;
+					case 401:
+						setMessage('Token expirado');
+						setShowModal(true);
+						break;
+					default:
+						setCursos(json.message);
 					}
 					setLoading(false);
 				});
