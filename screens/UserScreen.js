@@ -104,19 +104,18 @@ function UsuarioHome({ navigation }) {
 								<Stack p="4" space={4}>
 									<Box>
 
-										{console.log(photo_url === '')
+										{console.log(photo_url)
 										}
-										{photo_url === '' ?
+										{(photo_url === '' || photo_url === null || photo_url == 'undefined') ?
 											< Avatar
-												bg="purple.600"
+												bg="indigo.600"
 												alignSelf="center"
 												size="2xl"
-												source={require('../images/default.png')}
 											>
+												{firstName.charAt(0).toUpperCase()}
 											</Avatar>
 											:
 											<Avatar
-												bg="purple.600"
 												alignSelf="center"
 												size="2xl"
 												source={{ uri: photo_url }}

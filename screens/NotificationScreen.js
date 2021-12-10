@@ -20,7 +20,10 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
 	return (
-		<Tab.Navigator style={{ marginTop: Constants.statusBarHeight }}>
+		<Tab.Navigator
+			screenOptions={{
+				swipeEnabled: false
+			}} style={{ marginTop: Constants.statusBarHeight }}>
 			<Tab.Screen name="Mensajes" component={Messages} />
 			<Tab.Screen name="Contactos" component={Contacts} />
 		</Tab.Navigator>

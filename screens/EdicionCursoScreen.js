@@ -94,20 +94,20 @@ function EdicionCursoScreen({ navigation, route }) {
 											if (!error) navigation.goBack();
 										}}
 									>
-                    Continuar
+										Continuar
 									</Button>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-                Editar curso
+								Editar curso
 							</Heading>
 							<VStack space={3} mt="5">
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Título
+										Título
 									</FormControl.Label>
 									<Input onChangeText={(titulo) => setTitulo(titulo)} value={titulo} />
 								</FormControl>
@@ -115,7 +115,7 @@ function EdicionCursoScreen({ navigation, route }) {
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Descripción
+										Descripción
 									</FormControl.Label>
 									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} value={descripcion} />
 								</FormControl>
@@ -123,7 +123,7 @@ function EdicionCursoScreen({ navigation, route }) {
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Hashtags asociados
+										Hashtags asociados
 									</FormControl.Label>
 									<Input onChangeText={(hashtags) => setHashtags(hashtags)} value={hashtags} />
 								</FormControl>
@@ -131,13 +131,13 @@ function EdicionCursoScreen({ navigation, route }) {
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-                    Ubicación
+										Ubicación
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLocation(location)} value={location} />
 								</FormControl>
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-                  Confirmar
+									Confirmar
 								</Button>
 							</VStack>
 						</Box>

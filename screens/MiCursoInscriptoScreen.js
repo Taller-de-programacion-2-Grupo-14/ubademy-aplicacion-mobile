@@ -44,7 +44,8 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 					text: 'Cancelar',
 					style: 'cancel'
 				},
-				{ text: 'OK', style: 'destructive',
+				{
+					text: 'OK', style: 'destructive',
 					onPress: () => {
 						desinscripcionCurso(String(route.params.courseid))
 							.then((response) => response.json())
@@ -125,7 +126,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{position: 'absolute', top: 20, right: 20}}>
+						<Box style={{ position: 'absolute', top: 20, right: 20 }}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -137,15 +138,15 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 								}}
 							>
 								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
-								{ route.params.verComoCreador ?
-									<Menu.Item onPress={() => {navigation.goBack();}} >Ver curso como creador</Menu.Item> :
-									<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
+								{route.params.verComoCreador ?
+									<Menu.Item onPress={() => { navigation.goBack(); }} >Ver curso como creador</Menu.Item> :
+									<Menu.Item onPress={() => { navigation.navigate('MisCursosScreen'); }} >Salir del curso</Menu.Item>
 								}
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{ route.params.name }
+								{route.params.name}
 							</Heading>
 							<Divider my="5" />
 							<Heading size="xl" color="coolGray.800" fontWeight="600">

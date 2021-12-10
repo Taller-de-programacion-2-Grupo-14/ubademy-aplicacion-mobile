@@ -33,8 +33,8 @@ function MisCursosCreadosScreen({ navigation }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item);} }>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+		<Link onPress={() => { item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item); }}>
+			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
 						{item.type}
@@ -46,7 +46,7 @@ function MisCursosCreadosScreen({ navigation }) {
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
-            Ingresar
+						Ingresar
 					</Text>
 				</Flex>
 			</Box>
@@ -95,7 +95,7 @@ function MisCursosCreadosScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<>
-						<Modal isOpen={showModal} onClose={() => {if (bloqueado) {navigation.navigate('LoginScreen');} setShowModal(false);}} size="lg">
+						<Modal isOpen={showModal} onClose={() => { if (bloqueado) { navigation.navigate('LoginScreen'); } setShowModal(false); }} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>

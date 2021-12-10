@@ -42,7 +42,7 @@ export default function HomeScreen() {
 					</View> :
 					<Box safeArea flex={8} p="2" py="8" w="90%" mx="auto" style={{ justifyContent: 'center' }}>
 						<Heading size="lg" fontWeight="600" color="coolGray.800" >
-                            Bienvenido {firstName}
+							Bienvenido {firstName}
 						</Heading>
 					</Box>
 			}

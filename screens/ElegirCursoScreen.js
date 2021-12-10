@@ -31,8 +31,8 @@ function ElegirCursoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => navigation.navigate('CondicionesScreen', item) }>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+		<Link onPress={() => navigation.navigate('CondicionesScreen', item)}>
+			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
 						{item.subscription}
@@ -62,7 +62,7 @@ function ElegirCursoScreen({ navigation, route }) {
 						setMessage('Busqueda sin resultados');
 						setShowModal(true);
 					} else {
-						if (json.status === 503){
+						if (json.status === 503) {
 							setMessage('courses service is currently unavailable, please try later');
 							setShowModal(true);
 						} else {

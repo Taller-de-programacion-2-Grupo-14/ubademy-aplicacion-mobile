@@ -26,7 +26,7 @@ function BuscarScreen({ navigation }) {
 	const [tipo, setTipo] = React.useState('');
 	const [suscripcion, setSuscripcion] = React.useState('');
 	const [textoLibre, setTextoLibre] = React.useState('');
-	const busqueda = {tipo:'', suscripcion:'', textoLibre:''};
+	const busqueda = { tipo: '', suscripcion: '', textoLibre: '' };
 
 	const isFocused = useIsFocused();
 
@@ -112,7 +112,8 @@ function BuscarScreen({ navigation }) {
 										busqueda.tipo = tipo;
 										busqueda.suscripcion = suscripcion;
 										busqueda.textoLibre = textoLibre;
-										navigation.navigate('ElegirCursoScreen', busqueda);}} >
+										navigation.navigate('ElegirCursoScreen', busqueda);
+									}} >
 									Buscar
 								</Button>
 							</VStack>

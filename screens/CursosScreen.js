@@ -29,20 +29,20 @@ export function CursosScreen() {
 	return (
 		<NativeBaseProvider>
 			<Stack.Navigator initialRouteName="MisCursosScreen">
-				<Stack.Screen name="MisCursosScreen" component={MisCursosScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="MisCursosCreadosScreen" component={MisCursosCreadosScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="MiCursoCreadoScreen" component={MiCursoCreadoScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="MisCursosInscriptosScreen" component={MisCursosInscriptosScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="MiCursoInscriptoScreen" component={MiCursoInscriptoScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="MisColaboracionesScreen" component={MisColaboracionesScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="MiCursoColaboradorScreen" component={MiCursoColaboradorScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="EdicionCursoScreen" component={EdicionCursoScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="ListadoAlumnosScreen" component={ListadoAlumnosScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="ListadoProfesoresScreen" component={ListadoProfesoresScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="ABcolaboradorScreen" component={ABcolaboradorScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="CrearExamenScreen" component={CrearExamenScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="ResolverExamenScreen" component={ResolverExamenScreen} options={{ headerShown: false }}/>
-				<Stack.Screen name="VerExamenScreen" component={VerExamenScreen} options={{ headerShown: false }}/>
+				<Stack.Screen name="MisCursosScreen" component={MisCursosScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="MisCursosCreadosScreen" component={MisCursosCreadosScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="MiCursoCreadoScreen" component={MiCursoCreadoScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="MisCursosInscriptosScreen" component={MisCursosInscriptosScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="MiCursoInscriptoScreen" component={MiCursoInscriptoScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="MisColaboracionesScreen" component={MisColaboracionesScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="MiCursoColaboradorScreen" component={MiCursoColaboradorScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="EdicionCursoScreen" component={EdicionCursoScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="ListadoAlumnosScreen" component={ListadoAlumnosScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="ListadoProfesoresScreen" component={ListadoProfesoresScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="ABcolaboradorScreen" component={ABcolaboradorScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="CrearExamenScreen" component={CrearExamenScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="ResolverExamenScreen" component={ResolverExamenScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="VerExamenScreen" component={VerExamenScreen} options={{ headerShown: false }} />
 			</Stack.Navigator>
 		</NativeBaseProvider>
 	);

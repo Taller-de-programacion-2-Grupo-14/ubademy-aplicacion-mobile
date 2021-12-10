@@ -59,7 +59,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'name': 'Taller',
 							'creator_first_name': 'Franco',
@@ -130,7 +130,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses/favorites`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'name': 'Fisica Newtoniana',
 							'creator_first_name': 'Franco',
@@ -283,7 +283,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses/my_courses`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'name': 'Algebra',
 							'id': 1,
@@ -300,7 +300,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses/my_subscriptions`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'name': 'Arboles',
 							'id': 1,
@@ -331,7 +331,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses/users/:id`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'user_id': 1,
 							'last_name': 'Pacino',
@@ -352,7 +352,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses/:id/view`, () => {
 				return {
-					'message':{
+					'message': {
 						'name': 'Quimica',
 						'cancelled': 0,
 						'id': 27,
@@ -364,7 +364,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses/collaborations`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'name': 'Empanadas',
 							'id': 5,
@@ -385,7 +385,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/courses/historical`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'id': 1,
 							'name': 'Pensamiento Cientifico',
@@ -421,7 +421,7 @@ export function makeServer({ environment = 'test' } = {}) {
 			});
 			this.get(`${global.host}/exams/:id`, () => {
 				return {
-					'message':[
+					'message': [
 						{
 							'id': 1,
 							'nombre': 'Parcial 1 - Termodinamica',

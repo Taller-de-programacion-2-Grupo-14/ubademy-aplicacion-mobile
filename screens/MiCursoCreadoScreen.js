@@ -50,7 +50,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 					text: 'No',
 					style: 'cancel'
 				},
-				{ text: 'Si', style: 'destructive',
+				{
+					text: 'Si', style: 'destructive',
 					onPress: () => {
 						cancelarCurso(String(route.params.id))
 							.then((response) => response.json())
@@ -95,7 +96,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 						setEstado('Indeterminado (por error 503)');
 					} else {
 						setNombre(json.message.name);
-						if (json.message.cancelled == 0){
+						if (json.message.cancelled == 0) {
 							setEstado('Vigente');
 						} else {
 							setEstado('Cancelado');
@@ -150,7 +151,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{position: 'absolute', top: 20, right: 20}}>
+						<Box style={{ position: 'absolute', top: 20, right: 20 }}>
 							<Menu
 								w="190"
 								trigger={(triggerProps) => {
@@ -161,24 +162,24 @@ function MiCursoCreadoScreen({ navigation, route }) {
 									);
 								}}
 							>
-								<Menu.Item onPress={() => {navigation.navigate('EdicionCursoScreen', route.params);}} >Editar curso</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('ListadoAlumnosScreen', route.params.id);}}>Listado de alumnos</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('ListadoProfesoresScreen', route.params.id);}}>Listado de profesores</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('CrearExamenScreen', route.params);}}>Crear exámen</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('ABcolaboradorScreen', route.params.id);}}>Alta de colaborador</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('EdicionCursoScreen', route.params); }} >Editar curso</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('ListadoAlumnosScreen', route.params.id); }}>Listado de alumnos</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('ListadoProfesoresScreen', route.params.id); }}>Listado de profesores</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('CrearExamenScreen', route.params); }}>Crear exámen</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('ABcolaboradorScreen', route.params.id); }}>Alta de colaborador</Menu.Item>
 								<Divider />
-								<Menu.Item onPress={() => {navigation.navigate('MiCursoInscriptoScreen', route.params);}} >Ver curso como estudiante</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('MiCursoInscriptoScreen', route.params); }} >Ver curso como estudiante</Menu.Item>
 								<Divider />
 								<Menu.Item onPress={cancelar} >Cancelar curso</Menu.Item>
-								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('MisCursosScreen'); }} >Salir del curso</Menu.Item>
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{ nombre }
+								{nombre}
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600">
-								{'\n'}Estado: { estado }
+								{'\n'}Estado: {estado}
 							</Heading>
 							<Divider my="5" />
 							<Heading size="xl" color="coolGray.800" fontWeight="600">

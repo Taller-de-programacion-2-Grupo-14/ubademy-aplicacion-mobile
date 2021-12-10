@@ -123,14 +123,14 @@ function CondicionesScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box style={{top: 20, alignItems: 'flex-end'}}>
+						<Box style={{ top: 20, alignItems: 'flex-end' }}>
 							<Pressable onPress={() => this.corazon()} >
 								<Icon name={favorito ? 'favorite' : 'favorite-border'} size={35} color={favorito ? 'red' : 'black'} />
 							</Pressable>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold >
-								{ route.params.name }
+								{route.params.name}
 							</Heading>
 							<Heading size="lg" color="coolGray.800" fontWeight="600">
 								{'\n'}Condiciones de la inscripción
@@ -142,55 +142,55 @@ function CondicionesScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Creador del curso:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.creator_first_name } { route.params.creator_last_name } </Text>
+									<Text fontSize="sm" > {route.params.creator_first_name} {route.params.creator_last_name} </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Descripción:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.description } </Text>
+									<Text fontSize="sm" > {route.params.description} </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Hashtags:
 									</FormControl.Label>
-									<Text fontSize="sm"> { route.params.hashtags } </Text>
+									<Text fontSize="sm"> {route.params.hashtags} </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de curso:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.type } </Text>
+									<Text fontSize="sm" > {route.params.type} </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Cantidad de exámenes:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.exams } </Text>
+									<Text fontSize="sm" > {route.params.exams} </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de suscripción:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.subscription } </Text>
+									<Text fontSize="sm" > {route.params.subscription} </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Ubicación:
 									</FormControl.Label>
-									<Text fontSize="sm" > { route.params.location } </Text>
+									<Text fontSize="sm" > {route.params.location} </Text>
 								</FormControl>
 							</VStack>
 							<Button mt="2" isDisabled={!route.params.can_subscribe} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 								Confirmar inscripción
 							</Button>
-							<Text color={route.params.can_subscribe ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}> {route.params.is_subscribed ? 'Usted ya está inscripto' :
+							<Text color={route.params.can_subscribe ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}> {route.params.is_subscribed ? 'Usted ya está inscripto' :
 								route.params.can_edit ? 'Usted es el creador' : 'No tiene el nivel de suscrcripción adecuado'
 							}
 							</Text>

@@ -125,7 +125,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 												setShowModal(false);
 											}}
 										>
-										Cancelar
+											Cancelar
 										</Button>
 										<Button
 											onPress={() => {
@@ -135,13 +135,13 @@ function ListadoAlumnosScreen({ navigation, route }) {
 												setApellido('');
 											}}
 										>
-										Buscar
+											Buscar
 										</Button>
 									</Button.Group>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Modal isOpen={showModalError} onClose={() => {if (bloqueado) {navigation.navigate('LoginScreen');} setShowModalError(false);}} size="lg">
+						<Modal isOpen={showModalError} onClose={() => { if (bloqueado) { navigation.navigate('LoginScreen'); } setShowModalError(false); }} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>
@@ -168,7 +168,7 @@ function ListadoAlumnosScreen({ navigation, route }) {
 						</Link>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center', top: 20 }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-							Listado de alumnos{'\n'}
+								Listado de alumnos{'\n'}
 							</Heading>
 							<FlatList
 								data={alumnos}

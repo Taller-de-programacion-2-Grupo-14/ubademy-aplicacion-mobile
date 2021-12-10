@@ -1,7 +1,4 @@
 import Constants from 'expo-constants';
-//import { Platform } from 'react-native';
-
-// const localhost = Platform.OS === 'ios' ? 'localhost:8080' : '10.0.2.2:8080';
 
 const ENV = {
 	dev: {
@@ -20,6 +17,8 @@ const ENV = {
 	}
 };
 
+const GOOGLE_PLACES_API_KEY = 'AIzaSyCQSjz81wWuE8r6wh7O_dM--76bg3Z6np4';
+
 const getEnvVars = (env = Constants.manifest.releaseChannel) => {
 	// What is __DEV__ ?
 	// This variable is set to true when react-native is running in Dev mode.
@@ -34,4 +33,9 @@ const getEnvVars = (env = Constants.manifest.releaseChannel) => {
 	}
 };
 
+export const getGoogleAPIKey = () => {
+	return GOOGLE_PLACES_API_KEY;
+};
+
 export default getEnvVars;
+
