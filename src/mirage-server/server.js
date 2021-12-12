@@ -536,6 +536,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.post(`${global.host}/exams/correct/:id`, () => {
+				return {
+					'status': 200
+				};
+			});
 		},
 	});
 

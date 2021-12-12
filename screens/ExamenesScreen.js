@@ -37,7 +37,7 @@ function ExamenesScreen({ navigation, route }) {
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.50">
-						{item.nombre_alumno}
+						Alumno: {item.nombre_alumno}
 					</Text>
 				</Flex>
 			</Box>
