@@ -4,7 +4,7 @@ export async function examenesACorregir(idCurso, estado) {
 	const token = await SecureStore.getItemAsync('secure_token');
 	var aEnviar;
 
-	if (estado == '') {
+	if (estado == 'Todos') {
 		aEnviar = `${global.host}/examenes/${idCurso}`;
 	} else {
 		aEnviar = `${global.host}/examenes/${idCurso}?estado=${estado}`;
