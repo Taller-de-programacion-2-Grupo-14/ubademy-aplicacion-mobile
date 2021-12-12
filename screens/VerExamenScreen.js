@@ -57,7 +57,7 @@ function VerExamenScreen({ navigation, route }) {
 	);
 
 	this.publicar = () => {
-		publicarExamen(String(route.params.id))
+		publicarExamen(String(route.params.id_exam))
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -103,7 +103,7 @@ function VerExamenScreen({ navigation, route }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{route.params.nombre}
+								{route.params.exam_name}
 							</Heading>
 							<Box safeArea flex={1} w="95%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 								<FlatList

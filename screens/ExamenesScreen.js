@@ -30,7 +30,7 @@ function ExamenesScreen({ navigation, route }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => navigation.navigate('CorregirExamenScreen', item) }>
+		<Link onPress={() => {item['id_course'] = route.params.id; navigation.navigate('CorregirExamenScreen', item);} }>
 			<Box bg="#C042E2" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.nombre}

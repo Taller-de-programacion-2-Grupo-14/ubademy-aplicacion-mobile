@@ -69,7 +69,7 @@ function CorregirExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		enviarCorreccion(String(route.params.id_exam), nota, observaciones)
+		enviarCorreccion(String(route.params.id_exam), String(route.params.id_student), String(route.params.id_course), nota, observaciones)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
