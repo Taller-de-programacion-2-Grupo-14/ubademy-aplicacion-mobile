@@ -476,6 +476,66 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.get(`${global.host}/examenes/:id`, () => {
+				return {
+					'message': [
+						{
+							'id_student': 1,
+							'id_exam': 1,
+							'nombre_alumno': 'German',
+							'nombre': 'Parcial 1 - Termodinamica',
+							'id_questions': [
+								'q1e1',
+								'q2e1'
+							],
+							'questions': [
+								'¿Cual es el segundo principio de la termodinamica?',
+								'¿Tenet es horrible o solo muy mala?'
+							],
+							'answers': [
+								'La cantidad de entropía del universo tiende a incrementarse en el tiempo.',
+								'Es horrible'
+							]
+						},
+						{
+							'id': 2,
+							'id_exam': 2,
+							'nombre_alumno': 'Luke',
+							'nombre': 'Parcial 2 - Electroquimica',
+							'id_questions': [
+								'q1e2',
+								'q2e2'
+							],
+							'questions': [
+								'¿Que gusto tiene la sal?',
+								'¿Cual es el sentido de la vida?'
+							],
+							'answers': [
+								'Salada.',
+								'Mantenerte ocupado con tonterías insignificantes hasta que eventualmente estés muerto.'
+							]
+						},
+						{
+							'id': 3,
+							'id_exam': 3,
+							'nombre_alumno': 'Marty',
+							'nombre': 'Parcial 3 - Corrosion',
+							'id_questions': [
+								'q1e3',
+								'q2e3'
+							],
+							'questions': [
+								'¿Quien descubrio america?',
+								'¿Cuanto es 2+2?'
+							],
+							'answers': [
+								'Enrique Borja',
+								'5'
+							]
+						}],
+					'status': 200
+				};
+			});
 		},
 	});
 

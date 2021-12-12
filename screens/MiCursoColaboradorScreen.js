@@ -192,6 +192,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 									);
 								}}
 							>
+								<Menu.Item onPress={() => { navigation.navigate('ExamenesScreen', route.params.id); }}>Corregir exámenes</Menu.Item>
 								<Menu.Item onPress={baja} >Darse de baja del curso</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 							</Menu>

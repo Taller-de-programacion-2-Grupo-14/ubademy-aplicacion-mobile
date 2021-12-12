@@ -124,9 +124,6 @@ function VerExamenScreen({ navigation, route }) {
 								</Button> :
 								null
 							}
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} >
-								Corregir
-							</Button>
 						</Box>
 					</>
 			}

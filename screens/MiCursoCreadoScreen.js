@@ -216,6 +216,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								<Menu.Item onPress={() => { navigation.navigate('ListadoProfesoresScreen', route.params.id); }}>Listado de profesores</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('CrearExamenScreen', route.params); }}>Crear exámen</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ABcolaboradorScreen', route.params.id); }}>Alta de colaborador</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('ExamenesScreen', route.params.id); }}>Corregir exámenes</Menu.Item>
 								<Divider />
 								<Menu.Item onPress={() => { navigation.navigate('MiCursoInscriptoScreen', route.params); }} >Ver curso como estudiante</Menu.Item>
 								<Divider />
