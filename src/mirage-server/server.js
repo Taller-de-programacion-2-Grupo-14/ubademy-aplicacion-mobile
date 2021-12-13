@@ -523,6 +523,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.put(`${global.host}/exams/edit/:id`, () => {
+				return {
+					'status': 200
+				};
+			});
 		},
 	});
 

@@ -23,6 +23,7 @@ import ExamenesScreen from './ExamenesScreen';
 import CorregirExamenScreen from './CorregirExamenScreen';
 import ResueltosScreen from './ResueltosScreen';
 import ExamenResueltoScreen from './ExamenResueltoScreen';
+import EditarExamenScreen from './EditarExamenScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
@@ -51,6 +52,7 @@ export function CursosScreen() {
 				<Stack.Screen name="CorregirExamenScreen" component={CorregirExamenScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="ResueltosScreen" component={ResueltosScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="ExamenResueltoScreen" component={ExamenResueltoScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="EditarExamenScreen" component={EditarExamenScreen} options={{ headerShown: false }} />
 			</Stack.Navigator>
 		</NativeBaseProvider>
 	);

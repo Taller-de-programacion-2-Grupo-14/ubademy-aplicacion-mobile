@@ -1,75 +1,61 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
 	Heading,
+	ScrollView,
 	Spinner,
-	FlatList,
-	Divider,
-	Button,
 	Modal,
 	VStack,
 	HStack,
-	Text
+	Text,
+	Button,
+	FormControl,
+	Input
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-import { publicarExamen } from '../src/services/publicarExamen';
+import { editarExamen } from '../src/services/editarExamen';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
-VerExamenScreen.propTypes = {
+EditarExamenScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-function VerExamenScreen({ navigation, route }) {
+function EditarExamenScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
-	const [preguntas, setPreguntas] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [mostrar, setMostrar] = useState(true);
-	const isFocused = useIsFocused();
-
-	const renderItem = ({ item }) => (
-		<>
-			<Heading size="lg" color="coolGray.800" fontWeight="600" >
-				{item}
-			</Heading>
-			<Divider my="5" />
-		</>
-	);
+	const [nombre, setNombre] = React.useState('');
+	const [pregunta, setPregunta] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
-			if (route.params.verComoCreador) {
-				setMostrar(true);
-			} else {
-				setMostrar(false);
-			}
-			setPreguntas(route.params.questions);
+			// Do something when the screen is focused
+			setNombre(route.params.exam_name);
+			setPregunta(route.params.questions[0]);
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [isFocused])
+		}, [])
 	);
 
-	this.publicar = () => {
-		publicarExamen(String(route.params.id_exam))
+	this.onSubmit = () => {
+		editarExamen(String(route.params.id_exam), String(route.params.id_course), nombre, [pregunta])
 			.then((response) => response.json())
 			.then((json) => {
-				console.log(json);
 				if (json.status === 200) {
-					setMessage('¡Publicación exitosa!');
+					setShowModal(true);
+					setMessage('¡Datos actualizados!');
 				} else {
 					setError(true);
-					setMessage('Error en la publicación del exámen');
+					setShowModal(true);
+					setMessage('Ha ocurrido un error');
 				}
-				setShowModal(true);
 			});
 	};
 
@@ -81,7 +67,12 @@ function VerExamenScreen({ navigation, route }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<>
+					<ScrollView
+						_contentContainerStyle={{
+							px: '20px',
+							mb: '4',
+						}}
+					>
 						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
@@ -95,39 +86,41 @@ function VerExamenScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModal(false) : navigation.goBack();
+											setShowModal(false);
+											if (!error) navigation.goBack();
 										}}
 									>
-										Continuar
+                    Continuar
 									</Button>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{route.params.exam_name}
+								Editar exámen
 							</Heading>
-							<Box safeArea flex={1} w="95%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-								<FlatList
-									data={preguntas}
-									renderItem={renderItem}
-									keyExtractor={(item, index) => index.toString()}
-								/>
-							</Box>
-							{mostrar ?
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { navigation.navigate('EditarExamenScreen', route.params); }}>
-									Editar exámen
-								</Button> :
-								null
-							}
-							{mostrar ?
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
-									Publicar
-								</Button> :
-								null
-							}
+							<VStack space={3} mt="5">
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Nombre del exámen
+									</FormControl.Label>
+									<Input onChangeText={(nombre) => setNombre(nombre)} value={nombre} multiline={true}/>
+								</FormControl>
+
+								<FormControl>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Pregunta
+									</FormControl.Label>
+									<Input onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true}/>
+								</FormControl>
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+									Confirmar
+								</Button>
+							</VStack>
 						</Box>
-					</>
+					</ScrollView>
 			}
 		</NativeBaseProvider>
 	);
@@ -141,4 +134,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default VerExamenScreen;
+export default EditarExamenScreen;
