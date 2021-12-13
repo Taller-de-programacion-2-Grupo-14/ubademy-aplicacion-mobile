@@ -479,7 +479,9 @@ export function makeServer({ environment = 'test' } = {}) {
 							'answers': [
 								'La cantidad de entropía del universo tiende a incrementarse en el tiempo.',
 								'Es horrible'
-							]
+							],
+							'correction': 'Es el mejor exámen que he visto en mi vida.',
+							'status': 'Aprobado'
 						},
 						{
 							'id_student': 2,
@@ -493,7 +495,9 @@ export function makeServer({ environment = 'test' } = {}) {
 							'answers': [
 								'Salada.',
 								'Mantenerte ocupado con tonterías insignificantes hasta que eventualmente estés muerto.'
-							]
+							],
+							'correction': 'Y, eeeeh, mas o menos.',
+							'status': 'Aprobado'
 						},
 						{
 							'id_student': 3,
@@ -507,7 +511,9 @@ export function makeServer({ environment = 'test' } = {}) {
 							'answers': [
 								'Enrique Borja',
 								'5'
-							]
+							],
+							'correction': 'Es el peor exámen que he visto en mi vida.',
+							'status': 'Desaprobado'
 						}],
 					'status': 200
 				};
