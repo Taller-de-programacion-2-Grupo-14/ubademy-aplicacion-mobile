@@ -69,7 +69,7 @@ function CorregirExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		enviarCorreccion(String(route.params.id_exam), String(route.params.id_student), String(route.params.id_course), nota, observaciones)
+		enviarCorreccion(String(route.params.exam_id), String(route.params.id_student), String(route.params.id_course), nota, observaciones)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -118,7 +118,7 @@ function CorregirExamenScreen({ navigation, route }) {
 								{route.params.nombre}
 							</Heading>
 							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
-								Alumno: {route.params.nombre_alumno}
+								ID del estudiante: {route.params.id_student}
 							</Heading>
 							<Box safeArea flex={1} w="95%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 								<FlatList

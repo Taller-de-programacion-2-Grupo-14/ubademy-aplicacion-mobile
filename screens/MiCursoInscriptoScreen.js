@@ -137,6 +137,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 									);
 								}}
 							>
+								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={() => { navigation.navigate('ResueltosScreen', route.params.id); }} >Exámenes resueltos</Menu.Item>
 								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
 								{route.params.verComoCreador ?
 									<Menu.Item onPress={() => { navigation.goBack(); }} >Ver curso como creador</Menu.Item> :
@@ -150,7 +151,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 							</Heading>
 							<Divider my="5" />
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								Exámenes
+								Exámenes a resolver
 							</Heading>
 							<FlatList
 								data={examenes}
