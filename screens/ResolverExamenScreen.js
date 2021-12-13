@@ -44,12 +44,12 @@ function ResolverExamenScreen({ navigation, route }) {
 
 	this.onSubmit = () => {
 		setRespuestas([respuesta]);
-		completarExamen(String(route.params.id), route.params.questions, respuestas)
+		completarExamen(String(route.params.id), String(route.params.course_id), route.params.questions, respuestas)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
 				if (json.status === 200) {
-					setMessage('¡Examen enviado correctamente!');
+					setMessage('¡Exámen enviado correctamente!');
 				} else {
 					setError(true);
 					setMessage('Error en el enviado del exámen');

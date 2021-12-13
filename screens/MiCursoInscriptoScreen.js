@@ -65,7 +65,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 		);
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; navigation.navigate('ResolverExamenScreen', item);}}>
+		<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; item['course_id'] = route.params.id; navigation.navigate('ResolverExamenScreen', item);}}>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.exam_name}
