@@ -528,6 +528,11 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
+			this.post(`${global.host}/courses/collaborators/send_request`, () => {
+				return {
+					'status': 200
+				};
+			});
 		},
 	});
 
