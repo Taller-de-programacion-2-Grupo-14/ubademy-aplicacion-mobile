@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-export async function publicarExamen(idExamen) {
+export async function publicarExamen(idCurso, nombreExamen) {
 	const token = await SecureStore.getItemAsync('secure_token');
 
 	return fetch(`${global.host}/exams/publish`, {
@@ -10,6 +10,6 @@ export async function publicarExamen(idExamen) {
 			'x-access-token': token,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 'exam_id': idExamen })
+		body: JSON.stringify({ 'exam_name': nombreExamen, 'course_id': idCurso })
 	});
 }

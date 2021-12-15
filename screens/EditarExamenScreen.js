@@ -45,7 +45,7 @@ function EditarExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		editarExamen(String(route.params.id_exam), String(route.params.id_course), nombre, [pregunta])
+		editarExamen(String(route.params.id_course), nombre, [pregunta])
 			.then((response) => response.json())
 			.then((json) => {
 				if (json.status === 200) {

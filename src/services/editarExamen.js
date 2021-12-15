@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 export async function editarExamen(idExamen, idCurso, nombre, pregunta) {
 	const token = await SecureStore.getItemAsync('secure_token');
 
-	return fetch(`${global.host}/exams/edit/${idExamen}`, {
+	return fetch(`${global.host}/exams/edit`, {
 		method: 'PUT',
 		headers: {
 			Accept: 'application/json',

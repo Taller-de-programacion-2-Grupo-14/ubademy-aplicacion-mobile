@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-export async function completarExamen(idExamen, idCurso, preguntas, respuestas) {
+export async function completarExamen(idCurso, preguntas, respuestas, nombreExamen) {
 	const token = await SecureStore.getItemAsync('secure_token');
 
 	return fetch(`${global.host}/exams/resolve/${idCurso}`, {
@@ -10,6 +10,6 @@ export async function completarExamen(idExamen, idCurso, preguntas, respuestas) 
 			'x-access-token': token,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 'id_exam': idExamen , 'questions': preguntas, 'answers': respuestas })
+		body: JSON.stringify({ 'name': nombreExamen , 'questions': preguntas, 'answers': respuestas })
 	});
 }

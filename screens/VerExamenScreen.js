@@ -59,7 +59,7 @@ function VerExamenScreen({ navigation, route }) {
 	);
 
 	this.publicar = () => {
-		publicarExamen(String(route.params.id_exam))
+		publicarExamen(route.params.exam_name, route.params.id_course)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);

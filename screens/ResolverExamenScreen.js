@@ -44,7 +44,7 @@ function ResolverExamenScreen({ navigation, route }) {
 
 	this.onSubmit = () => {
 		setRespuestas([respuesta]);
-		completarExamen(String(route.params.id), String(route.params.course_id), route.params.questions, respuestas)
+		completarExamen(String(route.params.course_id), route.params.questions, respuestas, route.params.exam_name)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);

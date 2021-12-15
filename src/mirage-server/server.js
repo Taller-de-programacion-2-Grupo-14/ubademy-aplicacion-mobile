@@ -523,7 +523,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.put(`${global.host}/exams/edit/:id`, () => {
+			this.put(`${global.host}/exams/edit`, () => {
 				return {
 					'status': 200
 				};
