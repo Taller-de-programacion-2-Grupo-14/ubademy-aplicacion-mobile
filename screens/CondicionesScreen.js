@@ -46,7 +46,7 @@ function CondicionesScreen({ navigation, route }) {
 				.then(data => data.json())
 				.then(json => {
 					console.log(json);
-					setFavorito(json.message.favorito);
+					setFavorito(json.message.liked);
 					setLoading(false);
 				});
 			return () => {
