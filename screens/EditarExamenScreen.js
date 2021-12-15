@@ -28,13 +28,11 @@ function EditarExamenScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [nombre, setNombre] = React.useState('');
 	const [pregunta, setPregunta] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setNombre(route.params.exam_name);
 			setPregunta(route.params.questions[0]);
 			setLoading(false);
 			return () => {
@@ -45,7 +43,7 @@ function EditarExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		editarExamen(String(route.params.id_course), nombre, [pregunta])
+		editarExamen(String(route.params.id_course), route.params.title, [pregunta])
 			.then((response) => response.json())
 			.then((json) => {
 				if (json.status === 200) {
@@ -99,15 +97,10 @@ function EditarExamenScreen({ navigation, route }) {
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								Editar exámen
 							</Heading>
+							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
+								{route.params.title}
+							</Heading>
 							<VStack space={3} mt="5">
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Nombre del exámen
-									</FormControl.Label>
-									<Input onChangeText={(nombre) => setNombre(nombre)} value={nombre} multiline={true}/>
-								</FormControl>
-
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>

@@ -31,6 +31,7 @@ function VerExamenScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [mostrar, setMostrar] = useState(true);
+	const [publicado, setPublicado] = useState(false);
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
@@ -49,6 +50,11 @@ function VerExamenScreen({ navigation, route }) {
 			} else {
 				setMostrar(false);
 			}
+			if (route.params.status=='published'){
+				setPublicado(true);
+			} else {
+				setPublicado(false);
+			}
 			setPreguntas(route.params.questions);
 			setLoading(false);
 			return () => {
@@ -59,7 +65,7 @@ function VerExamenScreen({ navigation, route }) {
 	);
 
 	this.publicar = () => {
-		publicarExamen(route.params.exam_name, route.params.id_course)
+		publicarExamen(route.params.id_course, route.params.title)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -115,15 +121,21 @@ function VerExamenScreen({ navigation, route }) {
 								/>
 							</Box>
 							{mostrar ?
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { navigation.navigate('EditarExamenScreen', route.params); }}>
+								<Button mt="2" isDisabled={publicado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { navigation.navigate('EditarExamenScreen', route.params); }}>
 									Editar exámen
 								</Button> :
 								null
 							}
 							{mostrar ?
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
+								<Button mt="2" isDisabled={publicado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
 									Publicar
 								</Button> :
+								null
+							}
+							{mostrar ?
+								<Text color={!publicado ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
+									El exámen ya ha sido publicado
+								</Text> :
 								null
 							}
 						</Box>

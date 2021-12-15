@@ -68,7 +68,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 		<Link onPress={() => {route.params.verComoCreador ? item['verComoCreador'] = true : item['verComoCreador'] = false; item['course_id'] = route.params.id; navigation.navigate('ResolverExamenScreen', item);}}>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.exam_name}
+					{item.title}
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
@@ -82,7 +82,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerExamenes(String(route.params.id))
+			obtenerExamenes(String(route.params.id), '')
 				.then(data => data.json())
 				.then(json => {
 					console.log(json);
@@ -156,7 +156,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 							<FlatList
 								data={examenes}
 								renderItem={renderItem}
-								keyExtractor={item => String(item.id_exam)}
+								keyExtractor={item => String(item.title)}
 							/>
 						</Box>
 					</>
