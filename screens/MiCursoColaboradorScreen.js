@@ -74,7 +74,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('VerExamenScreen', item);} }>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.exam_name}
+					{item.title}
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
@@ -213,7 +213,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 							<FlatList
 								data={examenes}
 								renderItem={renderItem}
-								keyExtractor={item => String(item.id_exam)}
+								keyExtractor={item => String(item.title)}
 							/>
 						</Box>
 					</>
