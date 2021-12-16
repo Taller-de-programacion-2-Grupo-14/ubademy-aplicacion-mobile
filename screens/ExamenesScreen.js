@@ -33,11 +33,11 @@ function ExamenesScreen({ navigation, route }) {
 		<Link onPress={() => {item['id_course'] = route.params; navigation.navigate('CorregirExamenScreen', item);} }>
 			<Box bg="#C042E2" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.exam_name}
+					{item.exam}
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.50">
-						ID del estudiante: {item.id_student}
+						ID del estudiante: {item.user}
 					</Text>
 				</Flex>
 			</Box>
@@ -105,7 +105,7 @@ function ExamenesScreen({ navigation, route }) {
 							<FlatList
 								data={examenes}
 								renderItem={renderItem}
-								keyExtractor={item => String(item.exam_id)}
+								keyExtractor={(item, index) => index.toString()}
 							/>
 						</Box>
 					</>
