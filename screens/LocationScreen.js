@@ -7,9 +7,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Button } from 'react-native';
 import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
-import { getGoogleAPIKey } from '../environment';
-
-const GOOGLE_PLACES_API_KEY = getGoogleAPIKey();
+import Constants from 'expo-constants';
+import { StatusBar } from "native-base";
 
 navigator.geolocation = require('react-native-geolocation-service');
 
@@ -55,7 +54,7 @@ const MapInput = (props) => {
 			}
 
 			query={{
-				key: GOOGLE_PLACES_API_KEY,
+				key: Constants.manifest.extra.googlePlaces.googlePlacesApiKey,
 				language: 'es'
 			}}
 
@@ -138,6 +137,7 @@ const LocationScreen = ({ navigation }) => {
 
 	return (
 		<View style={styles.container}>
+			<StatusBar backgroundColor="#000000" barStyle="light-content" />
 			<View style={{ flex: 1 }}>
 				<MapInput notifyChange={
 					(loc, address) => {

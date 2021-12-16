@@ -4,14 +4,15 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
-	Spinner
+	Spinner,
+	Button
 } from 'native-base';
 
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
-import { useFocusEffect } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
 	const [firstName, setFirstName] = React.useState('');
 	const [loading, setLoading] = React.useState(true);
 
@@ -44,6 +45,14 @@ export default function HomeScreen() {
 						<Heading size="lg" fontWeight="600" color="coolGray.800" >
 							Bienvenido {firstName}
 						</Heading>
+						<Button colorScheme="indigo"
+							flex="1"
+							onPress={() => {
+								navigation.navigate('Subscripcion');
+							}}
+						>
+							Continuar
+						</Button>
 					</Box>
 			}
 		</NativeBaseProvider >
