@@ -8,7 +8,7 @@ import { Button } from 'react-native';
 import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
 import Constants from 'expo-constants';
-import { StatusBar } from "native-base";
+import { StatusBar } from 'native-base';
 
 navigator.geolocation = require('react-native-geolocation-service');
 
