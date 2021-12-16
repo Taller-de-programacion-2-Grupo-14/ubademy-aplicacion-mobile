@@ -16,6 +16,7 @@ import {
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { publicarExamen } from '../src/services/publicarExamen';
+import { obtenerExamen } from '../src/services/obtenerExamen';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -55,7 +56,18 @@ function VerExamenScreen({ navigation, route }) {
 			} else {
 				setPublicado(false);
 			}
-			setPreguntas(route.params.questions);
+
+			obtenerExamen(String(route.params.id_course), route.params.title)
+				.then((response) => response.json())
+				.then((json) => {
+					if (json.status === 200) {
+						setPreguntas(json.message.questions);
+					} else {
+						setError(true);
+						setShowModal(true);
+						setMessage('Ha ocurrido un error');
+					}
+				});
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
