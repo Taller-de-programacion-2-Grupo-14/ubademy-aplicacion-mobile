@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 export async function enviarCorreccion(idEstudiante, idCurso, nota, observaciones, nombreExamen) {
 	const token = await SecureStore.getItemAsync('secure_token');
 
-	return fetch(`${global.host}/resolution/grade`, {
+	return fetch(`${global.host}/resolution/grade/${idCurso}/${idEstudiante}`, {
 		method: 'PATCH',
 		headers: {
 			Accept: 'application/json',

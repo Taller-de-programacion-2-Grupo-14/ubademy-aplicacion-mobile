@@ -20,6 +20,7 @@ import {
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { enviarCorreccion } from '../src/services/enviarCorreccion';
+import { obtenerExamen } from '../src/services/obtenerExamen';
 import PropTypes from 'prop-types';
 
 CorregirExamenScreen.propTypes = {
@@ -36,6 +37,7 @@ function CorregirExamenScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [nota, setNota] = React.useState('');
+	const [corregido, setCorregido] = React.useState(false);
 
 	const renderItem = ({ item, index }) => (
 		<>
@@ -58,8 +60,25 @@ function CorregirExamenScreen({ navigation, route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setPreguntas(route.params.questions);
-			setRespuestas(route.params.answers);
+			if (route.params.status == 'nc'){
+				setCorregido(false);
+			} else {
+				setCorregido(true);
+			}
+
+			obtenerExamen(String(route.params.course), route.params.exam)
+				.then((response) => response.json())
+				.then((json) => {
+					if (json.status === 200) {
+						setPreguntas(json.message.questions);
+					} else {
+						setError(true);
+						setShowModal(true);
+						setMessage('Ha ocurrido un error');
+					}
+				});
+			//setPreguntas(route.params.questions);
+			setRespuestas(route.params.answer);
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -69,7 +88,7 @@ function CorregirExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		enviarCorreccion(String(route.params.id_student), String(route.params.id_course), nota, observaciones, route.params.exam_name)
+		enviarCorreccion(String(route.params.user), String(route.params.course), nota, observaciones, route.params.exam)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -115,10 +134,10 @@ function CorregirExamenScreen({ navigation, route }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{route.params.exam_name}
+								{route.params.exam}
 							</Heading>
 							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
-								ID del estudiante: {route.params.id_student}
+								ID del estudiante: {route.params.user}
 							</Heading>
 							<Box safeArea flex={1} w="95%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 								<FlatList
@@ -129,35 +148,71 @@ function CorregirExamenScreen({ navigation, route }) {
 								/>
 							</Box>
 
-							<FormControl isRequired>
-								<FormControl.Label
-									_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-									Nota</FormControl.Label>
-								<Select
-									selectedValue={nota}
-									minWidth="200"
-									accessibilityLabel="Aprobado / Desaprobado"
-									placeholder="Aprobado / Desaprobado"
-									_selectedItem={{
-										bg: 'teal.600',
-										endIcon: <CheckIcon size="5" />,
-									}}
-									mt={1}
-									onValueChange={(nota) => setNota(nota)}
-								>
-									<Select.Item label="Aprobado" value="Aprobado" />
-									<Select.Item label="Desaprobado" value="Desaprobado" />
-								</Select>
-								<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-									Seleccionar uno
-								</FormControl.ErrorMessage>
-							</FormControl>
+							{corregido ?
+								<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
+									Nota:
+								</Heading>
+								:
+								null
+							}
+							{corregido ?
+								<Heading size="lg" color="coolGray.800" fontWeight="600" >
+									{route.params.status}
+								</Heading>
+								:
+								null
+							}
+							{corregido ?
+								<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
+									Observaciones:
+								</Heading>
+								:
+								null
+							}
+							{corregido ?
+								<Heading size="lg" color="coolGray.800" fontWeight="600" >
+									{route.params.correction}
+								</Heading>
+								:
+								null
+							}
 
-							<FormControl isRequired>
-								<FormControl.Label>Observaciones:</FormControl.Label>
-								<Input onChangeText={(observaciones) => setObservaciones(observaciones)} value={observaciones} multiline={true} />
-							</FormControl>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()}>
+							{!corregido ?
+								<FormControl isRequired>
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Nota</FormControl.Label>
+									<Select
+										selectedValue={nota}
+										minWidth="200"
+										accessibilityLabel="Aprobado / Desaprobado"
+										placeholder="Aprobado / Desaprobado"
+										_selectedItem={{
+											bg: 'teal.600',
+											endIcon: <CheckIcon size="5" />,
+										}}
+										mt={1}
+										onValueChange={(nota) => setNota(nota)}
+									>
+										<Select.Item label="Aprobado" value="Aprobado" />
+										<Select.Item label="Desaprobado" value="Desaprobado" />
+									</Select>
+									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+										Seleccionar uno
+									</FormControl.ErrorMessage>
+								</FormControl>
+								:
+								null
+							}
+							{!corregido ?
+								<FormControl isRequired>
+									<FormControl.Label>Observaciones:</FormControl.Label>
+									<Input onChangeText={(observaciones) => setObservaciones(observaciones)} value={observaciones} multiline={true} />
+								</FormControl> :
+								null
+							}
+
+							<Button isDisabled={corregido} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()}>
 								Terminar corrección
 							</Button>
 						</Box>
