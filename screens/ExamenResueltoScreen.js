@@ -20,6 +20,7 @@ function ExamenResueltoScreen({ route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [preguntas, setPreguntas] = React.useState([]);
 	const [respuestas, setRespuestas] = React.useState([]);
+	const [estado, setEstado] = React.useState('');
 
 	const renderItem = ({ item, index }) => (
 		<>
@@ -42,8 +43,14 @@ function ExamenResueltoScreen({ route }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			if (route.params.status == 'nc'){
+				setEstado('No corregido');
+			} else {
+				setEstado(route.params.status);
+			}
+
 			setPreguntas(route.params.questions);
-			setRespuestas(route.params.answers);
+			setRespuestas(route.params.answer);
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -63,7 +70,7 @@ function ExamenResueltoScreen({ route }) {
 					<>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{route.params.exam_name}
+								{route.params.exam}
 							</Heading>
 							<Box safeArea flex={1} w="95%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 								<FlatList
@@ -77,7 +84,7 @@ function ExamenResueltoScreen({ route }) {
 								Estado:
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600">
-								{route.params.status}
+								{estado}
 							</Heading>
 							<Heading size="md" color="coolGray.800" fontWeight="600" bold>
 								Observaciones:

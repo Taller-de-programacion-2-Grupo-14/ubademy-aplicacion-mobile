@@ -48,8 +48,20 @@ function VerExamenScreen({ navigation, route }) {
 		React.useCallback(() => {
 			if (route.params.verComoCreador) {
 				setMostrar(true);
+				obtenerExamen(String(route.params.id_course), route.params.title)
+					.then((response) => response.json())
+					.then((json) => {
+						if (json.status === 200) {
+							setPreguntas(json.message.questions);
+						} else {
+							setError(true);
+							setShowModal(true);
+							setMessage('Ha ocurrido un error');
+						}
+					});
 			} else {
 				setMostrar(false);
+				setPreguntas(route.params.questions);
 			}
 			if (route.params.status=='published'){
 				setPublicado(true);
@@ -57,17 +69,7 @@ function VerExamenScreen({ navigation, route }) {
 				setPublicado(false);
 			}
 
-			obtenerExamen(String(route.params.id_course), route.params.title)
-				.then((response) => response.json())
-				.then((json) => {
-					if (json.status === 200) {
-						setPreguntas(json.message.questions);
-					} else {
-						setError(true);
-						setShowModal(true);
-						setMessage('Ha ocurrido un error');
-					}
-				});
+
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused

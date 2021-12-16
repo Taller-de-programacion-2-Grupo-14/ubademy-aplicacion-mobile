@@ -27,7 +27,7 @@ function ResueltosScreen({ navigation, route }) {
 		<Link onPress={() => navigation.navigate('ExamenResueltoScreen', item) }>
 			<Box bg="#C042E2" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.exam_name}
+					{item.exam}
 				</Heading>
 				<Flex>
 					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.50">
@@ -71,7 +71,7 @@ function ResueltosScreen({ navigation, route }) {
 							<FlatList
 								data={examenes}
 								renderItem={renderItem}
-								keyExtractor={item => String(item.exam_id)}
+								keyExtractor={item => String(item.exam)}
 							/>
 						</Box>
 					</>

@@ -20,7 +20,6 @@ import {
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { enviarCorreccion } from '../src/services/enviarCorreccion';
-import { obtenerExamen } from '../src/services/obtenerExamen';
 import PropTypes from 'prop-types';
 
 CorregirExamenScreen.propTypes = {
@@ -66,18 +65,7 @@ function CorregirExamenScreen({ navigation, route }) {
 				setCorregido(true);
 			}
 
-			obtenerExamen(String(route.params.course), route.params.exam)
-				.then((response) => response.json())
-				.then((json) => {
-					if (json.status === 200) {
-						setPreguntas(json.message.questions);
-					} else {
-						setError(true);
-						setShowModal(true);
-						setMessage('Ha ocurrido un error');
-					}
-				});
-			//setPreguntas(route.params.questions);
+			setPreguntas(route.params.questions);
 			setRespuestas(route.params.answer);
 			setLoading(false);
 			return () => {
