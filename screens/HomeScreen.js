@@ -44,6 +44,16 @@ export default function HomeScreen() {
 						<Heading size="lg" fontWeight="600" color="coolGray.800" >
 							Bienvenido {firstName}
 						</Heading>
+						{
+						// <Button colorScheme="indigo"
+						// 	flex="1"
+						// 	onPress={() => {
+						// 		navigation.navigate('Subscripcion');
+						// 	}}
+						// >
+						// 	Continuar
+						// </Button>
+						}
 					</Box>
 			}
 		</NativeBaseProvider >
