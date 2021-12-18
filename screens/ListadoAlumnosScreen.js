@@ -16,12 +16,10 @@ import {
 	Heading,
 	Spinner,
 	Pressable,
-	Icon,
 	Avatar,
 	Spacer,
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import Moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerAlumnos } from '../src/services/obtenerAlumnos';
@@ -163,8 +161,8 @@ function ListadoAlumnosScreen({ navigation, route }) {
 							<Link onPress={() => setShowModal(true)} style={{ position: 'absolute', right: 20, top: 10 }}>
 								<SearchIcon size="8" />
 							</Link>
-							<Box bg="white" flex="1" safeAreaTop>
-								<Heading p="4" pb="3" size="lg">
+							<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center', top: 20 }}>
+								<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 									Alumnos del curso
 								</Heading>
 								{
@@ -182,13 +180,6 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	);
 }
 function Basic({ listData }) {
-
-	const closeRow = (rowMap, rowKey) => {
-		if (rowMap[rowKey]) {
-			rowMap[rowKey].closeRow();
-		}
-		console.log('en close row');
-	};
 
 	const onRowDidOpen = (rowKey) => {
 		console.log('This row opened', rowKey);
@@ -228,53 +219,11 @@ function Basic({ listData }) {
 
 	);
 
-	const renderHiddenItem = (data, rowMap) => (
-		<HStack flex="1" pl="2">
-			<Pressable
-				w="70"
-				ml="auto"
-				bg="coolGray.200"
-				justifyContent="center"
-				onPress={() => closeRow(rowMap, data.item.key)}
-				_pressed={{
-					opacity: 0.5,
-				}}>
-				<VStack alignItems="center" space={2}>
-					<Icon
-						as={<Entypo name="dots-three-horizontal" />}
-						size="xs"
-						color="coolGray.800" onPress={() => console.log('hola')}
-					/>
-					<Text fontSize="xs" fontWeight="medium" color="coolGray.800" onPress={() => console.log('hola')}>
-						Ver
-					</Text>
-
-				</VStack>
-			</Pressable>
-			<Pressable
-				w="70"
-				bg="indigo.500"
-				justifyContent="center"
-				onPress={() => console.log('Quiere chatear')}
-				_pressed={{
-					opacity: 0.5,
-				}}>
-				<VStack alignItems="center" space={2}>
-					<Text color="white" fontSize="xs" fontWeight="medium">
-						Enviar
-					</Text>
-					<Icon as={<MaterialIcons name="message" />} color="white" size="xs" />
-				</VStack>
-			</Pressable>
-		</HStack>
-	);
-
 	return (
 		<Box bg="white" safeArea flex="1">
 			<SwipeListView
 				data={listData}
 				renderItem={renderItem}
-				renderHiddenItem={renderHiddenItem}
 				rightOpenValue={-130}
 				previewRowKey={'0'}
 				previewOpenValue={-40}
