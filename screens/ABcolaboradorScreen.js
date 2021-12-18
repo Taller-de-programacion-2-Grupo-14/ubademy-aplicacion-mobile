@@ -6,30 +6,31 @@ import {
 	Heading,
 	FormControl,
 	VStack,
-	//HStack,
-	//Text,
-	//Modal,
+	HStack,
+	Text,
+	Modal,
 	Button,
 	Input,
 	ScrollView,
 	Spinner
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-//import PropTypes from 'prop-types';
-//import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { enviarSolicitudColaborador } from '../src/services/enviarSolicitudColaborador';
 
-// ABcolaboradorScreen.propTypes = {
-// 	navigation: PropTypes.object.isRequired,
-// 	route: PropTypes.object.isRequired
-// };
+ABcolaboradorScreen.propTypes = {
+	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired
+};
 
+function ABcolaboradorScreen({ navigation, route }) {
 //function ABcolaboradorScreen({ navigation }) {
-function ABcolaboradorScreen() {
 	const [loading, setLoading] = React.useState(true);
 	const [mail, setMail] = React.useState('');
-	//const [showModal, setShowModal] = useState(false);
-	//const [message, setMessage] = React.useState('');
-	//const [error, setError] = React.useState(false);
+	const [showModal, setShowModal] = useState(false);
+	const [message, setMessage] = React.useState('');
+	const [error, setError] = React.useState(false);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -41,6 +42,21 @@ function ABcolaboradorScreen() {
 			};
 		}, [])
 	);
+
+	this.onSubmit = () => {
+		enviarSolicitudColaborador(String(route.params), mail)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				if (json.status === 200) {
+					setMessage('¡Solicitud enviada con éxito!');
+				} else {
+					setError(true);
+					setMessage('Error al enviar la solicitud');
+				}
+				setShowModal(true);
+			});
+	};
 
 	return (
 
@@ -56,29 +72,27 @@ function ABcolaboradorScreen() {
 							mb: '4',
 						}}
 					>
-						{
-						// <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
-						// 	<Modal.Content maxWidth="350">
-						// 		<Modal.Body>
-						// 			<VStack space={3}>
-						// 				<HStack alignItems="center" justifyContent="space-between">
-						// 					<Text fontWeight="medium">{message}</Text>
-						// 				</HStack>
-						// 			</VStack>
-						// 		</Modal.Body>
-						// 		<Modal.Footer>
-						// 			<Button colorScheme="indigo"
-						// 				flex="1"
-						// 				onPress={() => {
-						// 					error ? setShowModal(false) : navigation.goBack();
-						// 				}}
-						// 			>
-							//         Continuar
-						// 			</Button>
-						// 		</Modal.Footer>
-						// 	</Modal.Content>
-						// </Modal>
-						}
+						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+							<Modal.Content maxWidth="350">
+								<Modal.Body>
+									<VStack space={3}>
+										<HStack alignItems="center" justifyContent="space-between">
+											<Text fontWeight="medium">{message}</Text>
+										</HStack>
+									</VStack>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button colorScheme="indigo"
+										flex="1"
+										onPress={() => {
+											error ? setShowModal(false) : navigation.goBack();
+										}}
+									>
+										Continuar
+									</Button>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								Alta de un colaborador
@@ -89,7 +103,7 @@ function ABcolaboradorScreen() {
 									<Input onChangeText={(mail) => setMail(mail)} value={mail} />
 								</FormControl>
 							</VStack>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}>
+							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()}>
                 Enviar solicitud de alta
 							</Button>
 						</Box>

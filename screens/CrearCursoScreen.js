@@ -17,10 +17,14 @@ import {
 	Spinner,
 	Select,
 	CheckIcon,
-	WarningOutlineIcon
+	WarningOutlineIcon,
+	Avatar
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { map, size } from 'lodash';
+import { loadImageFromGallery } from '../src/utils/helpers';
 
 export default function CrearCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
@@ -35,6 +39,12 @@ export default function CrearCursoScreen({ navigation }) {
 	const [message, setMessage] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
+	const [imagesSelected, setImagesSelected] = React.useState([]);
+
+	const imageSelect = async() => {
+		const response = await loadImageFromGallery([4, 3]);
+		setImagesSelected([...imagesSelected, response.image]);
+	};
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -195,6 +205,31 @@ export default function CrearCursoScreen({ navigation }) {
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLocation(location)} />
 								</FormControl>
+
+								<ScrollView horizontal style={{flexDirection: 'row', marginHorizontal: 20, marginTop: 30}}>
+									{
+										size(imagesSelected) < 10 && (
+											<Icon
+												type="material-community"
+												name="camera-alt"
+												//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
+												size={50}
+												color="#7A7A7A"
+												onPress= {imageSelect}
+												//style= {{marginTop: -10}}
+											/>
+										)
+									}
+									{
+										map(imagesSelected, (imagesCurso, index) => (
+											<Avatar
+												key={index}
+												style={{width:60, height:60}}
+												source={{ uri: imagesCurso }}
+											/>
+										))
+									}
+								</ScrollView>
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso

@@ -1,13 +1,13 @@
 import * as SecureStore from 'expo-secure-store';
 
-export async function obtenerExamenes(idCurso, nombreExamen) {
+export async function examenesACorregir(idCurso, estado) {
 	const token = await SecureStore.getItemAsync('secure_token');
 	var aEnviar;
 
-	if (nombreExamen == '') {
-		aEnviar = `${global.host}/exams/${idCurso}`;
+	if (estado == 'Todos') {
+		aEnviar = `${global.host}/resolutions/${idCurso}`;
 	} else {
-		aEnviar = `${global.host}/exams/${idCurso}?name=${nombreExamen}`;
+		aEnviar = `${global.host}/resolutions/${idCurso}?estado=${estado}`;
 	}
 
 	return fetch(`${aEnviar}`, {
