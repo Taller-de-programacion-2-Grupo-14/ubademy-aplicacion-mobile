@@ -101,8 +101,17 @@ export default function LoginScreen({ navigation }) {
 							setMensaje('Usuario bloqueado');
 							setLoading(false);
 							setShowModal(true);
+						} else if (json.status === 503) {
+							setMensaje('El servicio no se encuentra disponible');
+							console.log('El servicio no se encuentra disponible');
+							setLoading(false);
+							setShowModal(true);
+						} else if (json.status === 500) {
+							setMensaje('Error de servidor');
+							setLoading(false);
+							setShowModal(true);
 						} else {
-							setMensaje('Usuario o contraseña invalidos');
+							setMensaje('Error. Intente mas tarde');
 							setLoading(false);
 							setShowModal(true);
 							console.log('email o contrasenia invalidos');
