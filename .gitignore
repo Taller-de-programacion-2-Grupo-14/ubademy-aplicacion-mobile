@@ -55,3 +55,4 @@ buck-out/
 .expo/
 web-build/
 .yarn
+.env

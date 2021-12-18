@@ -17,9 +17,9 @@ function App() {
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="LoginScreen">
 				<Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
-				<Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-				<Stack.Screen name="LocationScreen" component={LocationScreen} />
-				<Stack.Screen name="UpdateUsuarioScreen" component={UpdateUsuarioScreen} />
+				<Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="LocationScreen" component={LocationScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="UpdateUsuarioScreen" component={UpdateUsuarioScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
 				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} />
 				<Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} />
