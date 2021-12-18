@@ -18,6 +18,7 @@ import {
 	Pressable,
 	Avatar,
 	Spacer,
+	Divider
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Moment from 'moment';
@@ -187,7 +188,7 @@ function Basic({ listData }) {
 
 	const renderItem = ({ item }) => (
 
-		< Box >
+		< Box style={{ justifyContent: 'center', top: 5 }} >
 			<Pressable onPress={() => console.log('You touched me')} bg="white">
 				<Box
 					pl="4"
@@ -215,6 +216,7 @@ function Basic({ listData }) {
 					</HStack>
 				</Box>
 			</Pressable>
+			<Divider my="1" />
 		</Box >
 
 	);

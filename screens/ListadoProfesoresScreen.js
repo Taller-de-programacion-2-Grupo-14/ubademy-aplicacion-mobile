@@ -16,7 +16,9 @@ import {
 	Text,
 	SearchIcon,
 	Heading,
-	Spinner
+	Spinner,
+	Avatar,
+	Spacer
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerAlumnos } from '../src/services/obtenerAlumnos';
@@ -72,12 +74,20 @@ function ListadoProfesoresScreen({ navigation, route }) {
 	}
 
 	const renderItem = ({ item }) => (
-		<Box safeArea flex={1} w="90%" mx="auto" py="3" style={{ justifyContent: 'center', top: 20 }}>
+		<Box safeArea flex={1} w="90%" mx="auto"  style={{ justifyContent: 'center', top: 20 }}>
 			<View style={{flexDirection:'row'}}>
-				<Text bold fontSize="md">
-					{item.last_name}, {item.first_name}
-				</Text>
-				<Button colorScheme="red" _text={{ color: 'white' }} style={{ position: 'absolute', right: 20, top: -6}}
+				<HStack alignItems="center" space={3}>
+					{(item.photo_url == '' || item.photo_url == null || item.photo_url == 'undefined') ? (<Avatar bg="indigo.500" size="48px" >{item.first_name.charAt(0).toUpperCase()}</Avatar>) :
+						<Avatar size="48px" source={{ uri: item.photo_url }} />
+					}
+					<VStack>
+						<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
+							{item.first_name} {item.last_name}
+						</Text>
+					</VStack>
+					<Spacer />
+				</HStack>
+				<Button colorScheme="red" _text={{ color: 'white' }} style={{ position: 'absolute', right: 20, top: 6}}
 					onPress={() => baja(item.first_name + ' ' + item.last_name, item.user_id)} >
 					Dar de baja
 				</Button>
