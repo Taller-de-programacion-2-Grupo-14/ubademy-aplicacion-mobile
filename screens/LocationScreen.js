@@ -6,7 +6,7 @@ import { getLocation } from '../src/services/locationService';
 import { useFocusEffect } from '@react-navigation/native';
 import { Button } from 'react-native';
 import PropTypes from 'prop-types';
-import * as SecureStore from 'expo-secure-store';
+//import * as SecureStore from 'expo-secure-store';
 import Constants from 'expo-constants';
 import { StatusBar } from 'native-base';
 

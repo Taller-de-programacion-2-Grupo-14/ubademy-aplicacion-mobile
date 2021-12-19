@@ -24,7 +24,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/storage';
 
 export default function CrearCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
@@ -39,7 +40,7 @@ export default function CrearCursoScreen({ navigation }) {
 	const [message, setMessage] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
-	const [image, setImage] = useState(null);
+	const [image, setImage] = React.useState(null);
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
@@ -49,12 +50,48 @@ export default function CrearCursoScreen({ navigation }) {
 			aspect: [4, 3],
 			quality: 1,
 		});
-
 		console.log(result);
-
 		if (!result.cancelled) {
 			setImage(result.uri);
 		}
+	};
+
+	uploadImage = uri => {
+		return new Promise((resolve, reject) => {
+			let xhr = new XMLHttpRequest();
+			xhr.onerror = reject;
+			xhr.onreadystatechange = () => {
+				if (xhr.readyState === 4) {
+					resolve(xhr.response);
+				}
+			};
+
+			xhr.open('GET', uri);
+			xhr.responseType = 'blob';
+			xhr.send();
+		});
+	};
+
+	const subirImagen = async () =>{
+		console.log(image);
+		this.uploadImage(image)
+			.then(resolve => {
+				let ref = firebase
+					.storage()
+					.ref()
+					.child('imagenes/hola');
+				ref
+					.put(resolve)
+					.then(resolve => {
+						console.log('Imagen subida correctamente');
+					})
+					.catch(error => {
+						console.log('Error al subir la imagen');
+					});
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 
 	useFocusEffect(
@@ -229,7 +266,7 @@ export default function CrearCursoScreen({ navigation }) {
 
 								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirImagen} >
 									Crear curso
 								</Button>
 							</VStack>
