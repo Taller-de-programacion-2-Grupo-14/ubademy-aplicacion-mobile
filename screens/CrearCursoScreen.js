@@ -18,13 +18,13 @@ import {
 	Select,
 	CheckIcon,
 	WarningOutlineIcon,
-	Avatar
+	Image
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { map, size } from 'lodash';
-import { loadImageFromGallery } from '../src/utils/helpers';
+import * as ImagePicker from 'expo-image-picker';
+import { useState } from 'react';
 
 export default function CrearCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
@@ -39,11 +39,22 @@ export default function CrearCursoScreen({ navigation }) {
 	const [message, setMessage] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
-	const [imagesSelected, setImagesSelected] = React.useState([]);
+	const [image, setImage] = useState(null);
 
-	const imageSelect = async() => {
-		const response = await loadImageFromGallery([4, 3]);
-		setImagesSelected([...imagesSelected, response.image]);
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+
+		console.log(result);
+
+		if (!result.cancelled) {
+			setImage(result.uri);
+		}
 	};
 
 	useFocusEffect(
@@ -206,30 +217,17 @@ export default function CrearCursoScreen({ navigation }) {
 									<Input onChangeText={(location) => setLocation(location)} />
 								</FormControl>
 
-								<ScrollView horizontal style={{flexDirection: 'row', marginHorizontal: 20, marginTop: 30}}>
-									{
-										size(imagesSelected) < 10 && (
-											<Icon
-												type="material-community"
-												name="camera-alt"
-												//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
-												size={50}
-												color="#7A7A7A"
-												onPress= {imageSelect}
-												//style= {{marginTop: -10}}
-											/>
-										)
-									}
-									{
-										map(imagesSelected, (imagesCurso, index) => (
-											<Avatar
-												key={index}
-												style={{width:60, height:60}}
-												source={{ uri: imagesCurso }}
-											/>
-										))
-									}
-								</ScrollView>
+								<Icon
+									type="material-community"
+									name="camera-alt"
+									//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
+									size={50}
+									color="#7A7A7A"
+									onPress= {pickImage}
+									//style= {{marginTop: -10}}
+								/>
+
+								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso
