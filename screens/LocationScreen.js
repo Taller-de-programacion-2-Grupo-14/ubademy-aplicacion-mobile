@@ -38,7 +38,7 @@ const MapInput = (props) => {
 			placeholder='Ingrese ubicacion'
 			minLength={2} // minimum length of text to search
 			autoFocus={true}
-			returnKeyType={'search'} // Can be left out for default return key 
+			returnKeyType={'search'} // Can be left out for default return key
 			listViewDisplayed={false}    // true/false/undefined
 			fetchDetails={true}
 			onFail={(error) => console.error(error)}
@@ -67,7 +67,7 @@ const MapInput = (props) => {
 
 };
 
-const LocationScreen = ({ navigation }) => {
+const LocationScreen = ({ navigation, route }) => {
 
 	const [state, setState] = React.useState({
 		region: {}
@@ -118,9 +118,7 @@ const LocationScreen = ({ navigation }) => {
 
 	const saveAndGoBack = () => {
 		console.log(address);
-		const token = SecureStore.getItemAsync('secure_token');
-		console.log(token);
-		if (token) {
+		if (!route.params) {
 			navigation.navigate({
 				name: 'UpdateUsuarioScreen',
 				params: { ubicacion: address },
