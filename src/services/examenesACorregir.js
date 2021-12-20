@@ -7,7 +7,7 @@ export async function examenesACorregir(idCurso, estado) {
 	if (estado == 'Todos') {
 		aEnviar = `${global.host}/resolutions/${idCurso}`;
 	} else {
-		aEnviar = `${global.host}/resolutions/${idCurso}?estado=${estado}`;
+		aEnviar = `${global.host}/resolutions/${idCurso}?status=${estado}`;
 	}
 
 	return fetch(`${aEnviar}`, {

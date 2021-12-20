@@ -182,8 +182,8 @@ function CorregirExamenScreen({ navigation, route }) {
 										mt={1}
 										onValueChange={(nota) => setNota(nota)}
 									>
-										<Select.Item label="Aprobado" value="Aprobado" />
-										<Select.Item label="Desaprobado" value="Desaprobado" />
+										<Select.Item label="Aprobado" value="aprobado" />
+										<Select.Item label="Desaprobado" value="desaprobado" />
 									</Select>
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
 										Seleccionar uno
