@@ -110,6 +110,10 @@ export default function LoginScreen({ navigation }) {
 							setMensaje('Error de servidor');
 							setLoading(false);
 							setShowModal(true);
+						} else if (json.status === 400) {
+							setMensaje('Usuario o password incorrecto');
+							setLoading(false);
+							setShowModal(true);
 						} else {
 							setMensaje('Error. Intente mas tarde');
 							setLoading(false);

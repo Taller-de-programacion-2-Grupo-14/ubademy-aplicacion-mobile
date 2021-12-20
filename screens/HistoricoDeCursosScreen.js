@@ -9,12 +9,14 @@ import {
 	Menu,
 	Modal,
 	FlatList,
-	Divider,
 	Text,
 	VStack,
 	HStack,
 	Button,
-	Spinner
+	Spinner,
+	Link,
+	Spacer,
+	Flex
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -35,12 +37,24 @@ function HistoricoDeCursosScreen({ navigation }) {
 	const [estado, setEstado] = React.useState('Todos');
 
 	const renderItem = ({ item }) => (
-		<>
-			<Text bold fontSize="md">
-				{item.name}
-			</Text>
-			<Divider my="1" />
-		</>
+		<Link onPress={() => { item['verComoCreador'] = false; navigation.navigate('MiCursoInscriptoScreen', item); }}>
+			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
+				<HStack alignItems="flex-start">
+					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
+						{item.type}
+					</Text>
+					<Spacer />
+				</HStack>
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
+					{item.name}
+				</Heading>
+				<Flex>
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
+						{(item.status=='on course') ? 'En curso' : ((item.status=='failed') ? 'Desaprobado' : 'Aprobado')}
+					</Text>
+				</Flex>
+			</Box>
+		</Link>
 	);
 
 	function filtrar(filtro) {
