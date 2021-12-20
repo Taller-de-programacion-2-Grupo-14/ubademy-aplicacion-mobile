@@ -25,3 +25,12 @@ export async function obtenerUsuarios(blocked) {
 		},
 	});
 }
+
+export async function obtenerUsuarioConEmail(email) {
+	return fetch(`${global.host}/users?email=${email}`, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json'
+		},
+	});
+}

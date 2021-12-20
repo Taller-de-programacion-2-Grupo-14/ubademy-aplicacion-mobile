@@ -9,7 +9,6 @@ import RecuperoPasswordScreen from './screens/RecuperoPasswordScreen';
 import LocationScreen from './screens/LocationScreen';
 import UpdateUsuarioScreen from './screens/UpdateUsuarioScreen';
 
-
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -21,8 +20,8 @@ function App() {
 				<Stack.Screen name="LocationScreen" component={LocationScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="UpdateUsuarioScreen" component={UpdateUsuarioScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} />
-				<Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} />
+				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} options={{ headerShown: false }} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

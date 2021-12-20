@@ -4,7 +4,6 @@ import {
 	NativeBaseProvider,
 	Box,
 	Text,
-	Heading,
 	VStack,
 	FormControl,
 	Link,
@@ -84,98 +83,96 @@ function UpdateUsuarioScreen({ navigation, route }) {
 	return (
 
 		<NativeBaseProvider>
-			<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
-				<Modal.Content maxWidth="350">
-					<Modal.Body>
-						<VStack space={3}>
-							<HStack alignItems="center" justifyContent="space-between">
-								<Text fontWeight="medium">{modalMessage}</Text>
-							</HStack>
-						</VStack>
-					</Modal.Body>
-					<Modal.Footer>
-						<Button colorScheme="indigo"
-							flex="1"
-							onPress={() => {
-								setShowModal(false);
+			<Box flex={1} bg="white">
+				<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+					<Modal.Content maxWidth="350">
+						<Modal.Body>
+							<VStack space={3}>
+								<HStack alignItems="center" justifyContent="space-between">
+									<Text fontWeight="medium">{modalMessage}</Text>
+								</HStack>
+							</VStack>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button colorScheme="indigo"
+								flex="1"
+								onPress={() => {
+									setShowModal(false);
+								}}
+							>
+								Continuar
+							</Button>
+						</Modal.Footer>
+					</Modal.Content>
+				</Modal>
+
+				{
+					loading ?
+						<View style={spinnerStyles.spinnerStyle}>
+							<Spinner color="indigo.500" size="lg" />
+						</View> :
+						<ScrollView
+							_contentContainerStyle={{
+								px: '20px',
+								mb: '4',
 							}}
 						>
-							Continuar
-						</Button>
-					</Modal.Footer>
-				</Modal.Content>
-			</Modal>
+							<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+								<VStack space={3} mt="5">
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Email
+										</FormControl.Label>
+										<Input onChangeText={(email) => setEmail(email)} value={email} />
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Nombre
+										</FormControl.Label>
+										<Input onChangeText={(firstName) => setFirstName(firstName)} value={firstName} />
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Apellido
+										</FormControl.Label>
+										<Input onChangeText={(lastName) => setLastName(lastName)} value={lastName} />
+									</FormControl>
 
-			{
-				loading ?
-					<View style={spinnerStyles.spinnerStyle}>
-						<Spinner color="indigo.500" size="lg" />
-					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Modificar mis datos
-							</Heading>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Ubicacion
+										</FormControl.Label>
+										<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
+										<Link onPress={() => navigation.navigate('LocationScreen')}
+											_text={{
+												color: 'indigo.500',
+												fontWeight: 'medium',
+												fontSize: 'sm',
+											}}
+										>
+											Modificar mi ubicacion
+										</Link>
+									</FormControl>
 
-							<VStack space={3} mt="5">
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Email
-									</FormControl.Label>
-									<Input onChangeText={(email) => setEmail(email)} value={email} />
-								</FormControl>
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Nombre
-									</FormControl.Label>
-									<Input onChangeText={(firstName) => setFirstName(firstName)} value={firstName} />
-								</FormControl>
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Apellido
-									</FormControl.Label>
-									<Input onChangeText={(lastName) => setLastName(lastName)} value={lastName} />
-								</FormControl>
-
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Ubicacion
-									</FormControl.Label>
-									<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
-									<Link onPress={() => navigation.navigate('LocationScreen')}
-										_text={{
-											color: 'indigo.500',
-											fontWeight: 'medium',
-											fontSize: 'sm',
-										}}
-									>
-										Modificar mi ubicacion
-									</Link>
-								</FormControl>
-
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Tipo de curso de mayor interes
-									</FormControl.Label>
-									<Input onChangeText={(interest) => setInterests(interest)} value={interest} />
-								</FormControl>
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-									Confirmar
-								</Button>
-							</VStack>
-						</Box>
-					</ScrollView>
-			}
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Tipo de curso de mayor interes
+										</FormControl.Label>
+										<Input onChangeText={(interest) => setInterests(interest)} value={interest} />
+									</FormControl>
+									<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+										Confirmar
+									</Button>
+								</VStack>
+							</Box>
+						</ScrollView>
+				}
+			</Box>
 		</NativeBaseProvider>
 	);
 }

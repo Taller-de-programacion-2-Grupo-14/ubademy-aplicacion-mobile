@@ -7,32 +7,42 @@ import {
 	Heading,
 	Icon,
 	HStack,
-	Avatar,
 	VStack,
 	Spacer,
-	Button
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import * as Notifications from 'expo-notifications';
+import { getDatabase, ref, onValue } from 'firebase/database';
 import { useFocusEffect } from '@react-navigation/native';
+import { obtenerUsuario } from '../src/services/obtenerUsuario';
 
-async function schedulePushNotification() {
-	await Notifications.scheduleNotificationAsync({
-		content: {
-			title: 'Has recibido una invitación',
-			body: 'Te han invitado a ser colaborador de un curso, deseas colaborar?',
-			data: { data: 'goes here' },
-			categoryIdentifier: 'collaborations',
-		},
-		trigger: { seconds: 2 },
-	});
-}
+export default function NotificationsScreen() {
 
-export default function MessagesScreen() {
+	const [data, setData] = React.useState([]);
+
+	function getNotifications(userId) {
+		const db = getDatabase();
+		const reference = ref(db, 'notifications/' + userId);
+		console.log('reference', reference);
+		onValue(reference, (snapshot) => {
+			const notification = snapshot.val();
+			console.log('notification', notification);
+			const b = notification; //cosito es lo que contiene el data que me pasaste
+			let data = [];
+			Object.entries(b).forEach(v => data.push(v[1].notification));
+			console.log(data);
+			setData(data);
+		});
+	}
 
 	useFocusEffect(
 		React.useCallback(() => {
+			obtenerUsuario()
+				.then(data => data.json())
+				.then(json => {
+					console.log(json);
+					getNotifications(json.user_id);
+				});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -45,64 +55,30 @@ export default function MessagesScreen() {
 		<NativeBaseProvider>
 			<Box bg="white" flex="1" safeAreaTop>
 				<Heading p="4" pb="3" size="lg">
-					Inbox
+					Notificaciones
 				</Heading>
-				<Button
-					title="Press to schedule a notification"
-					onPress={async () => {
-						await schedulePushNotification();
-					}}
-				/>
-				<Basic />
+				<Basic data={data} />
 			</Box>
 		</NativeBaseProvider>
 	);
 }
 
-function Basic() {
-	const data = [
-		{
-			id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-			fullName: 'Afreen Khan',
-			timeStamp: '12:47 PM',
-			recentText: 'Good Day!',
-			avatarUrl:
-				'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-		},
-		{
-			id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-			fullName: 'Sujita Mathur',
-			timeStamp: '11:11 PM',
-			recentText: 'Cheer up, there!',
-			avatarUrl:
-				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU',
-		},
-		{
-			id: '58694a0f-3da1-471f-bd96-145571e29d72',
-			fullName: 'Anci Barroco',
-			timeStamp: '6:22 PM',
-			recentText: 'Good Day!',
-			avatarUrl: 'https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg',
-		},
-		{
-			id: '68694a0f-3da1-431f-bd56-142371e29d72',
-			fullName: 'Aniket Kumar',
-			timeStamp: '8:56 PM',
-			recentText: 'All the best',
-			avatarUrl:
-				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU',
-		},
-		{
-			id: '28694a0f-3da1-471f-bd96-142456e29d72',
-			fullName: 'Kiara',
-			timeStamp: '12:47 PM',
-			recentText: 'I will call today.',
-			avatarUrl:
-				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU',
-		},
-	];
+function Basic(data) {
+	const [listData, setListData] = useState(data.data);
+	useFocusEffect(
+		React.useCallback(() => {
+			console.log('en basic', data.data);
+			const test = data.data;
+			console.log('test', data.data);
+			console.log('list data', listData, test);
+			setListData(test);
+			return () => {
+				// Do something when the screen is unfocused
+				// Useful for cleanup functions
 
-	const [listData, setListData] = useState(data);
+			};
+		}, [listData, data])
+	);
 
 	const closeRow = (rowMap, rowKey) => {
 		if (rowMap[rowKey]) {
@@ -131,16 +107,16 @@ function Basic() {
 					py="2"
 				>
 					<HStack alignItems="center" space={3}>
-						<Avatar size="48px" source={{ uri: item.avatarUrl }} />
+						<Icon as={<MaterialIcons name="email" />} color="black" size="xs" />
 						<VStack>
 							<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
-								{item.fullName}
+								{item.title}
 							</Text>
-							<Text color="coolGray.600" _dark={{ color: 'warmGray.200' }}>{item.recentText}</Text>
+							<Text color="coolGray.600" _dark={{ color: 'warmGray.200' }}> {item.content}</Text>
 						</VStack>
 						<Spacer />
 						<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-							{item.timeStamp}
+							{item.date}
 						</Text>
 					</HStack>
 				</Box>
@@ -187,13 +163,14 @@ function Basic() {
 			</Pressable>
 		</HStack>
 	);
+
 	return (
 		<Box bg="white" safeArea flex="1">
 			<SwipeListView
 				data={listData}
 				renderItem={renderItem}
 				renderHiddenItem={renderHiddenItem}
-				rightOpenValue={-130}
+				leftOpenValue={-130}
 				previewRowKey={'0'}
 				previewOpenValue={-40}
 				previewOpenDelay={3000}
@@ -202,3 +179,4 @@ function Basic() {
 		</Box>
 	);
 }
+

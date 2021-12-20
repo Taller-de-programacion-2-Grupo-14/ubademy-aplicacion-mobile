@@ -21,7 +21,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import Moment from 'moment';
 
-export default function Contactscreen() {
+export default function Contactscreen({ navigation }) {
 	const isFocused = useIsFocused();
 	const [loading, setLoading] = React.useState(true);
 	const [users, setUsers] = React.useState({});
@@ -58,14 +58,14 @@ export default function Contactscreen() {
 						<View style={spinnerStyles.spinnerStyle}>
 							<Spinner color="indigo.500" size="lg" />
 						</View> :
-						<Basic listData={users} />
+						<Basic listData={users} navigation={navigation} />
 				}
 			</Box>
 		</NativeBaseProvider>
 	);
 }
 
-function Basic({ listData }) {
+function Basic({ listData, navigation }) {
 
 	const closeRow = (rowMap, rowKey) => {
 		if (rowMap[rowKey]) {
@@ -112,7 +112,7 @@ function Basic({ listData }) {
 
 	);
 
-	const renderHiddenItem = (data, rowMap, setShowModal) => (
+	const renderHiddenItem = (data, rowMap) => (
 		<HStack flex="1" pl="2">
 			<Pressable
 				w="70"
@@ -127,9 +127,9 @@ function Basic({ listData }) {
 					<Icon
 						as={<Entypo name="dots-three-horizontal" />}
 						size="xs"
-						color="coolGray.800" onPress={() => setShowModal(false)}
+						color="coolGray.800" onPress={() => navigation.navigate('Perfil', { email: data.item.email })}
 					/>
-					<Text fontSize="xs" fontWeight="medium" color="coolGray.800" onPress={() => setShowModal(false)}>
+					<Text fontSize="xs" fontWeight="medium" color="coolGray.800" onPress={() => navigation.navigate('Perfil', { email: data.item.email })}>
 						Ver
 					</Text>
 
@@ -139,7 +139,7 @@ function Basic({ listData }) {
 				w="70"
 				bg="indigo.500"
 				justifyContent="center"
-				onPress={() => console.log('Quiere chatear')}
+				onPress={() => navigation.navigate('Chat', { id: data.item.email })}
 				_pressed={{
 					opacity: 0.5,
 				}}>
@@ -159,11 +159,12 @@ function Basic({ listData }) {
 				data={listData}
 				renderItem={renderItem}
 				renderHiddenItem={renderHiddenItem}
-				leftOpenValue={-130}
+				rightOpenValue={-130}
 				previewRowKey={'0'}
 				previewOpenValue={-40}
-				previewOpenDelay={3000}
+				previewOpenDelay={1000}
 				onRowDidOpen={onRowDidOpen}
+				initialNumToRender={10}
 				keyExtractor={(item, index) => index.toString()}
 			/>
 		</Box>
@@ -172,8 +173,18 @@ function Basic({ listData }) {
 
 
 Basic.propTypes = {
-	listData: PropTypes.array
+	listData: PropTypes.array,
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+		goBack: PropTypes.func,
+	}).isRequired,
+	route: PropTypes.object
 };
+
+Contactscreen.propTypes = {
+	navigation: PropTypes.object,
+};
+
 
 const spinnerStyles = StyleSheet.create({
 	spinnerStyle: {
@@ -182,4 +193,6 @@ const spinnerStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 });
+
+
 
