@@ -266,7 +266,7 @@ export default function CrearCursoScreen({ navigation }) {
 
 								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirImagen} >
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso
 								</Button>
 							</VStack>

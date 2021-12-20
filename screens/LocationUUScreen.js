@@ -67,7 +67,7 @@ const MapInput = (props) => {
 
 };
 
-const LocationScreen = ({ navigation }) => {
+const LocationUUScreen = ({ navigation }) => {
 
 	const [state, setState] = React.useState({
 		region: {}
@@ -119,7 +119,7 @@ const LocationScreen = ({ navigation }) => {
 	const saveAndGoBack = () => {
 		console.log(address);
 		navigation.navigate({
-			name: 'RegisterScreen',
+			name: 'UpdateUsuarioScreen',
 			params: { ubicacion: address },
 			merge: true,
 		});
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-LocationScreen.propTypes = {
+LocationUUScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 
@@ -176,4 +176,4 @@ MapInput.propTypes = {
 	notifyChange: PropTypes.func
 };
 
-export default LocationScreen;
+export default LocationUUScreen;

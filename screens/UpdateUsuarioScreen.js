@@ -34,7 +34,6 @@ function UpdateUsuarioScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalMessage, setModalMessage] = React.useState('');
 	const [loading, setLoading] = React.useState(true);
-	let vengoDelRegistro = false;
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -43,7 +42,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 				const { ubicacion } = route.params;
 				console.log(ubicacion);
 				setLocation(ubicacion);
-				console.log('en register screen');
+				console.log('en UpdateUsuarioScreen');
 				console.log(location);
 			}
 			obtenerUsuario()
@@ -152,7 +151,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 										Ubicacion
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
-									<Link onPress={() => navigation.navigate('LocationScreen', vengoDelRegistro)}
+									<Link onPress={() => navigation.navigate('LocationUUScreen')}
 										_text={{
 											color: 'indigo.500',
 											fontWeight: 'medium',

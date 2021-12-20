@@ -32,7 +32,6 @@ export default function RegisterScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [location, setLocation] = React.useState('');
-	let vengoDelRegistro = true;
 
 	const { validate, isFieldInError, getErrorsInField } =
 		useValidation({
@@ -341,7 +340,7 @@ export default function RegisterScreen({ navigation, route }) {
 								getErrorsInField('location').map(errorMessage => (
 									<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 								))}
-							<Link onPress={() => navigation.navigate('LocationScreen', vengoDelRegistro)}
+							<Link onPress={() => navigation.navigate('LocationScreen')}
 								_text={{
 									color: 'indigo.500',
 									fontWeight: 'medium',
