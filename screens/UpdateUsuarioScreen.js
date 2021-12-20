@@ -34,6 +34,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalMessage, setModalMessage] = React.useState('');
 	const [loading, setLoading] = React.useState(true);
+	let vengoDeUU = true;
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -151,7 +152,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 										Ubicacion
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
-									<Link onPress={() => navigation.navigate('LocationUUScreen')}
+									<Link onPress={() => navigation.navigate('LocationUUScreen', vengoDeUU)}
 										_text={{
 											color: 'indigo.500',
 											fontWeight: 'medium',

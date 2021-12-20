@@ -18,13 +18,14 @@ import {
 	Select,
 	CheckIcon,
 	WarningOutlineIcon,
-	TextArea
+	TextArea,
+	Link
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { useValidation } from 'react-native-form-validator';
 
-export default function CrearCursoScreen({ navigation }) {
+export default function CrearCursoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [titulo, setTitulo] = React.useState('');
 	const [descripcion, setDescripcion] = React.useState('');
@@ -37,6 +38,7 @@ export default function CrearCursoScreen({ navigation }) {
 	const [message, setMessage] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
+	let vengoDeUU = false;
 
 	const { validate, isFieldInError, getErrorsInField, isFormValid } =
 		useValidation({
@@ -56,6 +58,13 @@ export default function CrearCursoScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			if (route.params?.ubicacion) {
+				const { ubicacion } = route.params;
+				console.log(ubicacion);
+				setLocation(ubicacion);
+				console.log('en CrearCursoScreen');
+				console.log(location);
+			}
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -252,11 +261,20 @@ export default function CrearCursoScreen({ navigation }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Ubicación
 									</FormControl.Label>
-									<Input onChangeText={(location) => setLocation(location)} />
+									<Input onChangeText={(location) => setLocation(location)} value={location} isDisabled />
 									{isFieldInError('location') &&
 										getErrorsInField('location').map(errorMessage => (
 											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 										))}
+									<Link onPress={() => navigation.navigate('LocationUUScreen', vengoDeUU)}
+										_text={{
+											color: 'indigo.500',
+											fontWeight: 'medium',
+											fontSize: 'sm',
+										}}
+									>
+										Seleccionar mi ubicacion
+									</Link>
 								</FormControl>
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
@@ -283,4 +301,5 @@ CrearCursoScreen.propTypes = {
 		navigate: PropTypes.func.isRequired,
 		goBack: PropTypes.func,
 	}).isRequired,
+	route: PropTypes.object
 };

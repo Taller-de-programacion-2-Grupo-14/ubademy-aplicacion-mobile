@@ -1,6 +1,5 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import CrearCursoScreen from './CrearCursoScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InscribirmeScreen from './InscribirmeScreen';
 import FavoritosScreen from './FavoritosScreen';
@@ -24,6 +23,7 @@ import CorregirExamenScreen from './CorregirExamenScreen';
 import ResueltosScreen from './ResueltosScreen';
 import ExamenResueltoScreen from './ExamenResueltoScreen';
 import EditarExamenScreen from './EditarExamenScreen';
+import CCScreen from './CCScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
@@ -65,7 +65,7 @@ export default function CursosApp() {
 		<Drawer.Navigator initialRouteName="CursosScreen">
 			<Drawer.Screen name="Mis cursos" component={CursosScreen} />
 			<Drawer.Screen name="Buscar un curso" component={InscribirmeScreen} />
-			<Drawer.Screen name="Crear un curso" component={CrearCursoScreen} />
+			<Drawer.Screen name="Crear un curso" component={CCScreen} />
 			<Drawer.Screen name="Histórico de cursos" component={HistoricoDeCursosScreen} />
 			<Drawer.Screen name="Cursos favoritos" component={FavoritosScreen} />
 		</Drawer.Navigator>

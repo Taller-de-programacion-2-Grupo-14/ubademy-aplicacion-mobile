@@ -67,7 +67,7 @@ const MapInput = (props) => {
 
 };
 
-const LocationUUScreen = ({ navigation }) => {
+const LocationUUScreen = ({ navigation, route }) => {
 
 	const [state, setState] = React.useState({
 		region: {}
@@ -118,11 +118,26 @@ const LocationUUScreen = ({ navigation }) => {
 
 	const saveAndGoBack = () => {
 		console.log(address);
-		navigation.navigate({
-			name: 'UpdateUsuarioScreen',
-			params: { ubicacion: address },
-			merge: true,
-		});
+		// navigation.navigate({
+		// 	name: 'UpdateUsuarioScreen',
+		// 	params: { ubicacion: address },
+		// 	merge: true,
+		// });
+
+		//Si vengo de UpdateUsuarioScreen...
+		if (route.params) {
+			navigation.navigate({
+				name: 'UpdateUsuarioScreen',
+				params: { ubicacion: address },
+				merge: true,
+			});
+		} else {
+			navigation.navigate({
+				name: 'CrearCursoScreen',
+				params: { ubicacion: address },
+				merge: true,
+			});
+		}
 	};
 
 	return (
@@ -159,6 +174,7 @@ const styles = StyleSheet.create({
 
 LocationUUScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
 MyMapView.propTypes = {
