@@ -18,14 +18,11 @@ import {
 	Select,
 	CheckIcon,
 	WarningOutlineIcon,
-	Image
+	TextArea
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import * as ImagePicker from 'expo-image-picker';
-import firebase from 'firebase/app';
-import 'firebase/storage';
+import { useValidation } from 'react-native-form-validator';
 
 export default function CrearCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
@@ -40,59 +37,21 @@ export default function CrearCursoScreen({ navigation }) {
 	const [message, setMessage] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
-	const [image, setImage] = React.useState(null);
 
-	const pickImage = async () => {
-		// No permissions request is necessary for launching the image library
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.All,
-			allowsEditing: true,
-			aspect: [4, 3],
-			quality: 1,
+	const { validate, isFieldInError, getErrorsInField, isFormValid } =
+		useValidation({
+			state: { titulo, descripcion, hashtags, tipo, examenes, suscripcion, location },
+			deviceLocale: 'es',
+			labels: {
+				titulo: 'Titulo',
+				descripcion: 'Descripción',
+				hashtags: 'Hashtags',
+				tipo: 'Tipo',
+				examenes: 'Examenes',
+				suscripcion: 'Subscripción',
+				location: 'Ubicación'
+			}
 		});
-		console.log(result);
-		if (!result.cancelled) {
-			setImage(result.uri);
-		}
-	};
-
-	uploadImage = uri => {
-		return new Promise((resolve, reject) => {
-			let xhr = new XMLHttpRequest();
-			xhr.onerror = reject;
-			xhr.onreadystatechange = () => {
-				if (xhr.readyState === 4) {
-					resolve(xhr.response);
-				}
-			};
-
-			xhr.open('GET', uri);
-			xhr.responseType = 'blob';
-			xhr.send();
-		});
-	};
-
-	const subirImagen = async () =>{
-		console.log(image);
-		this.uploadImage(image)
-			.then(resolve => {
-				let ref = firebase
-					.storage()
-					.ref()
-					.child('imagenes/hola');
-				ref
-					.put(resolve)
-					.then(resolve => {
-						console.log('Imagen subida correctamente');
-					})
-					.catch(error => {
-						console.log('Error al subir la imagen');
-					});
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -106,20 +65,31 @@ export default function CrearCursoScreen({ navigation }) {
 	);
 
 	this.onSubmit = () => {
-		crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location)
-			.then((response) => response.json())
-			.then((json) => {
-				console.log('creando curso');
-				console.log(json);
-				if (json.status === 200) {
-					setMessage('Curso creado exitosamente');
-					setShowModal(true);
-				} else {
-					setError(true);
-					setMessage('Error al crear el curso');
-					setShowModal(true);
-				}
-			});
+		validate({
+			titulo: { required: true },
+			descripcion: { required: true },
+			hashtags: { required: true },
+			tipo: { required: true },
+			examenes: { numbers: true, required: true },
+			location: { required: true },
+			suscripcion: { required: true },
+		});
+		if (isFormValid() == true) {
+			crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location)
+				.then((response) => response.json())
+				.then((json) => {
+					console.log('creando curso');
+					console.log(json);
+					if (json.status === 200) {
+						setMessage('Curso creado exitosamente');
+						setShowModal(true);
+					} else {
+						setError(true);
+						setMessage('Error al crear el curso');
+						setShowModal(true);
+					}
+				});
+		}
 	};
 
 	return (
@@ -159,35 +129,54 @@ export default function CrearCursoScreen({ navigation }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
+							<Heading size="sm" color="coolGray.800" fontWeight="600">
 								Complete los siguientes datos para crear un curso
 							</Heading>
 							<VStack space={3} mt="5">
-								<FormControl isRequired>
+								<FormControl isRequired isInvalid={isFieldInError('titulo')}>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Título
 									</FormControl.Label>
 									<Input onChangeText={(titulo) => setTitulo(titulo)} />
+									{isFieldInError('titulo') &&
+										getErrorsInField('titulo').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl isRequired isInvalid={isFieldInError('descripcion')}>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Descripción
 									</FormControl.Label>
-									<Input onChangeText={(descripcion) => setDescripcion(descripcion)} />
+									<TextArea onChangeText={(descripcion) => setDescripcion(descripcion)}
+										h={20}
+										placeholder="Descripción"
+										w={{
+											base: '100%',
+											md: '25%',
+										}}
+									/>
+									{isFieldInError('descripcion') &&
+										getErrorsInField('descripcion').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl isRequired isInvalid={isFieldInError('hashtags')}>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Hashtags asociados (ingrese las palabras separadas por una coma)
 									</FormControl.Label>
 									<Input onChangeText={(hashtags) => setHashtags(hashtags)} />
+									{isFieldInError('hashtags') &&
+										getErrorsInField('hashtags').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl isRequired isInvalid={isFieldInError('tipo')}>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de curso</FormControl.Label>
@@ -211,17 +200,25 @@ export default function CrearCursoScreen({ navigation }) {
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
 										Seleccionar uno
 									</FormControl.ErrorMessage>
+									{isFieldInError('tipo') &&
+										getErrorsInField('tipo').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl isRequired isInvalid={isFieldInError('examenes')}>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Cantidad de exámenes
 									</FormControl.Label>
 									<Input onChangeText={(examenes) => setExamenes(examenes)} />
+									{isFieldInError('examenes') &&
+										getErrorsInField('examenes').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl isRequired isInvalid={isFieldInError('suscripcion')}>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de suscripción</FormControl.Label>
@@ -241,30 +238,26 @@ export default function CrearCursoScreen({ navigation }) {
 										<Select.Item label="Estándar" value="Estandar" />
 										<Select.Item label="Premium" value="Premium" />
 									</Select>
+									{isFieldInError('suscripcion') &&
+										getErrorsInField('suscripcion').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
 										Seleccionar uno
 									</FormControl.ErrorMessage>
 								</FormControl>
 
-								<FormControl isRequired>
+								<FormControl isRequired isInvalid={isFieldInError('location')}>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Ubicación
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLocation(location)} />
+									{isFieldInError('location') &&
+										getErrorsInField('location').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 								</FormControl>
-
-								<Icon
-									type="material-community"
-									name="camera-alt"
-									//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
-									size={50}
-									color="#7A7A7A"
-									onPress= {pickImage}
-									//style= {{marginTop: -10}}
-								/>
-
-								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso

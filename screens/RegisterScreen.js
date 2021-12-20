@@ -33,10 +33,18 @@ export default function RegisterScreen({ navigation, route }) {
 	const [error, setError] = React.useState(false);
 	const [location, setLocation] = React.useState('');
 
-	const { validate, isFieldInError, getErrorsInField } =
+	const { validate, isFieldInError, getErrorsInField, isFormValid } =
 		useValidation({
 			state: { mail, password, passwordR, name, lastName, location },
-			deviceLocale: 'es'
+			deviceLocale: 'es',
+			labels: {
+				name: 'Nombre',
+				mail: 'Email',
+				password: 'Contraseña',
+				passwordR: 'Contraseña',
+				lastName: 'Apellido',
+				location: 'Ubicación'
+			}
 		});
 
 	useFocusEffect(
@@ -60,51 +68,52 @@ export default function RegisterScreen({ navigation, route }) {
 	this.handleSubmit = () => {
 		validate({
 			mail: { email: true, required: true },
-			password: { minlength: 6, maxlength: 35, required: true },
-			passwordR: { minlength: 6, maxlength: 35, required: true, equalPassword: password },
+			password: { minlength: 7, maxlength: 35, required: true },
+			passwordR: { minlength: 7, maxlength: 35, required: true, equalPassword: password },
 			name: { minlength: 1, maxlength: 30, required: true },
 			lastName: { minlength: 1, maxlength: 30, required: true },
 			location: { required: true },
 		});
-		register(mail, password, name, lastName, location, interests)
-			.then((response) => {
-				const json = response.json();
-				console.log(json);
-				if (response.status === 200) {
-					setMessage('Registro Exitoso!');
-					setShowModal(true);
-					// login(mail, password)
-					// 	.then((response) => response.json())
-					// 	.then((json) => {
-					// 		console.log(json);
-					// 		if (json.status === 200) {
-					// 			SecureStore.setItemAsync('secure_token', json.token);
-					// 			console.log(json.token);
+		if (isFormValid() == true) {
+			register(mail, password, name, lastName, location, interests)
+				.then((response) => {
+					const json = response.json();
+					console.log(json);
+					if (response.status === 200) {
+						setMessage('Registro Exitoso!');
+						setShowModal(true);
+						// login(mail, password)
+						// 	.then((response) => response.json())
+						// 	.then((json) => {
+						// 		console.log(json);
+						// 		if (json.status === 200) {
+						// 			SecureStore.setItemAsync('secure_token', json.token);
+						// 			console.log(json.token);
 
-					// 		} else {
-					// 			setMessage('email o contrasenia invalidos');
-					// 			setError(true);
-					// 			setShowModal(true);
-					// 			console.log('email o contrasenia invalidos');
-					// 		}
+						// 		} else {
+						// 			setMessage('email o contrasenia invalidos');
+						// 			setError(true);
+						// 			setShowModal(true);
+						// 			console.log('email o contrasenia invalidos');
+						// 		}
 
-					// 	})
-					// 	.catch((error) => {
-					// 		console.error(error);
-					// 	});
-					// //navigation.navigate("LoginScreen")
-				} else if (response.status == 400) {
-					setMessage('Error al registrarse');
-					setError(true);
-					setShowModal(true);
-					console.log('Bad Request');
-				}
+						// 	})
+						// 	.catch((error) => {
+						// 		console.error(error);
+						// 	});
+						// //navigation.navigate("LoginScreen")
+					} else if (response.status == 400) {
+						setMessage('Error al registrarse');
+						setError(true);
+						setShowModal(true);
+						console.log('Bad Request');
+					}
 
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		}
 	};
 
 	this.onRegionChange = (region) => {
