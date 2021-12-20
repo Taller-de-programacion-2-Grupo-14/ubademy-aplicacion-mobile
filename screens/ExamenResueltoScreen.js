@@ -46,7 +46,11 @@ function ExamenResueltoScreen({ route }) {
 			if (route.params.status == 'nc'){
 				setEstado('No corregido');
 			} else {
-				setEstado(route.params.status);
+				if (route.params.status == 'pass'){
+					setEstado('Aprobado');
+				} else {
+					setEstado ('Desaprobado');
+				}
 			}
 
 			setPreguntas(route.params.questions);

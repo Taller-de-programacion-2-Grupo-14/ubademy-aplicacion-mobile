@@ -93,8 +93,9 @@ function ExamenesScreen({ navigation, route }) {
 							>
 								<Menu.OptionGroup defaultValue={estado} title="Exámenes" type="radio">
 									<Menu.ItemOption onPress={() => filtrar('Todos')} value="Todos">Todos</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => filtrar('a corregir')} value="a corregir">A corregir</Menu.ItemOption>
-									<Menu.ItemOption onPress={() => filtrar('corregidos')} value="corregidos">Corregidos</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('nc')} value="nc">A corregir</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('pass')} value="pass">Aprobados</Menu.ItemOption>
+									<Menu.ItemOption onPress={() => filtrar('fail')} value="fail">Desaprobados</Menu.ItemOption>
 								</Menu.OptionGroup>
 							</Menu>
 						</Box>

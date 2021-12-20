@@ -2,9 +2,10 @@ import 'dotenv/config';
 
 export default {
 	'expo': {
-		'name': 'ubademyTest',
+		'name': 'Ubademy',
 		'slug': 'ubademyTest',
-		'version': '1.0.0',
+		'version': '2.3.3',
+		'icon': './images/icono.png',
 		'assetBundlePatterns': [
 			'**/*'
 		],
@@ -33,6 +34,10 @@ export default {
 			'googlePlaces': {
 				googlePlacesApiKey: process.env.GOOGLE_PLACES_API_KEY
 			}
+		},
+		'android': {
+			'package': 'com.grupo14.ubademy',
+			'versionCode': 2
 		}
 	},
 	'android': {

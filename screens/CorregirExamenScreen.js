@@ -37,6 +37,7 @@ function CorregirExamenScreen({ navigation, route }) {
 	const [error, setError] = React.useState(false);
 	const [nota, setNota] = React.useState('');
 	const [corregido, setCorregido] = React.useState(false);
+	const [estado, setEstado] = React.useState('');
 
 	const renderItem = ({ item, index }) => (
 		<>
@@ -63,6 +64,14 @@ function CorregirExamenScreen({ navigation, route }) {
 				setCorregido(false);
 			} else {
 				setCorregido(true);
+			}
+
+			if (route.params.status == 'fail'){
+				setEstado('Desaprobado');
+			} else {
+				if (route.params.status == 'pass') {
+					setEstado('Aprobado');
+				}
 			}
 
 			setPreguntas(route.params.questions);
@@ -145,7 +154,7 @@ function CorregirExamenScreen({ navigation, route }) {
 							}
 							{corregido ?
 								<Heading size="lg" color="coolGray.800" fontWeight="600" >
-									{route.params.status}
+									{estado}
 								</Heading>
 								:
 								null
@@ -182,8 +191,8 @@ function CorregirExamenScreen({ navigation, route }) {
 										mt={1}
 										onValueChange={(nota) => setNota(nota)}
 									>
-										<Select.Item label="Aprobado" value="Aprobado" />
-										<Select.Item label="Desaprobado" value="Desaprobado" />
+										<Select.Item label="Aprobado" value="aprobado" />
+										<Select.Item label="Desaprobado" value="desaprobado" />
 									</Select>
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
 										Seleccionar uno
