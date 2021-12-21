@@ -19,11 +19,15 @@ import {
 	CheckIcon,
 	WarningOutlineIcon,
 	TextArea,
-	Link
+	Link,
+	Image
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { useValidation } from 'react-native-form-validator';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as ImagePicker from 'expo-image-picker';
+import { firebase } from 'firebase/storage';
 
 export default function CrearCursoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
@@ -39,6 +43,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
 	let vengoDeUU = false;
+	const [image, setImage] = React.useState(null);
 
 	const { validate, isFieldInError, getErrorsInField, isFormValid } =
 		useValidation({
@@ -54,6 +59,34 @@ export default function CrearCursoScreen({ navigation, route }) {
 				location: 'Ubicación'
 			}
 		});
+
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+		console.log(result);
+		if (!result.cancelled) {
+			setImage(result.uri);
+		}
+	};
+
+	const uploadPicture = (uri) => {
+		return new Promise ( (resolve, reject) => {
+			let xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = () => {
+				if(xhr.readyState===4){
+					resolve(xhr.response);
+				}
+			};
+			xhr.open('GET', uri);
+			xhr.responseType = 'blob';
+			xhr.send();
+		});
+	};
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -276,6 +309,42 @@ export default function CrearCursoScreen({ navigation, route }) {
 										Seleccionar mi ubicacion
 									</Link>
 								</FormControl>
+
+								<Icon
+									type="material-community"
+									name="camera-alt"
+									//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
+									size={50}
+									color="#7A7A7A"
+									onPress= {pickImage}
+									//style= {{marginTop: -10}}
+								/>
+
+								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
+
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => {
+									uploadPicture(image)
+										.then( resolve => {
+											let ref = firebase
+												.storage()
+												.ref()
+												.child('imagenes/foto1');
+											ref
+												.put(resolve)
+												.then( resolve => {
+													alert('Imagen subida exitosamente');
+												})
+												.catch(error =>{
+													alert('Error al subir la imagen');
+													console.log(error);
+												});
+										})
+										.catch(error => {
+											console.log(error);
+										});
+								}} >
+									Subir imágenes
+								</Button>
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso
