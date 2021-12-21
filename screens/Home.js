@@ -12,9 +12,7 @@ import { setUserExpoToken } from '../src/services/setExpoToken';
 import { aceptarColaboracion } from '../src/services/aceptarColaboracion';
 import { getDatabase, ref, push } from 'firebase/database';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SubscriptionUpgrade from './SubscriptionUpgrade';
-import HomeScreen from './HomeScreen';
+import BienvenidaScreen from './BienvenidaScreen';
 
 function saveNotification(notificationInfo, userId) {
 	console.log('en save notification');
@@ -81,16 +79,6 @@ async function registerForPushNotificationsAsync() {
 }
 
 const Tab = createMaterialBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
-function HomeScreenStack() {
-	return (
-		<Stack.Navigator initialRouteName="Home3">
-			<Stack.Screen name="Home3" component={HomeScreen} options={{ headerShown: false }} />
-			<Stack.Screen name="Subscripcion" component={SubscriptionUpgrade} options={{ headerShown: false }} />
-		</Stack.Navigator>
-	);
-}
 
 export default function HomeApp() {
 	const [expoPushToken, setExpoPushToken] = useState('');
@@ -186,10 +174,10 @@ export default function HomeApp() {
 		<NativeBaseProvider>
 			<Tab.Navigator activeColor="white" inactiveColor="white" shifting={true} barStyle={{ backgroundColor: '#736bfc' }}>
 				<Tab.Screen
-					name="Home2"
-					component={HomeScreenStack}
+					name="BienvenidaScreen"
+					component={BienvenidaScreen}
 					options={{
-						tabBarLabel: 'Home2',
+						tabBarLabel: 'Home',
 						tabBarIcon: ({ focused }) => (
 							<MaterialCommunityIcons name={focused ? 'home' : 'home-outline'} color='white' size={26} />
 						),
