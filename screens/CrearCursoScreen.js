@@ -46,6 +46,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 	const [image, setImage] = React.useState(null);
 	const [imagenSubida, setImagenSubida] = React.useState(null);
 	const [pickerResult, setPickerResult] = React.useState(null);
+	const d = new Date();
 
 	const { validate, isFieldInError, getErrorsInField, isFormValid } =
 		useValidation({
@@ -110,7 +111,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 			xhr.send(null);
 		});
 
-		const fileRef = ref(getStorage(), 'imagen01');
+		const fileRef = ref(getStorage(), `imagenes/banners/${String(d.getFullYear())+String(d.getMonth())+String(d.getFullYear())+String(d.getMonth())+String(d.getFullYear())+String(d.getMonth())+String(d.getMilliseconds())}`);
 		const result = await uploadBytes(fileRef, blob);
 		console.log(result);
 
@@ -148,7 +149,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 			suscripcion: { required: true },
 		});
 		if (isFormValid() == true) {
-			crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location)
+			crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location, imagenSubida)
 				.then((response) => response.json())
 				.then((json) => {
 					console.log('creando curso');
@@ -354,13 +355,10 @@ export default function CrearCursoScreen({ navigation, route }) {
 								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
-									Subir imágenes
+									Subir banner del curso
 								</Button>
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}
-									onPress={() => {
-										console.log(imagenSubida);
-									}} >
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso
 								</Button>
 							</VStack>
