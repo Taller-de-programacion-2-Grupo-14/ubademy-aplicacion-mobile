@@ -45,6 +45,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [nombreExamen, setNombreExamen] = React.useState('');
 	const [examenes, setExamenes] = React.useState([]);
 	const isFocused = useIsFocused();
+	const [puedeCrearExamen, setPuedeCrearExamen] = React.useState(true);
+	let parametro = route.params;
 
 	const cancelar = () =>
 		Alert.alert(
@@ -76,7 +78,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 		);
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = true; item['id_course'] = route.params.id; navigation.navigate('VerExamenScreen', item);} }>
+		<Link onPress={() => {item['verComoCreador'] = true; item['id_course'] = route.params.id; item['puedeCrearExamen'] = puedeCrearExamen; navigation.navigate('VerExamenScreen', item);} }>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.title}
@@ -105,6 +107,11 @@ function MiCursoCreadoScreen({ navigation, route }) {
 							setEstado('Vigente');
 						} else {
 							setEstado('Cancelado');
+						}
+						if (json.message.can_create_exams){
+							setPuedeCrearExamen(true);
+						} else {
+							setPuedeCrearExamen(false);
 						}
 					}
 				});
@@ -214,7 +221,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								<Menu.Item onPress={() => { navigation.navigate('EdicionCursoScreen', route.params); }} >Editar curso</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ListadoAlumnosScreen', route.params.id); }}>Listado de alumnos</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ListadoProfesoresScreen', route.params.id); }}>Listado de profesores</Menu.Item>
-								<Menu.Item onPress={() => { navigation.navigate('CrearExamenScreen', route.params); }}>Crear exámen</Menu.Item>
+								<Menu.Item onPress={() => { parametro['puedeCrearExamen'] = puedeCrearExamen; navigation.navigate('CrearExamenScreen', parametro); }}>Crear exámen</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ABcolaboradorScreen', route.params.id); }}>Alta de colaborador</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ExamenesScreen', route.params.id); }}>Corregir exámenes</Menu.Item>
 								<Divider />

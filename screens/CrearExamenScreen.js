@@ -105,11 +105,11 @@ function CrearExamenScreen({ navigation, route }) {
 									<FormControl.Label>Ingrese la pregunta</FormControl.Label>
 									<Input size="md" onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true} />
 								</FormControl>
-								<Button isDisabled={!route.params.can_create_exams} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+								<Button isDisabled={!route.params.puedeCrearExamen} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
                   Crear
 								</Button>
-								<Text color={route.params.can_create_exams ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
-									Ha alcanzado el número máximo de exámenes para este curso
+								<Text color={route.params.puedeCrearExamen ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
+									Ha alcanzado el número máximo de exámenes publicados para este curso
 								</Text>
 							</VStack>
 						</Box>
