@@ -27,7 +27,7 @@ import PropTypes from 'prop-types';
 import { useValidation } from 'react-native-form-validator';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
-import { firebase } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function CrearCursoScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
@@ -44,6 +44,8 @@ export default function CrearCursoScreen({ navigation, route }) {
 	const isFocused = useIsFocused();
 	let vengoDeUU = false;
 	const [image, setImage] = React.useState(null);
+	const [imagenSubida, setImagenSubida] = React.useState(null);
+	const [pickerResult, setPickerResult] = React.useState(null);
 
 	const { validate, isFieldInError, getErrorsInField, isFormValid } =
 		useValidation({
@@ -71,22 +73,50 @@ export default function CrearCursoScreen({ navigation, route }) {
 		console.log(result);
 		if (!result.cancelled) {
 			setImage(result.uri);
+			setPickerResult(result);
 		}
 	};
 
-	const uploadPicture = (uri) => {
-		return new Promise ( (resolve, reject) => {
-			let xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = () => {
-				if(xhr.readyState===4){
-					resolve(xhr.response);
-				}
-			};
-			xhr.open('GET', uri);
-			xhr.responseType = 'blob';
-			xhr.send();
-		});
+	const handleImagePicked = async (pR) => {
+		try {
+			if (!pR.cancelled) {
+				const uploadUrl = await uploadImageAsync(pR.uri);
+				setImagenSubida(uploadUrl);
+			}
+		} catch (e) {
+			console.log(e);
+			alert('Upload failed, sorry');
+		}
 	};
+
+	const _takePhoto = async () => {
+		handleImagePicked(pickerResult);
+	};
+
+	async function uploadImageAsync(uri) {
+		// Why are we using XMLHttpRequest? See:
+		// https://github.com/expo/expo/issues/2402#issuecomment-443726662
+		const blob = await new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest();
+			xhr.onload = function () {
+				resolve(xhr.response);
+			};
+			xhr.onerror = function (e) {
+				console.log(e);
+				reject(new TypeError('Network request failed'));
+			};
+			xhr.responseType = 'blob';
+			xhr.open('GET', uri, true);
+			xhr.send(null);
+		});
+
+		const fileRef = ref(getStorage(), 'imagen01');
+		const result = await uploadBytes(fileRef, blob);
+
+		// We're done with the blob, close and release it
+		blob.close();
+		return await getDownloadURL(fileRef);
+	}
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -322,31 +352,14 @@ export default function CrearCursoScreen({ navigation, route }) {
 
 								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => {
-									uploadPicture(image)
-										.then( resolve => {
-											let ref = firebase
-												.storage()
-												.ref()
-												.child('imagenes/foto1');
-											ref
-												.put(resolve)
-												.then( resolve => {
-													alert('Imagen subida exitosamente');
-												})
-												.catch(error =>{
-													alert('Error al subir la imagen');
-													console.log(error);
-												});
-										})
-										.catch(error => {
-											console.log(error);
-										});
-								}} >
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={_takePhoto} >
 									Subir imágenes
 								</Button>
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}
+									onPress={() => {
+										console.log(imagenSubida);
+									}} >
 									Crear curso
 								</Button>
 							</VStack>
