@@ -146,28 +146,28 @@ function CorregirExamenScreen({ navigation, route }) {
 							</Box>
 
 							{corregido ?
-								<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
+								<Heading size="md" color="coolGray.800" fontWeight="600" bold>
 									Nota:
 								</Heading>
 								:
 								null
 							}
 							{corregido ?
-								<Heading size="lg" color="coolGray.800" fontWeight="600" >
+								<Heading size="md" color="coolGray.800" fontWeight="600" >
 									{estado}
 								</Heading>
 								:
 								null
 							}
 							{corregido ?
-								<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
+								<Heading size="md" color="coolGray.800" fontWeight="600" bold>
 									Observaciones:
 								</Heading>
 								:
 								null
 							}
 							{corregido ?
-								<Heading size="lg" color="coolGray.800" fontWeight="600" >
+								<Heading size="md" color="coolGray.800" fontWeight="600" >
 									{route.params.correction}
 								</Heading>
 								:

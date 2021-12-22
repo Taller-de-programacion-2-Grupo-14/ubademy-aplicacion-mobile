@@ -26,10 +26,30 @@ CrearExamenScreen.propTypes = {
 function CrearExamenScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [nombre, setNombre] = React.useState('');
-	const [pregunta, setPregunta] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [inputs, setInputs] = React.useState([{key: '', value: ''}]);
+	let preguntas = [];
+
+	const addHandler = ()=>{
+		const _inputs = [...inputs];
+		_inputs.push({key: '', value: ''});
+		setInputs(_inputs);
+	};
+
+	// const deleteHandler = (key)=>{
+	// 	const _inputs = inputs.filter((input,index) => index != key);
+	// 	setInputs(_inputs);
+	// };
+
+	const inputHandler = (text, key)=>{
+		const _inputs = [...inputs];
+		_inputs[key].value = text;
+		_inputs[key].key   = key;
+		setInputs(_inputs);
+
+	};
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -43,7 +63,7 @@ function CrearExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		crearExamen(String(route.params.id), nombre, [pregunta])
+		crearExamen(String(route.params.id), nombre, preguntas)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -101,15 +121,28 @@ function CrearExamenScreen({ navigation, route }) {
 									<FormControl.Label>Ingrese el nombre del exámen</FormControl.Label>
 									<Input size="md" onChangeText={(nombre) => setNombre(nombre)} value={nombre} multiline={true} />
 								</FormControl>
-								<FormControl>
-									<FormControl.Label>Ingrese la pregunta</FormControl.Label>
-									<Input size="md" onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true} />
-								</FormControl>
-								<Button isDisabled={!route.params.puedeCrearExamen} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+
+								{inputs.map((input, key)=>(
+									<FormControl key={key}>
+										<FormControl.Label>Ingrese la pregunta</FormControl.Label>
+										<Input value={input.value} onChangeText={(text)=>inputHandler(text,key)} multiline={true}/>
+									</FormControl>
+								))}
+
+								<Button isDisabled={!route.params.can_create_exams} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={addHandler} >
+                  Agregar pregunta
+								</Button>
+								<Button isDisabled={!route.params.can_create_exams} mt="2" colorScheme="indigo" _text={{ color: 'white' }}
+									onPress={() => {
+										preguntas = inputs.map(function (obj) {
+											return obj.value;
+										});
+										this.onSubmit();
+									}} >
                   Crear
 								</Button>
-								<Text color={route.params.puedeCrearExamen ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
-									Ha alcanzado el número máximo de exámenes publicados para este curso
+								<Text color={route.params.can_create_exams ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
+									Ha alcanzado el número máximo de exámenes para este curso
 								</Text>
 							</VStack>
 						</Box>

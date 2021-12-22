@@ -35,6 +35,7 @@ function VerExamenScreen({ navigation, route }) {
 	const [publicado, setPublicado] = useState(false);
 	const [limiteAlcanzado, setLimiteAlcanzado] = useState(false);
 	const isFocused = useIsFocused();
+	let parametro = route.params;
 
 	const renderItem = ({ item }) => (
 		<>
@@ -142,7 +143,7 @@ function VerExamenScreen({ navigation, route }) {
 								/>
 							</Box>
 							{mostrar ?
-								<Button mt="2" isDisabled={publicado || limiteAlcanzado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { navigation.navigate('EditarExamenScreen', route.params); }}>
+								<Button mt="2" isDisabled={publicado || limiteAlcanzado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { parametro['preguntas'] = preguntas; navigation.navigate('EditarExamenScreen', parametro); }}>
 									Editar exámen
 								</Button> :
 								null
