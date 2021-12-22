@@ -1,5 +1,34 @@
-import firebase from '~/plugins/firebase.js';
-const db = firebase.firestore();
+import { database } from '../firebase';
+import {
+	collection,
+	addDoc,
+	orderBy,
+	query,
+	onSnapshot
+} from 'firebase/firestore';
+
+export function createGroup(userArray, createdBy, name, type) {
+	const vm = this;
+	const group = {
+		createdAt: new Date(),
+		createdBy,
+		members: userArray,
+		name,
+		type,
+	};
+	return new Promise((resolve, reject) => {
+		addDoc(collection(database, 'group')
+			.then(function (docRef) {
+				group.id = docRef.id;
+				vm.fetchGroupByUserID(vm.user.uid);
+				resolve(group);
+			})
+			.catch(function (error) {
+				reject(error);
+			});
+	});
+}
+
 export default {
 	data() {
 		return {

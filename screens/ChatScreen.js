@@ -15,137 +15,154 @@ import {
 import * as SecureStore from 'expo-secure-store';
 import { database } from '../src/utils/firebase';
 import { useFocusEffect } from '@react-navigation/native';
-
-function fetchGroupByUserID(uid) {
-	const vm = this;
-	return new Promise((resolve, reject) => {
-		const groupRef = db.collection('group');
-		groupRef
-			.where('members', 'array-contains', uid)
-			.onSnapshot((querySnapshot) => {
-				const allGroups = [];
-				querySnapshot.forEach((doc) => {
-					const data = doc.data();
-					data.id = doc.id;
-					if (data.recentMessage) allGroups.push(data);
-				});
-				vm.groups = allGroups;
-			});
-	});
-}
-
-function filterGroup(userArray) {
-	const vm = this;
-	vm.groups = [];
-	return new Promise((resolve, reject) => {
-		let groupRef = db.collection('group');
-		userArray.forEach((userId) => {
-			groupRef = groupRef.where('members', '==', userId);
-		});
-		groupRef
-			.get()
-			.then(function (querySnapshot) {
-				const allGroups = [];
-				querySnapshot.forEach((doc) => {
-					const data = doc.data();
-					data.id = doc.id;
-					allGroups.push(data);
-				});
-				if (allGroups.length > 0) {
-					resolve(allGroups[0]);
-				} else {
-					resolve(null);
-				}
-			})
-			.catch(function (error) {
-				reject(error);
-			});
-	});
-}
-
-function fetchMessagesByGroupId(groupId) {
-	const vm = this;
-	db.collection('message')
-		.doc(groupId.trim())
-		.collection('messages')
-		.orderBy('sentAt')
-		.onSnapshot((querySnapshot) => {
-			const allMessages = [];
-			querySnapshot.forEach((doc) => {
-				if (doc) allMessages.push(doc.data());
-			});
-			vm.messages = allMessages;
-		});
-}
-
-function saveMessage(messageText, sentAt, currentGroupId) {
-	if (messageText.trim()) {
-		const message = {
-			messageText,
-			sentAt,
-			sentBy: this.user.uid,
-		};
-		return new Promise((resolve, reject) => {
-			db.collection('message')
-				.doc(currentGroupId)
-				.collection('messages')
-				.add(message)
-				.then(function (docRef) {
-					resolve(message);
-				})
-				.catch(function (error) {
-					reject(error);
-				});
-		});
-	}
-}
-
-
+import firebase from '../src/utils/firebase';
 export default function ChatScreen({ navigation, route }) {
 	const [messages, setMessages] = useState([]);
 	const [email, setEmail] = useState('');
 	const [chatForID, setChatForID] = useState('');
+	const [roomName, setRoomName] = useState('');
+	const [docId, setDocId] = useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
+			const chatIDpre = [];
+			console.log('route', route);
 			SecureStore.getItemAsync('user_email').then((value) => {
 				setEmail(value);
+				chatIDpre.push(value);
 				console.log('en chat screen', email);
 				console.log('en chat screen2', value);
+				console.log('antes de create group', chatIDpre);
+				if (route.params?.id) {
+					console.log(route.params.id);
+					setChatForID(route.params.id);
+					chatIDpre.push(route.params.id);
+					console.log('en chat screen3', chatIDpre);
+				}
+				chatIDpre.sort();
+				const roomName = chatIDpre.join('_');
+				setRoomName(roomName);
+				console.log('room name esta seteado?', roomName);
+				//chequeo por room si existe, si no existe lo creo con el codigo que esta ahora
+				firebase.firestore().collection('THREADS').where('name', '==', roomName).get().then(snapshot => {
+					console.log('snapshot', snapshot);
+					if (!snapshot.empty) {
+						snapshot.forEach(doc => {
+							console.log(doc.id, '=>', doc.data());
+							setDocId(doc.id);
+						});
+						console.log('matching documents.');
+						return;
+					} else {
+						firebase.firestore()
+							.collection('THREADS')
+							.add({
+								name: roomName,
+								latestMessage: {
+									text: `You have joined the room ${roomName}.`,
+									createdAt: new Date().getTime()
+								}
+							})
+							.then(docRef => {
+								const pepito = docRef.id;
+								docRef.collection('MESSAGES').add({
+									text: `You have joined the room ${roomName}.`,
+									createdAt: new Date().getTime(),
+									system: true
+								});
+								setDocId(pepito);
+								console.log('el id recien creado', docId);
+							});
+					}
+				});
 			});
-			console.log('route', route);
-			if (route.params?.id) {
-				const { id } = route.id;
-				console.log(id);
-				setChatForID(id);
-				console.log('en chat screen3');
-				console.log(chatForID);
-			}
+			console.log(docId, roomName, email);
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [email, chatForID])
+		}, [])
 	);
 	useLayoutEffect(() => {
+		console.log('en el use layout effect', docId);
+		if (docId) {
+			const messagesListener = firebase.firestore()
+				.collection('THREADS')
+				.doc(docId)
+				.collection('MESSAGES')
+				.orderBy('createdAt', 'desc')
+				.onSnapshot(querySnapshot => {
+					const messages = querySnapshot.docs.map(doc => {
+						const firebaseData = doc.data();
 
-		const collectionRef = collection(database, 'chats');
-		const q = query(collectionRef, orderBy('createdAt', 'desc'));
+						const data = {
+							_id: doc.id,
+							text: '',
+							createdAt: new Date().getTime(),
+							...firebaseData
+						};
 
-		const unsubscribe = onSnapshot(q, querySnapshot => {
-			setMessages(
-				querySnapshot.docs.map(doc => ({
-					_id: doc.data()._id,
-					createdAt: doc.data().createdAt.toDate(),
-					text: doc.data().text,
-					user: doc.data().user
-				}))
-			);
-		});
+						if (!firebaseData.system) {
+							data.user = {
+								...firebaseData.user,
+								name: firebaseData.user.email
+							};
+						}
 
-		return unsubscribe;
+						return data;
+					});
+
+					setMessages(messages);
+				});
+
+			return () => messagesListener();
+		}
+		// const collectionRef = collection(database, 'chats');
+		// const q = query(collectionRef, orderBy('createdAt', 'desc'));
+
+		// const unsubscribe = onSnapshot(q, querySnapshot => {
+		// 	setMessages(
+		// 		querySnapshot.docs.map(doc => ({
+		// 			_id: doc.data()._id,
+		// 			createdAt: doc.data().createdAt.toDate(),
+		// 			text: doc.data().text,
+		// 			user: doc.data().user
+		// 		}))
+		// 	);
+		// });
+
+		// return unsubscribe;
 	});
 
+	async function handleSend(messages) {
+		const text = messages[0].text;
+
+		firebase.firestore()
+			.collection('THREADS')
+			.doc(docId)
+			.collection('MESSAGES')
+			.add({
+				text,
+				createdAt: new Date().getTime(),
+				user: {
+					_id: email,
+					email: email
+				}
+			});
+
+		await firebase.firestore()
+			.collection('THREADS')
+			.doc(docId)
+			.set(
+				{
+					latestMessage: {
+						text,
+						createdAt: new Date().getTime()
+					}
+				},
+				{ merge: true }
+			);
+	}
 
 	const onSend = useCallback((messages = []) => {
 		setMessages(previousMessages =>
@@ -164,7 +181,7 @@ export default function ChatScreen({ navigation, route }) {
 	return (
 		<GiftedChat
 			messages={messages}
-			onSend={messages => onSend(messages)}
+			onSend={handleSend}
 			user={{
 				_id: email,
 			}}

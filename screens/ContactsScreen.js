@@ -20,28 +20,33 @@ import {
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import Moment from 'moment';
+import * as SecureStore from 'expo-secure-store';
 
 export default function Contactscreen({ navigation }) {
 	const isFocused = useIsFocused();
 	const [loading, setLoading] = React.useState(true);
 	const [users, setUsers] = React.useState({});
+	const [email, setEmail] = React.useState('');
 	Moment.locale('es');
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			obtenerUsuarios(false)
-				.then(data => data.json())
-				.then(json => {
-					setLoading(false);
-					console.log(json.users);
-					setUsers(json.users);
-				});
+			SecureStore.getItemAsync('user_email').then((value) => {
+				setEmail(value);
+				obtenerUsuarios(false)
+					.then(data => data.json())
+					.then(json => {
+						setLoading(false);
+						console.log(json.users);
+						setUsers(json.users);
+					});
+			});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 				setUsers([]);
 			};
-		}, [isFocused], setUsers)
+		}, [isFocused], setUsers, email)
 	);
 
 	return (
@@ -78,36 +83,38 @@ function Basic({ listData, navigation }) {
 		console.log('This row opened', rowKey);
 	};
 
-	const renderItem = ({ item }) => (
+	const renderItem = ({ item, email }) => (
 
 		< Box >
-			<Pressable onPress={() => console.log('You touched me')} bg="white">
-				<Box
-					pl="4"
-					pr="5"
-					py="2"
-				>
-					<HStack alignItems="center" space={3}>
-						{(item.photo_url == '' || item.photo_url == null || item.photo_url == 'undefined') ? (<Avatar bg="indigo.500" size="48px" >{item.first_name.charAt(0).toUpperCase()}</Avatar>) :
-							<Avatar size="48px" source={{ uri: item.photo_url }} />
-						}
-						<VStack>
-							<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
-								{item.first_name} {item.last_name}
-							</Text>
-						</VStack>
-						<Spacer />
-						<VStack>
-							<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} >
-								Se registro el
-							</Text>
-							<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-								{Moment(item.created_at).format('d MMM YYYY')}
-							</Text>
-						</VStack>
-					</HStack>
-				</Box>
-			</Pressable>
+			{(item.email != email) ?
+				< Pressable onPress={() => console.log('You touched me')} bg="white">
+					<Box
+						pl="4"
+						pr="5"
+						py="2"
+					>
+						<HStack alignItems="center" space={3}>
+							{(item.photo_url == '' || item.photo_url == null || item.photo_url == 'undefined') ? (<Avatar bg="indigo.500" size="48px" >{item.first_name.charAt(0).toUpperCase()}</Avatar>) :
+								<Avatar size="48px" source={{ uri: item.photo_url }} />
+							}
+							<VStack>
+								<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
+									{item.first_name} {item.last_name}
+								</Text>
+							</VStack>
+							<Spacer />
+							<VStack>
+								<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} >
+									Se registro el
+								</Text>
+								<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
+									{Moment(item.created_at).format('d MMM YYYY')}
+								</Text>
+							</VStack>
+						</HStack>
+					</Box>
+				</Pressable> : ''
+			}
 		</Box >
 
 	);

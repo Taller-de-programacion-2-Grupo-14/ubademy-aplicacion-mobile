@@ -176,14 +176,14 @@ function UsuarioHome({ navigation }) {
 											</FormControl>
 										</Stack>
 									</Stack>
-									<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => navigation.goBack()} >
+									<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => navigation.navigate('Home2', { screen: 'Home3' })} >
 										Volver
 									</Button>
 								</ScrollView>
 							</Box>
 					}
 				</Center>
-			</Box>
+			</Box >
 		</NativeBaseProvider >
 	);
 }

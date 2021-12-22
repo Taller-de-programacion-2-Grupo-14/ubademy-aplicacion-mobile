@@ -7,7 +7,6 @@ import {
 	Spinner,
 	Badge,
 	Button,
-	Center,
 	PresenceTransition,
 	Modal,
 	VStack,
@@ -15,7 +14,6 @@ import {
 	Text,
 	FormControl,
 	Radio,
-	Container,
 	ScrollView
 } from 'native-base';
 import PropTypes from 'prop-types';
@@ -73,11 +71,11 @@ export default function SubscriptionUpgradeScreen({ navigation }) {
 				console.log(json);
 				if (json.status === 200) {
 					console.log(json.txn);
-					setMensaje('Cambio de subscripcion solicitada con exito');
+					setMensaje('Cambio de subscripcion solicitada con exito. En breve te confiramremos la recepción de tu pago');
 					setShowModal(true);
 					setLoading(false);
 				} else if (json.status === 400) {
-					setMensaje('Algo salio mal. Intente mas tarde');
+					setMensaje('El cambio de subscripción debe ser diferente a tu actual');
 					setLoading(false);
 					setShowModal(true);
 				} else if (json.status === 401) {
@@ -150,79 +148,78 @@ export default function SubscriptionUpgradeScreen({ navigation }) {
 									mb: '4',
 								}}
 							>
-								<Container>
-									<VStack space={3} w="100%">
-										<FormControl>
-											<HStack alignItems="flex-end">
-												<Heading>Mi subscripcion <Badge colorScheme="success"> {subscripcion}</Badge></Heading>
-											</HStack>
-											<Radio.Group
-												name="subscriptionGroup"
-												accessibilityLabel="select subscription"
-												defaultValue={groupValue}
-												onChange={(value) => {
-													setGroupValue(value || '');
-												}}
-											>
-												<HStack alignItems="center" justifyContent="space-between">
-													<Radio value="basico" my="1">
-														Basico
-													</Radio>
-													<Text color="blueGray.400">Gratis</Text>
-												</HStack>
-												<HStack alignItems="center" justifyContent="space-between">
-													<Radio value="estandar" my="1">
-														Standard
-													</Radio>
-													<Text color="blueGray.400">$0.0001</Text>
-												</HStack>
-												<HStack alignItems="center" justifyContent="space-between">
-													<Radio value="premium" my="1">
-														Premium
-													</Radio>
-													<Text color="emerald.600">$0.0002</Text>
-												</HStack>
-											</Radio.Group>
-										</FormControl>
-										<PresenceTransition
-											visible={isOpen}
-											initial={{
-												opacity: 0,
-											}}
-											animate={{
-												opacity: 1,
-												transition: {
-													duration: 250,
-												},
+
+								<VStack space={3} w="100%">
+									<FormControl>
+										<HStack alignItems="flex-end">
+											<Heading>Mi subscripcion </Heading><Badge colorScheme="success"> {subscripcion}</Badge>
+										</HStack>
+										<Radio.Group
+											name="subscriptionGroup"
+											accessibilityLabel="select subscription"
+											defaultValue={groupValue}
+											onChange={(value) => {
+												setGroupValue(value || '');
 											}}
 										>
-											<Center
-												mt="7"
-												bg="teal.500"
-												rounded="md"
-												w="100%"
-												h="100"
-												_text={{
-													color: 'white',
-												}}
-											>
-												Al cambiar su subscripcion podra acceder a una mayor cantidad de cursos
-												<Button colorScheme="indigo"
-													flex="1"
-													onPress={() => {
-														console.log('Acepto');
-														this.changeUserSubscription();
-													}}
-												>
-													Acepto
-												</Button>
-											</Center>
-										</PresenceTransition>
-										<Button onPress={() => setIsOpen(!isOpen)}>
-											{isOpen ? 'Cancelar' : 'Upgrade'}
+											<HStack alignItems="center" justifyContent="space-between">
+												<Radio value="basico" my="1">
+													Basico
+												</Radio>
+												<Text color="blueGray.400">Gratis</Text>
+											</HStack>
+											<HStack alignItems="center" justifyContent="space-between">
+												<Radio value="estandar" my="1">
+													Standard
+												</Radio>
+												<Text color="blueGray.400">$0.0001</Text>
+											</HStack>
+											<HStack alignItems="center" justifyContent="space-between">
+												<Radio value="premium" my="1">
+													Premium
+												</Radio>
+												<Text color="emerald.600">$0.0002</Text>
+											</HStack>
+										</Radio.Group>
+									</FormControl>
+									<PresenceTransition
+										visible={isOpen}
+										initial={{
+											opacity: 0,
+										}}
+										animate={{
+											opacity: 1,
+											transition: {
+												duration: 250,
+											},
+										}}
+									>
+										<Box
+											mt="7"
+											bg="teal.500"
+											rounded="md"
+											w="100%"
+											h="100"
+											_text={{
+												color: 'white',
+											}}
+										>
+											Al cambiar su subscripcion podra acceder a una mayor cantidad de cursos
+										</Box>
+										<Button mt="2" mb="2" colorScheme="indigo" _text={{ color: 'white' }}
+											flex="1"
+											onPress={() => {
+												console.log('Acepto');
+												this.changeUserSubscription();
+											}}
+										>
+											Acepto
 										</Button>
-									</VStack>
-								</Container>
+									</PresenceTransition>
+									<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => setIsOpen(!isOpen)}>
+										{isOpen ? 'Cancelar' : 'Cambiar mi subscripción'}
+									</Button>
+								</VStack>
 							</ScrollView>
 						</Box>
 				}
