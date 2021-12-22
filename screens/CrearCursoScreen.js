@@ -77,6 +77,10 @@ export default function CrearCursoScreen({ navigation, route }) {
 		}
 	};
 
+	const subirFoto = async () => {
+		handleImagePicked(pickerResult);
+	};
+
 	const handleImagePicked = async (pR) => {
 		try {
 			if (!pR.cancelled) {
@@ -87,10 +91,6 @@ export default function CrearCursoScreen({ navigation, route }) {
 			console.log(e);
 			alert('Upload failed, sorry');
 		}
-	};
-
-	const _takePhoto = async () => {
-		handleImagePicked(pickerResult);
 	};
 
 	async function uploadImageAsync(uri) {
@@ -112,6 +112,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 
 		const fileRef = ref(getStorage(), 'imagen01');
 		const result = await uploadBytes(fileRef, blob);
+		console.log(result);
 
 		// We're done with the blob, close and release it
 		blob.close();
@@ -352,7 +353,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 
 								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={_takePhoto} >
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
 									Subir imágenes
 								</Button>
 
