@@ -28,7 +28,15 @@ function VerMultimediaScreen({ route }) {
 			</Heading>
 			{
 				(item.tag=='video') ?
-					<Video source={{ uri: item.url }} useNativeControls resizeMode="contain" isLooping /> :
+					<Video
+						style={styles.video}
+						source={{
+							uri: item.url,
+						}}
+						useNativeControls
+						resizeMode="contain"
+						isLooping
+					/> :
 					<Image source={{ uri: item.url }} style={{ width: 400, height: 300 }} alt="multimedia" />
 			}
 		</>
@@ -81,6 +89,14 @@ const spinnerStyles = StyleSheet.create({
 		flex: 7,
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+});
+
+const styles = StyleSheet.create({
+	video: {
+		alignSelf: 'center',
+		width: 320,
+		height: 200,
 	},
 });
 
