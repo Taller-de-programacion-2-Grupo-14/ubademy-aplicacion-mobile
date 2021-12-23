@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { obtenerUsuarios } from '../src/services/obtenerUsuario';
+import { obtenerUsuarioConEmail } from '../src/services/obtenerUsuario';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import {
@@ -64,11 +65,11 @@ export default function Contactscreen({ navigation }) {
 		console.log(nombre);
 		console.log(apellido);
 		console.log(emailBusqueda);
-		obtenerUsuarios(false, emailBusqueda)
+		obtenerUsuarioConEmail(emailBusqueda)
 			.then((response) => response.json())
 			.then((json) => {
-				console.log(json);
-				setUsers(json.message);
+				console.log('dspues de buscar por email', json);
+				setUsers([json]);
 				setLoading(false);
 			});
 	};
@@ -84,7 +85,7 @@ export default function Contactscreen({ navigation }) {
 					</Link>
 				</HStack>
 				<Text pl="4" pb="2" color="coolGray.800" _dark={{ color: 'warmGray.50' }} >
-					Selecciona un usuario y enviale un mensaje personal
+					Selecciona o busca un usuario y enviale un mensaje personal
 				</Text>
 
 				{
@@ -98,14 +99,6 @@ export default function Contactscreen({ navigation }) {
 									<Modal.CloseButton />
 									<Modal.Header>Búsqueda</Modal.Header>
 									<Modal.Body>
-										<FormControl>
-											<FormControl.Label>Nombre</FormControl.Label>
-											<Input onChangeText={(nombre) => setNombre(nombre)} />
-										</FormControl>
-										<FormControl mt="3">
-											<FormControl.Label>Apellido</FormControl.Label>
-											<Input onChangeText={(apellido) => setApellido(apellido)} />
-										</FormControl>
 										<FormControl mt="3">
 											<FormControl.Label>Email</FormControl.Label>
 											<Input onChangeText={(emailBusqueda) => setEmailBusqueda(emailBusqueda)} />
@@ -127,9 +120,7 @@ export default function Contactscreen({ navigation }) {
 												onPress={() => {
 													this.onSubmit();
 													setShowModal(false);
-													setNombre('');
-													setApellido('');
-													setEmail('');
+													setEmailBusqueda('');
 												}}
 											>
 												Buscar

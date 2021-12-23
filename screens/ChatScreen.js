@@ -59,7 +59,9 @@ export default function ChatScreen({ navigation, route }) {
 								latestMessage: {
 									text: `Has iniciado un chat con ${route.params.email}.`,
 									createdAt: new Date().getTime()
-								}
+								},
+								user1: value,
+								user2: route.params.email
 							})
 							.then(docRef => {
 								const pepito = docRef.id;

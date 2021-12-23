@@ -12,7 +12,8 @@ import {
 	HStack,
 	Modal,
 	ScrollView,
-	Spinner
+	Spinner,
+	Avatar
 } from 'native-base';
 import { editarUsuario } from '../src/services/editarUsuario';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
@@ -33,6 +34,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalMessage, setModalMessage] = React.useState('');
 	const [loading, setLoading] = React.useState(true);
+	const [photo_url, setPhoto_url] = React.useState('');
 	let vengoDeUU = true;
 
 	useFocusEffect(
@@ -56,6 +58,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 					if (!route.params?.ubicacion) {
 						setLocation(json.location);
 					}
+					setPhoto_url(json.photo_url);
 					setInterests(json.interest);
 				});
 			return () => {
@@ -125,6 +128,35 @@ function UpdateUsuarioScreen({ navigation, route }) {
 							borderWidth="1"
 							rounded="md">
 							<VStack space={3} mt="3">
+								<Box>
+									<VStack>
+										{console.log(photo_url)
+										}
+										{(photo_url === '' || photo_url === null || photo_url == 'undefined') ?
+											< Avatar
+												bg="indigo.600"
+												alignSelf="center"
+												size="2xl"
+											>
+												{firstName.charAt(0).toUpperCase()}
+											</Avatar>
+											:
+											<Avatar
+												alignSelf="center"
+												size="2xl"
+												source={{ uri: photo_url }}
+											>
+											</Avatar>
+										}
+
+										<Link onPress={() => console.log('quiero cambiar foto')}
+											_text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
+											alignSelf="flex-end"
+											mt="1">
+											Modificar mi foto
+										</Link>
+									</VStack>
+								</Box>
 								<FormControl>
 									<FormControl.Label
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>

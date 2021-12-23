@@ -79,7 +79,7 @@ export default function HomeScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<Box bg="#fff" p="2">
-						<StatusBar backgroundColor="#fff" barStyle="light-content" />
+						<StatusBar backgroundColor="#000" barStyle="light-content" />
 
 						<Box safeAreaTop backgroundColor="indigo.500" />
 

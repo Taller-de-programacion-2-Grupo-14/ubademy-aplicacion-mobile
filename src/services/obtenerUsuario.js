@@ -28,6 +28,7 @@ export async function obtenerUsuarios(blocked, email) {
 }
 
 export async function obtenerUsuarioConEmail(email) {
+	console.log('en obtener usuario con email', email);
 	return fetch(`${global.host}/users?email=${email}`, {
 		method: 'GET',
 		headers: {
@@ -35,3 +36,4 @@ export async function obtenerUsuarioConEmail(email) {
 		},
 	});
 }
+
