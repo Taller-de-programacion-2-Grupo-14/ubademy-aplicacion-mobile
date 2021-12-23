@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -65,7 +65,9 @@ function SubirMultimediaScreen({ navigation, route }) {
 			}
 		} catch (e) {
 			console.log(e);
-			alert('Upload failed, sorry');
+			Alert.alert('Error', 'No se ha podido subir la imagen');
+		} finally {
+			Alert.alert('Ok', '¡Imagen subida con éxito!');
 		}
 	};
 
@@ -176,12 +178,12 @@ function SubirMultimediaScreen({ navigation, route }) {
 								onPress= {pickImage}
 								//style= {{marginTop: -10}}
 							/>
-							{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
+							{image && <Image source={{ uri: image }} key={image} style={{ width: 200, height: 200 }} alt="Logo" />}
+							<Button isDisabled={(image==null)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
                 Subir contenido
 							</Button>
 
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+							<Button isDisabled={(imagenSubida==null)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
                 Guardar
 							</Button>
 
