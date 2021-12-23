@@ -1,18 +1,25 @@
 import * as React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import MessagesScreen from './MessagesScreen';
-import ContactsScreen from './ContactsScreen';
+import MessagesStackScreen from './MessagesStackScreen';
+import ContactsStackScreen from './ContactsStackScreen';
+import NotificationsScreen from './NotificationsScreen';
 import Constants from 'expo-constants';
 
 function Messages() {
 	return (
-		<MessagesScreen />
+		<MessagesStackScreen />
 	);
 }
 
 function Contacts() {
 	return (
-		<ContactsScreen />
+		<ContactsStackScreen />
+	);
+}
+
+function Notifications() {
+	return (
+		<NotificationsScreen />
 	);
 }
 
@@ -24,8 +31,8 @@ export default function App() {
 			screenOptions={{
 				swipeEnabled: false
 			}} style={{ marginTop: Constants.statusBarHeight }}>
-			<Tab.Screen name="Mensajes" component={Messages} />
 			<Tab.Screen name="Contactos" component={Contacts} />
+			<Tab.Screen name="Avisos" component={Notifications} />
 		</Tab.Navigator>
 	);
 }

@@ -11,6 +11,21 @@ Notifications.setNotificationHandler({
 	}),
 });
 
+Notifications.setNotificationCategoryAsync('collaborations', [
+	{
+		actionId: 'accept',
+		buttonTitle: 'Aceptar',
+		isDestructive: true,
+		isAuthenticationRequired: false,
+	},
+	{
+		actionId: 'deny',
+		buttonTitle: 'Cancelar',
+		isDestructive: false,
+		isAuthenticationRequired: true,
+	},
+]);
+
 export default function App() {
 	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
@@ -25,6 +40,13 @@ export default function App() {
 
 		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
 			console.log(response);
+			//si es collabaration entonces chequeo el action identifier y si es aceptar , buscar el id de curso
+			// y llamar al endpoint
+			//si dio cancelar, que se cierre la notificacion y ya
+			// /courses/collaborators
+			//"data": Object {
+			//	"id_course": 1,
+			//  },
 		});
 
 		return () => {
@@ -59,9 +81,10 @@ export default function App() {
 async function schedulePushNotification() {
 	await Notifications.scheduleNotificationAsync({
 		content: {
-			title: 'You\'ve got mail! 📬',
-			body: 'Here is the notification body',
+			title: 'Has recibido una invitación',
+			body: 'Te han invitado a ser colaborador de un curso, deseas colaborar?',
 			data: { data: 'goes here' },
+			categoryIdentifier: 'collaborations',
 		},
 		trigger: { seconds: 2 },
 	});

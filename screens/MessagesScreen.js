@@ -7,13 +7,39 @@ import {
 	Heading,
 	Icon,
 	HStack,
+	Avatar,
 	VStack,
 	Spacer,
+	Button
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
+import * as Notifications from 'expo-notifications';
+import { useFocusEffect } from '@react-navigation/native';
+
+async function schedulePushNotification() {
+	await Notifications.scheduleNotificationAsync({
+		content: {
+			title: 'Has recibido una invitación',
+			body: 'Te han invitado a ser colaborador de un curso, deseas colaborar?',
+			data: { data: 'goes here' },
+			categoryIdentifier: 'collaborations',
+		},
+		trigger: { seconds: 2 },
+	});
+}
 
 export default function MessagesScreen() {
+
+	useFocusEffect(
+		React.useCallback(() => {
+			return () => {
+				// Do something when the screen is unfocused
+				// Useful for cleanup functions
+
+			};
+		}, [])
+	);
 
 	return (
 		<NativeBaseProvider>
@@ -21,6 +47,12 @@ export default function MessagesScreen() {
 				<Heading p="4" pb="3" size="lg">
 					Inbox
 				</Heading>
+				<Button
+					title="Press to schedule a notification"
+					onPress={async () => {
+						await schedulePushNotification();
+					}}
+				/>
 				<Basic />
 			</Box>
 		</NativeBaseProvider>
@@ -99,7 +131,7 @@ function Basic() {
 					py="2"
 				>
 					<HStack alignItems="center" space={3}>
-						<Icon as={<MaterialIcons name="message" />} color="black" size="xs" />
+						<Avatar size="48px" source={{ uri: item.avatarUrl }} />
 						<VStack>
 							<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
 								{item.fullName}
@@ -155,14 +187,13 @@ function Basic() {
 			</Pressable>
 		</HStack>
 	);
-
 	return (
 		<Box bg="white" safeArea flex="1">
 			<SwipeListView
 				data={listData}
 				renderItem={renderItem}
 				renderHiddenItem={renderHiddenItem}
-				leftOpenValue={-130}
+				rightOpenValue={-130}
 				previewRowKey={'0'}
 				previewOpenValue={-40}
 				previewOpenDelay={3000}
@@ -171,4 +202,3 @@ function Basic() {
 		</Box>
 	);
 }
-
