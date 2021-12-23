@@ -15,7 +15,10 @@ import {
 	Spinner,
 	Link,
 	FlatList,
-	Flex
+	Flex,
+	Stack,
+	Image,
+	Center
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -147,9 +150,41 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{route.params.name}
-							</Heading>
+							<Stack
+								direction={['column', 'column', 'row']}
+								rounded="lg"
+								overflow="hidden"
+								w="90%"
+								shadow="1"
+								_light={{ backgroundColor: 'coolGray.50' }}
+								_dark={{ backgroundColor: 'gray.700' }}>
+								<Box>
+									<Image
+										w={['100%', '100%', '40']}
+										h="40"
+										source={{
+											uri:
+												(route.params.profile_pic_url=='') ? 'https://firebasestorage.googleapis.com/v0/b/uba-demy.appspot.com/o/imagenes%2Fbanners%2Fgenerica.jpeg?alt=media&token=a62d3455-4a3c-4ca3-ab19-4df2d63c2ce9' :
+													route.params.profile_pic_url,
+										}}
+										alt="image"
+									/>
+									<Center
+										bg="violet.500"
+										_text={{ color: 'white', fontWeight: '700', fontSize: 'xs' }}
+										position="absolute"
+										bottom="0"
+										px="3"
+										py="1.5">
+										Suscripción: {route.params.subscription}
+									</Center>
+								</Box>
+								<Stack p="4" space={[3, 3, 1.5]}>
+									<Heading size="md" ml="-1">
+										{route.params.name}
+									</Heading>
+								</Stack>
+							</Stack>
 							<Divider my="5" />
 							<Heading size="xl" color="coolGray.800" fontWeight="600">
 								Exámenes a resolver
