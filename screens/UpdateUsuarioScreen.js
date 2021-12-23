@@ -118,7 +118,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 						}}
 					>
 
-						<Box safeArea flex={1} p="2" w="100%" mx="auto" py="8" style={{ justifyContent: 'center' }} mt="4" mb="4"
+						<Box safeArea flex={1} p="4" w="100%" mx="auto" py="8" style={{ justifyContent: 'center' }} mt="4" mb="4"
 							bg="white"
 							overflow="hidden"
 							borderColor="coolGray.200"
@@ -127,21 +127,21 @@ function UpdateUsuarioScreen({ navigation, route }) {
 							<VStack space={3} mt="3">
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Email
 									</FormControl.Label>
 									<Input onChangeText={(email) => setEmail(email)} value={email} />
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Nombre
 									</FormControl.Label>
 									<Input onChangeText={(firstName) => setFirstName(firstName)} value={firstName} />
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Apellido
 									</FormControl.Label>
 									<Input onChangeText={(lastName) => setLastName(lastName)} value={lastName} />
@@ -149,7 +149,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Ubicacion
 									</FormControl.Label>
 									<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
@@ -166,7 +166,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Tipo de curso de mayor interes
 									</FormControl.Label>
 									<Input onChangeText={(interest) => setInterests(interest)} value={interest} />

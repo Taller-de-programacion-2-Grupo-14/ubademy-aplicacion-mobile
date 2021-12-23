@@ -67,7 +67,8 @@ export default function ViewProfileScreen({ navigation, route }) {
 	return (
 
 		<NativeBaseProvider>
-			<Center flex={1} px="7">
+
+			<Center flex={1} >
 				<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 					<Modal.Content maxWidth="350">
 						<Modal.Body>
@@ -95,14 +96,14 @@ export default function ViewProfileScreen({ navigation, route }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 
-					<Box>
+					<Box bg="#fff" p="2" mt="3" mb="3">
 						<ScrollView
 							_contentContainerStyle={{
 								px: '20px',
 								mb: '4',
 							}}
 						>
-							<Stack p="4" space={4}>
+							<Stack space={4}>
 								<Box>
 									{console.log(photo_url)
 									}

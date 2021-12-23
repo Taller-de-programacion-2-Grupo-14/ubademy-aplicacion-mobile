@@ -136,21 +136,21 @@ function UsuarioHome({ navigation }) {
 
 									<FormControl>
 										<FormControl.Label
-											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 											Email
 										</FormControl.Label>
 										<Text fontSize="sm" > {email} </Text>
 									</FormControl>
 									<FormControl>
 										<FormControl.Label
-											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 											Nombre
 										</FormControl.Label>
 										<Text fontSize="sm"> {firstName} </Text>
 									</FormControl>
 									<FormControl>
 										<FormControl.Label
-											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 											Apellido
 										</FormControl.Label>
 										<Text fontSize="sm" > {lastName} </Text>
@@ -158,14 +158,14 @@ function UsuarioHome({ navigation }) {
 
 									<FormControl>
 										<FormControl.Label
-											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 											Ubicacion
 										</FormControl.Label>
 										<Text fontSize="sm" > {location} </Text>
 									</FormControl>
 									<FormControl>
 										<FormControl.Label
-											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 											Wallet ID
 										</FormControl.Label>
 										<Text fontSize="sm" > {walletID} </Text>
@@ -173,7 +173,7 @@ function UsuarioHome({ navigation }) {
 
 									<FormControl>
 										<FormControl.Label
-											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 											Tipo de curso de mayor interes
 										</FormControl.Label>
 										<Text fontSize="sm" > {interest} </Text>

@@ -32,7 +32,7 @@ import {
 	Headline,
 } from 'react-native-paper';
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
 	const [firstName, setFirstName] = React.useState('');
 	const [loading, setLoading] = React.useState(true);
 	const [subscripcion, setSubscripcion] = React.useState('');

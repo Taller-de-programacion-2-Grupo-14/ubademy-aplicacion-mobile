@@ -14,6 +14,7 @@ import { IconButton } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
 import firebase from '../src/utils/firebase';
+import { sendPushNotification } from '../src/services/notifications';
 export default function ChatScreen({ navigation, route }) {
 	const [messages, setMessages] = useState([]);
 	const [email, setEmail] = useState('');
@@ -41,7 +42,6 @@ export default function ChatScreen({ navigation, route }) {
 				const roomName = chatIDpre.join('_');
 				setRoomName(roomName);
 				console.log('room name esta seteado?', roomName);
-				//chequeo por room si existe, si no existe lo creo con el codigo que esta ahora
 				firebase.firestore().collection('THREADS').where('name', '==', roomName).get().then(snapshot => {
 					console.log('snapshot', snapshot);
 					if (!snapshot.empty) {
@@ -145,7 +145,7 @@ export default function ChatScreen({ navigation, route }) {
 				},
 				{ merge: true }
 			);
-
+		sendPushNotification('Nuevo mensaje', 'Has recibido un nuevo mensaje', 70);
 	}
 	function renderBubble(props) {
 		return (
