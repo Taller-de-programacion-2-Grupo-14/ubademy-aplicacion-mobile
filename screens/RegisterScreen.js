@@ -51,18 +51,11 @@ export default function RegisterScreen({ navigation, route }) {
 		React.useCallback(() => {
 			console.log('intento imprimir route');
 			console.log(route);
-			if (route.params?.ubicacion) {
-				const { ubicacion } = route.params;
-				console.log(ubicacion);
-				setLocation(ubicacion);
-				console.log('en register screen');
-				console.log(location);
-			}
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [route.params?.ubicacion])
+		}, [])
 	);
 
 	this.handleSubmit = () => {
@@ -345,20 +338,12 @@ export default function RegisterScreen({ navigation, route }) {
 									_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 									Ubicacion
 								</FormControl.Label>
-								<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
+								<Input onChangeText={(location) => setLocation(location)} />
 								{isFieldInError('location') &&
 									getErrorsInField('location').map(errorMessage => (
 										<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 									))}
-								<Link onPress={() => navigation.navigate('LocationScreen')}
-									_text={{
-										color: 'indigo.500',
-										fontWeight: 'medium',
-										fontSize: 'sm',
-									}}
-								>
-									Seleccionar mi ubicacion
-								</Link>
+
 							</FormControl>
 							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.handleSubmit()} >
 								Registrarme

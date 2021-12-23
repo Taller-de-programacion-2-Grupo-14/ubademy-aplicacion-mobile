@@ -116,23 +116,25 @@ export default function HomeApp() {
 		});
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 			setNotification(notification);
-			console.log(notification);
+			console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', notification);
 			const notificationInfo = {
 				'date': notification.date,
 				'title': notification.request.content.title,
 				'content': notification.request.content.body,
 				'id': notification.request.identifier
 			};
-			obtenerUsuario()
-				.then(data => data.json())
-				.then(json => {
-					console.log(json);
-					setUserId(json.user_id);
-					console.log('en noti listener id usuario', userId);
-					saveNotification(notificationInfo, json.user_id);
-					console.log(notificationInfo);
-					console.log('lalalal222');
-				});
+			if (notification.categoryIdentifier == 'collaborations') {
+				obtenerUsuario()
+					.then(data => data.json())
+					.then(json => {
+						console.log(json);
+						setUserId(json.user_id);
+						console.log('en noti listener id usuario', userId);
+						saveNotification(notificationInfo, json.user_id);
+						console.log(notificationInfo);
+						console.log('lalalal222');
+					});
+			}
 		});
 
 		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {

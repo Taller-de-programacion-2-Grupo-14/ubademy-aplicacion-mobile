@@ -152,16 +152,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Ubicacion
 									</FormControl.Label>
-									<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
-									<Link onPress={() => navigation.navigate('LocationUUScreen', vengoDeUU)}
-										_text={{
-											color: 'indigo.500',
-											fontWeight: 'medium',
-											fontSize: 'sm',
-										}}
-									>
-										Modificar mi ubicacion
-									</Link>
+									<Input onChangeText={(location) => setLocation(location)} value={location} />
 								</FormControl>
 
 								<FormControl>

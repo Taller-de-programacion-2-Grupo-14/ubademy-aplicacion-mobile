@@ -15,7 +15,13 @@ import {
 	Avatar,
 	VStack,
 	Spacer,
-	Spinner
+	Spinner,
+	Modal,
+	FormControl,
+	Input,
+	Button,
+	Link,
+	SearchIcon
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
@@ -27,6 +33,11 @@ export default function Contactscreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [users, setUsers] = React.useState({});
 	const [email, setEmail] = React.useState('');
+	const [emailBusqueda, setEmailBusqueda] = React.useState('');
+	const [showModal, setShowModal] = React.useState(false);
+	const [nombre, setNombre] = React.useState('');
+	const [apellido, setApellido] = React.useState('');
+
 	Moment.locale('es');
 	useFocusEffect(
 		React.useCallback(() => {
@@ -46,24 +57,89 @@ export default function Contactscreen({ navigation }) {
 				// Useful for cleanup functions
 				setUsers([]);
 			};
-		}, [isFocused, setUsers, email])
+		}, [isFocused, email])
 	);
-
+	this.onSubmit = () => {
+		setLoading(true);
+		console.log(nombre);
+		console.log(apellido);
+		console.log(emailBusqueda);
+		obtenerUsuarios(false, emailBusqueda)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				setUsers(json.message);
+				setLoading(false);
+			});
+	};
 	return (
 		<NativeBaseProvider>
 			<Box bg="white" flex="1" safeAreaTop>
-				<Heading p="4" pb="3" size="lg">
-					Usuarios de Ubademy
-				</Heading>
+				<HStack>
+					<Heading p="4" pb="3" size="lg">
+						Usuarios de Ubademy
+					</Heading>
+					<Link onPress={() => setShowModal(true)} style={{ position: 'absolute', right: 20, top: 10 }}>
+						<SearchIcon size="6" />
+					</Link>
+				</HStack>
 				<Text pl="4" pb="2" color="coolGray.800" _dark={{ color: 'warmGray.50' }} >
 					Selecciona un usuario y enviale un mensaje personal
 				</Text>
+
 				{
 					loading ?
 						<View style={spinnerStyles.spinnerStyle}>
 							<Spinner color="indigo.500" size="lg" />
 						</View> :
-						<Basic listData={users} navigation={navigation} />
+						<>
+							<Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+								<Modal.Content maxWidth="400px" p="2">
+									<Modal.CloseButton />
+									<Modal.Header>Búsqueda</Modal.Header>
+									<Modal.Body>
+										<FormControl>
+											<FormControl.Label>Nombre</FormControl.Label>
+											<Input onChangeText={(nombre) => setNombre(nombre)} />
+										</FormControl>
+										<FormControl mt="3">
+											<FormControl.Label>Apellido</FormControl.Label>
+											<Input onChangeText={(apellido) => setApellido(apellido)} />
+										</FormControl>
+										<FormControl mt="3">
+											<FormControl.Label>Email</FormControl.Label>
+											<Input onChangeText={(emailBusqueda) => setEmailBusqueda(emailBusqueda)} />
+										</FormControl>
+									</Modal.Body>
+									<Modal.Footer>
+										<Button.Group space={2}>
+											<Button
+												variant="ghost"
+												colorScheme="indigo"
+												onPress={() => {
+													setShowModal(false);
+												}}
+											>
+												Cancelar
+											</Button>
+											<Button
+												colorScheme="indigo"
+												onPress={() => {
+													this.onSubmit();
+													setShowModal(false);
+													setNombre('');
+													setApellido('');
+													setEmail('');
+												}}
+											>
+												Buscar
+											</Button>
+										</Button.Group>
+									</Modal.Footer>
+								</Modal.Content>
+							</Modal>
+							<Basic listData={users} navigation={navigation} />
+						</>
 				}
 			</Box>
 		</NativeBaseProvider>
@@ -145,7 +221,7 @@ function Basic({ listData, navigation }) {
 				w="70"
 				bg="indigo.500"
 				justifyContent="center"
-				onPress={() => navigation.navigate('Chat', { id: data.item.email })}
+				onPress={() => navigation.navigate('Chat', { email: data.item.email, id: data.item.user_id })}
 				_pressed={{
 					opacity: 0.5,
 				}}>

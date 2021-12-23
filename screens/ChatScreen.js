@@ -32,10 +32,10 @@ export default function ChatScreen({ navigation, route }) {
 				console.log('en chat screen', email);
 				console.log('en chat screen2', value);
 				console.log('antes de create group', chatIDpre);
-				if (route.params?.id) {
-					console.log(route.params.id);
-					setChatForID(route.params.id);
-					chatIDpre.push(route.params.id);
+				if (route.params?.email) {
+					console.log(route.params.email);
+					setChatForID(route.params.email);
+					chatIDpre.push(route.params.email);
 					console.log('en chat screen3', chatIDpre);
 				}
 				chatIDpre.sort();
@@ -57,14 +57,14 @@ export default function ChatScreen({ navigation, route }) {
 							.add({
 								name: roomName,
 								latestMessage: {
-									text: `Has iniciado un chat con ${route.params.id}.`,
+									text: `Has iniciado un chat con ${route.params.email}.`,
 									createdAt: new Date().getTime()
 								}
 							})
 							.then(docRef => {
 								const pepito = docRef.id;
 								docRef.collection('MESSAGES').add({
-									text: `Has iniciado un chat con ${route.params.id}.`,
+									text: `Has iniciado un chat con ${route.params.email}.`,
 									createdAt: new Date().getTime(),
 									system: true
 								});
@@ -145,7 +145,7 @@ export default function ChatScreen({ navigation, route }) {
 				},
 				{ merge: true }
 			);
-		sendPushNotification('Nuevo mensaje', 'Has recibido un nuevo mensaje', 70);
+		sendPushNotification('Nuevo mensaje', `${route.params.email} te ha enviado un nuevo mensaje`, route.params.id, 'chat');
 	}
 	function renderBubble(props) {
 		return (
