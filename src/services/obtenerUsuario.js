@@ -13,11 +13,12 @@ export async function obtenerUsuario() {
 	});
 }
 
-export async function obtenerUsuarios(blocked) {
+export async function obtenerUsuarios(blocked, email) {
+	console.log('en obtener usuarios', email);
 	const token = await SecureStore.getItemAsync('secure_token');
 	console.log('en obtener usuarios service');
 	//cambiar la url por la de heroku cuando el mirage este desactivado
-	return fetch(`${global.host}/users/all?blocked=${blocked}&limit=10`, {
+	return fetch(`${global.host}/users/all?blocked=${blocked}&limit=10&not_email=${email}`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

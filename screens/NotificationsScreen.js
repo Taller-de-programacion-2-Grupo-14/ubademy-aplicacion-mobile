@@ -9,17 +9,19 @@ import {
 	HStack,
 	VStack,
 	Spacer,
+	FlatList,
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
+import Moment from 'moment';
 
 export default function NotificationsScreen() {
 
 	const [data, setData] = React.useState([]);
-
+	Moment.locale('es');
 	function getNotifications(userId) {
 		const db = getDatabase();
 		const reference = ref(db, 'notifications/' + userId);
@@ -99,28 +101,23 @@ function Basic(data) {
 	};
 
 	const renderItem = ({ item }) => (
-		<Box>
-			<Pressable onPress={() => console.log('You touched me')} bg="white">
-				<Box
-					pl="4"
-					pr="5"
-					py="2"
-				>
-					<HStack alignItems="center" space={3}>
-						<Icon as={<MaterialIcons name="email" />} color="black" size="xs" />
-						<VStack>
-							<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
-								{item.title}
-							</Text>
-							<Text color="coolGray.600" _dark={{ color: 'warmGray.200' }}> {item.content}</Text>
-						</VStack>
-						<Spacer />
-						<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-							{item.date}
-						</Text>
-					</HStack>
-				</Box>
-			</Pressable>
+		<Box borderBottomWidth="1" borderColor="coolGray.200"
+			pl="4"
+			pr="5"
+			py="2">
+			<HStack alignItems="center" space={3}>
+				<Icon as={<MaterialIcons name="email" />} color="black" size="xs" />
+				<VStack>
+					<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
+						{item.title}
+					</Text>
+					<Text color="coolGray.600" _dark={{ color: 'warmGray.200' }}> {item.content}</Text>
+				</VStack>
+				<Spacer />
+				<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
+					{Moment(item.date).format('d MMM YYYY')}
+				</Text>
+			</HStack>
 		</Box>
 	);
 
@@ -166,15 +163,9 @@ function Basic(data) {
 
 	return (
 		<Box bg="white" safeArea flex="1">
-			<SwipeListView
+			<FlatList
 				data={listData}
 				renderItem={renderItem}
-				renderHiddenItem={renderHiddenItem}
-				leftOpenValue={-130}
-				previewRowKey={'0'}
-				previewOpenValue={-40}
-				previewOpenDelay={3000}
-				onRowDidOpen={onRowDidOpen}
 			/>
 		</Box>
 	);

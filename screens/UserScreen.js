@@ -89,101 +89,101 @@ function UsuarioHome({ navigation }) {
 	return (
 
 		<NativeBaseProvider>
-			<Box flex={1} bg="white" alignItems="center" justifyContent="center">
-				<Center flex={1} px="7">
-					{
-						loading ?
-							<View style={spinnerStyles.spinnerStyle}>
-								<Spinner color="indigo.500" size="lg" />
-							</View> :
 
-							<Box>
-								<ScrollView
-									_contentContainerStyle={{
-										px: '20px',
-										mb: '4',
-									}}
-								>
-									<Stack p="4" space={4}>
-										<Box>
+			{
+				loading ?
+					<View style={spinnerStyles.spinnerStyle}>
+						<Spinner color="indigo.500" size="lg" />
+					</View> :
 
-											{console.log(photo_url)
-											}
-											{(photo_url === '' || photo_url === null || photo_url == 'undefined') ?
-												< Avatar
-													bg="indigo.600"
-													alignSelf="center"
-													size="2xl"
-												>
-													{firstName.charAt(0).toUpperCase()}
-												</Avatar>
-												:
-												<Avatar
-													alignSelf="center"
-													size="2xl"
-													source={{ uri: photo_url }}
-												>
-												</Avatar>
-											}
+					<ScrollView
+						_contentContainerStyle={{
+							px: '20px',
+							mb: '4',
+						}}
+					>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }} mt="4" mb="4"
+							bg="white"
+							overflow="hidden"
+							borderColor="coolGray.200"
+							borderWidth="1"
+							rounded="md">
+							<Stack p="4" space={4}>
+								<Box>
+
+									{console.log(photo_url)
+									}
+									{(photo_url === '' || photo_url === null || photo_url == 'undefined') ?
+										< Avatar
+											bg="indigo.600"
+											alignSelf="center"
+											size="2xl"
+										>
+											{firstName.charAt(0).toUpperCase()}
+										</Avatar>
+										:
+										<Avatar
+											alignSelf="center"
+											size="2xl"
+											source={{ uri: photo_url }}
+										>
+										</Avatar>
+									}
 
 
-										</Box>
-										<Stack alignItems="center" space={4} justifyContent="space-between">
+								</Box>
+								<Stack alignItems="center" space={4} justifyContent="space-between">
 
-											<FormControl>
-												<FormControl.Label
-													_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-													Email
-												</FormControl.Label>
-												<Text fontSize="sm" > {email} </Text>
-											</FormControl>
-											<FormControl>
-												<FormControl.Label
-													_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-													Nombre
-												</FormControl.Label>
-												<Text fontSize="sm"> {firstName} </Text>
-											</FormControl>
-											<FormControl>
-												<FormControl.Label
-													_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-													Apellido
-												</FormControl.Label>
-												<Text fontSize="sm" > {lastName} </Text>
-											</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Email
+										</FormControl.Label>
+										<Text fontSize="sm" > {email} </Text>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Nombre
+										</FormControl.Label>
+										<Text fontSize="sm"> {firstName} </Text>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Apellido
+										</FormControl.Label>
+										<Text fontSize="sm" > {lastName} </Text>
+									</FormControl>
 
-											<FormControl>
-												<FormControl.Label
-													_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-													Ubicacion
-												</FormControl.Label>
-												<Text fontSize="sm" > {location} </Text>
-											</FormControl>
-											<FormControl>
-												<FormControl.Label
-													_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-													Wallet ID
-												</FormControl.Label>
-												<Text fontSize="sm" > {walletID} </Text>
-											</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Ubicacion
+										</FormControl.Label>
+										<Text fontSize="sm" > {location} </Text>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Wallet ID
+										</FormControl.Label>
+										<Text fontSize="sm" > {walletID} </Text>
+									</FormControl>
 
-											<FormControl>
-												<FormControl.Label
-													_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-													Tipo de curso de mayor interes
-												</FormControl.Label>
-												<Text fontSize="sm" > {interest} </Text>
-											</FormControl>
-										</Stack>
-									</Stack>
-									<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => navigation.navigate('Home2', { screen: 'Home3' })} >
-										Volver
-									</Button>
-								</ScrollView>
-							</Box>
-					}
-				</Center>
-			</Box >
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Tipo de curso de mayor interes
+										</FormControl.Label>
+										<Text fontSize="sm" > {interest} </Text>
+									</FormControl>
+								</Stack>
+							</Stack>
+						</Box>
+					</ScrollView>
+			}
+
 		</NativeBaseProvider >
 	);
 }

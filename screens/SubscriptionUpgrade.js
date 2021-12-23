@@ -40,15 +40,15 @@ export default function SubscriptionUpgradeScreen({ navigation }) {
 					console.log(json);
 					if (json.subscription === 'free') {
 						console.log('es free entonces le pongo basico');
-						setSubscripcion('Basica');
+						setSubscripcion('BASICA');
 					}
 					if (json.subscription === 'platinum') {
 						console.log('es platinum entonces le pongo estandard');
-						setSubscripcion('Standard');
+						setSubscripcion('STANDARD');
 					}
 					if (json.subscription === 'black') {
 						console.log('es black entonces le pongo premium');
-						setSubscripcion('Premium');
+						setSubscripcion('PREMIUM');
 					}
 					setLoading(false);
 				})
@@ -152,8 +152,11 @@ export default function SubscriptionUpgradeScreen({ navigation }) {
 								<VStack space={3} w="100%">
 									<FormControl>
 										<HStack alignItems="flex-end">
-											<Heading>Mi subscripcion </Heading><Badge colorScheme="success"> {subscripcion}</Badge>
+											<Heading size="xl">Mi subscripción </Heading>
 										</HStack>
+
+										<Text fontSize="md">Actualmente tu nivel de subscripción es <Text fontSize="md" bold> {subscripcion}</Text>. Puedes cambiarla para poder acceder a una mayor cantidad y variedad de cursos.</Text>
+
 										<Radio.Group
 											name="subscriptionGroup"
 											accessibilityLabel="select subscription"
@@ -166,19 +169,19 @@ export default function SubscriptionUpgradeScreen({ navigation }) {
 												<Radio value="basico" my="1">
 													Basico
 												</Radio>
-												<Text color="blueGray.400">Gratis</Text>
+												<Text color="emerald.600" ml="1">Gratis</Text>
 											</HStack>
 											<HStack alignItems="center" justifyContent="space-between">
 												<Radio value="estandar" my="1">
 													Standard
 												</Radio>
-												<Text color="blueGray.400">$0.0001</Text>
+												<Text color="blueGray.500" ml="1">$0.0001</Text>
 											</HStack>
 											<HStack alignItems="center" justifyContent="space-between">
 												<Radio value="premium" my="1">
 													Premium
 												</Radio>
-												<Text color="emerald.600">$0.0002</Text>
+												<Text color="blueGray.700" ml="1">$0.0002</Text>
 											</HStack>
 										</Radio.Group>
 									</FormControl>
@@ -196,17 +199,23 @@ export default function SubscriptionUpgradeScreen({ navigation }) {
 									>
 										<Box
 											mt="7"
-											bg="teal.500"
+											bg="warmGray.50"
+											overflow="hidden"
+											borderColor="coolGray.200"
+											borderWidth="1"
 											rounded="md"
 											w="100%"
-											h="100"
+											h="200"
 											_text={{
-												color: 'white',
+												color: 'gray',
 											}}
+											p="5"
 										>
-											Al cambiar su subscripcion podra acceder a una mayor cantidad de cursos
+											<Text fontSize="md" bold underline>Términos y condiciones</Text>
+											<Text fontSize="md" >El cambio no será aplicado hasta recibir la confirmación de tu pago. Te notificaremos al recibir tu dinero y así hacer efectivo tu cambio de subscripción
+											</Text>
 										</Box>
-										<Button mt="2" mb="2" colorScheme="indigo" _text={{ color: 'white' }}
+										<Button mt="4" mb="2" colorScheme="indigo" _text={{ color: 'white' }}
 											flex="1"
 											onPress={() => {
 												console.log('Acepto');

@@ -1,19 +1,17 @@
 import React, {
 	useState,
 	useLayoutEffect,
-	useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
-import { GiftedChat } from 'react-native-gifted-chat';
 import {
-	collection,
-	addDoc,
-	orderBy,
-	query,
-	onSnapshot
-} from 'firebase/firestore';
+	GiftedChat,
+	Bubble,
+	Send,
+	SystemMessage
+} from 'react-native-gifted-chat';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
-import { database } from '../src/utils/firebase';
 import { useFocusEffect } from '@react-navigation/native';
 import firebase from '../src/utils/firebase';
 export default function ChatScreen({ navigation, route }) {
@@ -59,14 +57,14 @@ export default function ChatScreen({ navigation, route }) {
 							.add({
 								name: roomName,
 								latestMessage: {
-									text: `You have joined the room ${roomName}.`,
+									text: `Has iniciado un chat con ${route.params.id}.`,
 									createdAt: new Date().getTime()
 								}
 							})
 							.then(docRef => {
 								const pepito = docRef.id;
 								docRef.collection('MESSAGES').add({
-									text: `You have joined the room ${roomName}.`,
+									text: `Has iniciado un chat con ${route.params.id}.`,
 									createdAt: new Date().getTime(),
 									system: true
 								});
@@ -117,21 +115,6 @@ export default function ChatScreen({ navigation, route }) {
 
 			return () => messagesListener();
 		}
-		// const collectionRef = collection(database, 'chats');
-		// const q = query(collectionRef, orderBy('createdAt', 'desc'));
-
-		// const unsubscribe = onSnapshot(q, querySnapshot => {
-		// 	setMessages(
-		// 		querySnapshot.docs.map(doc => ({
-		// 			_id: doc.data()._id,
-		// 			createdAt: doc.data().createdAt.toDate(),
-		// 			text: doc.data().text,
-		// 			user: doc.data().user
-		// 		}))
-		// 	);
-		// });
-
-		// return unsubscribe;
 	});
 
 	async function handleSend(messages) {
@@ -162,22 +145,67 @@ export default function ChatScreen({ navigation, route }) {
 				},
 				{ merge: true }
 			);
+
+	}
+	function renderBubble(props) {
+		return (
+			<Bubble
+				{...props}
+				wrapperStyle={{
+					right: {
+						backgroundColor: '#a44eff',
+					},
+					left: {
+						backgroundColor: '#fff',
+					}
+				}}
+				textStyle={{
+					right: {
+						color: '#fff'
+					},
+					left: {
+						color: 'black'
+					}
+				}}
+			/>
+		);
 	}
 
-	const onSend = useCallback((messages = []) => {
-		setMessages(previousMessages =>
-			GiftedChat.append(previousMessages, messages)
+	function renderLoading() {
+		return (
+			<View style={styles.loadingContainer}>
+				<ActivityIndicator size='large' color='#a44eff' />
+			</View>
 		);
-		const { _id, createdAt, text, user } = messages[0];
-		console.log('en onSend2', user);
-		addDoc(collection(database, 'chats'), {
-			_id,
-			createdAt,
-			text,
-			user
-		});
-	}, []);
+	}
 
+	function renderSend(props) {
+		return (
+			<Send {...props}>
+				<View style={styles.sendingContainer}>
+					<IconButton icon='send-circle' size={32} color='#a44eff' />
+				</View>
+			</Send>
+		);
+	}
+
+	function scrollToBottomComponent() {
+		return (
+			<View style={styles.bottomComponentContainer}>
+				<IconButton icon='chevron-double-down' size={36} color='#a44eff' />
+			</View>
+		);
+	}
+
+	function renderSystemMessage(props) {
+		return (
+			<SystemMessage
+				{...props}
+				wrapperStyle={styles.systemMessageWrapper}
+				textStyle={styles.systemMessageText}
+			/>
+		);
+	}
 	return (
 		<GiftedChat
 			messages={messages}
@@ -185,6 +213,15 @@ export default function ChatScreen({ navigation, route }) {
 			user={{
 				_id: email,
 			}}
+			placeholder='Escribe tu mensaje aqui...'
+			alwaysShowSend
+			showUserAvatar
+			scrollToBottom
+			renderBubble={renderBubble}
+			renderLoading={renderLoading}
+			renderSend={renderSend}
+			scrollToBottomComponent={scrollToBottomComponent}
+			renderSystemMessage={renderSystemMessage}
 		/>
 	);
 }
@@ -197,6 +234,29 @@ ChatScreen.propTypes = {
 	route: PropTypes.object
 };
 
+const styles = StyleSheet.create({
+	loadingContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	sendingContainer: {
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	bottomComponentContainer: {
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	systemMessageWrapper: {
+		borderRadius: 4,
+		padding: 5
+	},
+	systemMessageText: {
+		fontSize: 14,
+		fontWeight: 'bold'
+	}
+});
 
 
 

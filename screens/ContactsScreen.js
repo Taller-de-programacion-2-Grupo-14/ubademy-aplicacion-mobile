@@ -33,7 +33,7 @@ export default function Contactscreen({ navigation }) {
 			// Do something when the screen is focused
 			SecureStore.getItemAsync('user_email').then((value) => {
 				setEmail(value);
-				obtenerUsuarios(false)
+				obtenerUsuarios(false, value)
 					.then(data => data.json())
 					.then(json => {
 						setLoading(false);
@@ -46,7 +46,7 @@ export default function Contactscreen({ navigation }) {
 				// Useful for cleanup functions
 				setUsers([]);
 			};
-		}, [isFocused], setUsers, email)
+		}, [isFocused, setUsers, email])
 	);
 
 	return (
@@ -83,38 +83,37 @@ function Basic({ listData, navigation }) {
 		console.log('This row opened', rowKey);
 	};
 
-	const renderItem = ({ item, email }) => (
+	const renderItem = ({ item }) => (
 
 		< Box >
-			{(item.email != email) ?
-				< Pressable onPress={() => console.log('You touched me')} bg="white">
-					<Box
-						pl="4"
-						pr="5"
-						py="2"
-					>
-						<HStack alignItems="center" space={3}>
-							{(item.photo_url == '' || item.photo_url == null || item.photo_url == 'undefined') ? (<Avatar bg="indigo.500" size="48px" >{item.first_name.charAt(0).toUpperCase()}</Avatar>) :
-								<Avatar size="48px" source={{ uri: item.photo_url }} />
-							}
-							<VStack>
-								<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
-									{item.first_name} {item.last_name}
-								</Text>
-							</VStack>
-							<Spacer />
-							<VStack>
-								<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} >
-									Se registro el
-								</Text>
-								<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-									{Moment(item.created_at).format('d MMM YYYY')}
-								</Text>
-							</VStack>
-						</HStack>
-					</Box>
-				</Pressable> : ''
-			}
+
+			< Pressable onPress={() => console.log('You touched me')} bg="white">
+				<Box
+					pl="4"
+					pr="5"
+					py="2"
+				>
+					<HStack alignItems="center" space={3}>
+						{(item.photo_url == '' || item.photo_url == null || item.photo_url == 'undefined') ? (<Avatar bg="indigo.500" size="48px" >{item.first_name.charAt(0).toUpperCase()}</Avatar>) :
+							<Avatar size="48px" source={{ uri: item.photo_url }} />
+						}
+						<VStack>
+							<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
+								{item.first_name} {item.last_name}
+							</Text>
+						</VStack>
+						<Spacer />
+						<VStack>
+							<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} >
+								Se registro el
+							</Text>
+							<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
+								{Moment(item.created_at).format('d MMM YYYY')}
+							</Text>
+						</VStack>
+					</HStack>
+				</Box>
+			</Pressable>
 		</Box >
 
 	);
