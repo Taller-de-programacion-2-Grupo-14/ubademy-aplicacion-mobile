@@ -4,23 +4,40 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
-	ScrollView,
-	Spinner
+	Spinner,
+	FlatList,
+	Image
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
-//import PropTypes from 'prop-types';
+import { obtenerMultimedia } from '../src/services/obtenerMultimedia';
+import PropTypes from 'prop-types';
 
-// VerMultimediaScreen.propTypes = {
-// 	navigation: PropTypes.object.isRequired,
-// };
+VerMultimediaScreen.propTypes = {
+	route: PropTypes.object.isRequired,
+};
 
-//function VerMultimediaScreen({ navigation }) {
-function VerMultimediaScreen() {
+function VerMultimediaScreen({ route }) {
 	const [loading, setLoading] = React.useState(true);
+	const [multimedia, setMultimedia] = React.useState([]);
+
+	const renderItem = ({ item }) => (
+		<>
+			<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
+				{item.title}
+			</Heading>
+			<Image source={{ uri: item.url }} style={{ width: 400, height: 300 }} alt="multimedia" />
+		</>
+	);
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			obtenerMultimedia(String(route.params.id))
+				.then(data => data.json())
+				.then(json => {
+					console.log(json);
+					setMultimedia(json.message);
+				});
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -37,18 +54,18 @@ function VerMultimediaScreen() {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
+					<>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Ver contenido multimedia (por ahora nada)
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+								Contenido multimedia
 							</Heading>
+							<FlatList
+								data={multimedia}
+								renderItem={renderItem}
+								keyExtractor={(item, index) => index.toString()}
+							/>
 						</Box>
-					</ScrollView>
+					</>
 			}
 		</NativeBaseProvider>
 	);

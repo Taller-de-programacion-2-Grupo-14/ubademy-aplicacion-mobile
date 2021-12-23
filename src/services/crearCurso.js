@@ -10,6 +10,6 @@ export async function crearCurso(titulo, descripcion, hashtags, tipo, examenes, 
 			'x-access-token': token,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 'name': titulo, 'description': descripcion, 'hashtags': hashtags, 'type': tipo, 'exams': parseInt(examenes), 'subscription': suscripcion, 'location': location, 'banner': imagenSubida })
+		body: JSON.stringify({ 'name': titulo, 'description': descripcion, 'hashtags': hashtags, 'type': tipo, 'exams': parseInt(examenes), 'subscription': suscripcion, 'location': location, 'profile_pic_url': imagenSubida })
 	});
 }
