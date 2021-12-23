@@ -56,21 +56,21 @@ function ListadoAlumnosScreen({ navigation, route }) {
 				.then((json) => {
 					console.log(json);
 					switch (json.status) {
-						case 503:
-							setMessage('Error de servidor, intente mas tarde');
-							setShowModalError(true);
-							break;
-						case 403:
-							setMessage('Usuario bloqueado');
-							setBloqueado(true);
-							setShowModalError(true);
-							break;
-						case 401:
-							setMessage('Token expirado');
-							setShowModalError(true);
-							break;
-						default:
-							setAlumnos(json.message);
+					case 503:
+						setMessage('Error de servidor, intente mas tarde');
+						setShowModalError(true);
+						break;
+					case 403:
+						setMessage('Usuario bloqueado');
+						setBloqueado(true);
+						setShowModalError(true);
+						break;
+					case 401:
+						setMessage('Token expirado');
+						setShowModalError(true);
+						break;
+					default:
+						setAlumnos(json.message);
 					}
 					setLoading(false);
 				});

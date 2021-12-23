@@ -33,7 +33,9 @@ function VerExamenScreen({ navigation, route }) {
 	const [error, setError] = React.useState(false);
 	const [mostrar, setMostrar] = useState(true);
 	const [publicado, setPublicado] = useState(false);
+	const [limiteAlcanzado, setLimiteAlcanzado] = useState(false);
 	const isFocused = useIsFocused();
+	let parametro = route.params;
 
 	const renderItem = ({ item }) => (
 		<>
@@ -63,12 +65,18 @@ function VerExamenScreen({ navigation, route }) {
 				setMostrar(false);
 				setPreguntas(route.params.questions);
 			}
+
 			if (route.params.status=='published'){
 				setPublicado(true);
 			} else {
 				setPublicado(false);
 			}
 
+			if (route.params.puedeCrearExamen){
+				setLimiteAlcanzado(false);
+			} else {
+				setLimiteAlcanzado(true);
+			}
 
 			setLoading(false);
 			return () => {
@@ -135,13 +143,13 @@ function VerExamenScreen({ navigation, route }) {
 								/>
 							</Box>
 							{mostrar ?
-								<Button mt="2" isDisabled={publicado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { navigation.navigate('EditarExamenScreen', route.params); }}>
+								<Button mt="2" isDisabled={publicado || limiteAlcanzado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { parametro['preguntas'] = preguntas; navigation.navigate('EditarExamenScreen', parametro); }}>
 									Editar exámen
 								</Button> :
 								null
 							}
 							{mostrar ?
-								<Button mt="2" isDisabled={publicado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
+								<Button mt="2" isDisabled={publicado || limiteAlcanzado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
 									Publicar
 								</Button> :
 								null
@@ -149,6 +157,12 @@ function VerExamenScreen({ navigation, route }) {
 							{mostrar ?
 								<Text color={!publicado ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
 									El exámen ya ha sido publicado
+								</Text> :
+								null
+							}
+							{limiteAlcanzado ?
+								<Text color={!limiteAlcanzado ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
+									Ha alcanzado el número máximo de exámenes publicados para este curso
 								</Text> :
 								null
 							}

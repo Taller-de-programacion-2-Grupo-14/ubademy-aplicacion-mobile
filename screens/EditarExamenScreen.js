@@ -4,7 +4,6 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
-	ScrollView,
 	Spinner,
 	Modal,
 	VStack,
@@ -12,7 +11,9 @@ import {
 	Text,
 	Button,
 	FormControl,
-	Input
+	Input,
+	FlatList,
+	Divider
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { editarExamen } from '../src/services/editarExamen';
@@ -28,12 +29,34 @@ function EditarExamenScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
-	const [pregunta, setPregunta] = React.useState('');
+	const [inputs, setInputs] = React.useState([{key: '', value: ''}]);
+	let preguntas = [];
+
+	const inputHandler = (text, key)=>{
+		const _inputs = [...inputs];
+		_inputs[key].value = text;
+		_inputs[key].key   = key;
+		setInputs(_inputs);
+	};
+
+	const renderItem = ({ index }) => (
+		<>
+			<FormControl>
+				<FormControl.Label>Pregunta:</FormControl.Label>
+				<Input onChangeText={(text)=>inputHandler(text,index)} placeholder={route.params.preguntas[index]} multiline={true} />
+			</FormControl>
+			<Divider my="5" />
+		</>
+	);
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			setPregunta(route.params.questions[0]);
+			const _inputs = [...inputs];
+			for (var i = 1; i < route.params.preguntas.length; i++) {
+				_inputs.push({key: '', value: ''});
+				setInputs(_inputs);
+			}
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -43,7 +66,7 @@ function EditarExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		editarExamen(String(route.params.id_course), route.params.title, [pregunta])
+		editarExamen(String(route.params.id_course), route.params.title, preguntas)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json.status === 200) {
@@ -65,12 +88,7 @@ function EditarExamenScreen({ navigation, route }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
+					<>
 						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
@@ -93,7 +111,7 @@ function EditarExamenScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" >
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								Editar exámen
 							</Heading>
@@ -101,19 +119,28 @@ function EditarExamenScreen({ navigation, route }) {
 								{route.params.title}
 							</Heading>
 							<VStack space={3} mt="5">
-								<FormControl>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Pregunta
-									</FormControl.Label>
-									<Input onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true}/>
-								</FormControl>
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+								<FlatList
+									data={route.params.preguntas}
+									renderItem={renderItem}
+									keyExtractor={(item, index) => index.toString()}
+								/>
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }}
+									onPress={() => {
+										preguntas = inputs.map(function (obj) {
+											return obj.value;
+										});
+										for (var i = 0; i < route.params.preguntas.length; i++) {
+											if (preguntas[i]==''){
+												preguntas[i] = route.params.preguntas[i];
+											}
+										}
+										this.onSubmit();
+									}} >
 									Confirmar
 								</Button>
 							</VStack>
 						</Box>
-					</ScrollView>
+					</>
 			}
 		</NativeBaseProvider>
 	);

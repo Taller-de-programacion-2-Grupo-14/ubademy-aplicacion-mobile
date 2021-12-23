@@ -1,7 +1,7 @@
 import React from 'react';
 import { crearCurso } from '../src/services/crearCurso';
 import { useIsFocused } from '@react-navigation/native';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -19,13 +19,16 @@ import {
 	CheckIcon,
 	WarningOutlineIcon,
 	TextArea,
-	Link
+	Image
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { useValidation } from 'react-native-form-validator';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-export default function CrearCursoScreen({ navigation, route }) {
+export default function CrearCursoScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(true);
 	const [titulo, setTitulo] = React.useState('');
 	const [descripcion, setDescripcion] = React.useState('');
@@ -38,7 +41,11 @@ export default function CrearCursoScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
-	let vengoDeUU = false;
+	const [image, setImage] = React.useState(null);
+	const [imagenSubida, setImagenSubida] = React.useState('');
+	const [pickerResult, setPickerResult] = React.useState(null);
+	const [esUnVideo, setEsUnVideo] = React.useState(false);
+	const d = new Date();
 
 	const { validate, isFieldInError, getErrorsInField, isFormValid } =
 		useValidation({
@@ -55,16 +62,83 @@ export default function CrearCursoScreen({ navigation, route }) {
 			}
 		});
 
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+		console.log(result);
+		if (!result.cancelled) {
+			setImage(result.uri);
+			setPickerResult(result);
+			if (result.type=='video') {
+				setEsUnVideo(true);
+			} else {
+				setEsUnVideo(false);
+			}
+		}
+	};
+
+	const subirFoto = async () => {
+		handleImagePicked(pickerResult);
+	};
+
+	const handleImagePicked = async (pR) => {
+		try {
+			if (!pR.cancelled) {
+				const uploadUrl = await uploadImageAsync(pR.uri);
+				setImagenSubida(uploadUrl);
+			}
+		} catch (e) {
+			console.log(e);
+			Alert.alert('Error', 'No se ha podido subir la imagen');
+		} finally {
+			Alert.alert('Ok', '¡Imagen subida con éxito!');
+		}
+	};
+
+	async function uploadImageAsync(uri) {
+		// Why are we using XMLHttpRequest? See:
+		// https://github.com/expo/expo/issues/2402#issuecomment-443726662
+		const blob = await new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest();
+			xhr.onload = function () {
+				resolve(xhr.response);
+			};
+			xhr.onerror = function (e) {
+				console.log(e);
+				reject(new TypeError('Network request failed'));
+			};
+			xhr.responseType = 'blob';
+			xhr.open('GET', uri, true);
+			xhr.send(null);
+		});
+
+		const fileRef = ref(getStorage(), `imagenes/banners/${String(d.getFullYear())+String(d.getMonth())+String(d.getFullYear())+String(d.getMonth())+String(d.getFullYear())+String(d.getMonth())+String(d.getMilliseconds())}`);
+		const result = await uploadBytes(fileRef, blob);
+		console.log(result);
+
+		// We're done with the blob, close and release it
+		blob.close();
+		return await getDownloadURL(fileRef);
+	}
+
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			if (route.params?.ubicacion) {
-				const { ubicacion } = route.params;
-				console.log(ubicacion);
-				setLocation(ubicacion);
-				console.log('en CrearCursoScreen');
-				console.log(location);
-			}
+			setTitulo('');
+			setDescripcion('');
+			setHashtags('');
+			setTipo('');
+			setExamenes('');
+			setSuscripcion('');
+			setLocation('');
+			setImage(null);
+			setImagenSubida('');
+			setPickerResult(null);
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -84,7 +158,12 @@ export default function CrearCursoScreen({ navigation, route }) {
 			suscripcion: { required: true },
 		});
 		if (isFormValid() == true) {
-			crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location)
+			console.log(imagenSubida);
+			if (imagenSubida===null){
+				setImagenSubida('');
+			}
+			console.log(imagenSubida);
+			crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location, imagenSubida)
 				.then((response) => response.json())
 				.then((json) => {
 					console.log('creando curso');
@@ -147,7 +226,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Título
 									</FormControl.Label>
-									<Input onChangeText={(titulo) => setTitulo(titulo)} />
+									<Input onChangeText={(titulo) => setTitulo(titulo)} value={titulo} />
 									{isFieldInError('titulo') &&
 										getErrorsInField('titulo').map(errorMessage => (
 											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
@@ -159,7 +238,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Descripción
 									</FormControl.Label>
-									<TextArea onChangeText={(descripcion) => setDescripcion(descripcion)}
+									<TextArea onChangeText={(descripcion) => setDescripcion(descripcion)} value={descripcion}
 										h={20}
 										placeholder="Descripción"
 										w={{
@@ -178,7 +257,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Hashtags asociados (ingrese las palabras separadas por una coma)
 									</FormControl.Label>
-									<Input onChangeText={(hashtags) => setHashtags(hashtags)} />
+									<Input onChangeText={(hashtags) => setHashtags(hashtags)} value={hashtags} />
 									{isFieldInError('hashtags') &&
 										getErrorsInField('hashtags').map(errorMessage => (
 											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
@@ -220,7 +299,7 @@ export default function CrearCursoScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Cantidad de exámenes
 									</FormControl.Label>
-									<Input onChangeText={(examenes) => setExamenes(examenes)} />
+									<Input onChangeText={(examenes) => setExamenes(examenes)} value={examenes} />
 									{isFieldInError('examenes') &&
 										getErrorsInField('examenes').map(errorMessage => (
 											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
@@ -261,21 +340,35 @@ export default function CrearCursoScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Ubicación
 									</FormControl.Label>
-									<Input onChangeText={(location) => setLocation(location)} value={location} isDisabled />
+									<Input onChangeText={(location) => setLocation(location)} value={location} />
 									{isFieldInError('location') &&
 										getErrorsInField('location').map(errorMessage => (
 											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
 										))}
-									<Link onPress={() => navigation.navigate('LocationUUScreen', vengoDeUU)}
-										_text={{
-											color: 'indigo.500',
-											fontWeight: 'medium',
-											fontSize: 'sm',
-										}}
-									>
-										Seleccionar mi ubicacion
-									</Link>
 								</FormControl>
+
+								<Icon
+									type="material-community"
+									name="camera-alt"
+									//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
+									size={50}
+									color="#7A7A7A"
+									onPress= {pickImage}
+									//style= {{marginTop: -10}}
+								/>
+
+								{image && <Image source={{ uri: image }} key={image} style={{ width: 200, height: 200 }} alt="Logo" />}
+
+								<Button isDisabled={(image==null) || (esUnVideo)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
+									Subir banner del curso
+								</Button>
+								{
+									esUnVideo ?
+										<Text color={!esUnVideo ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
+										El banner no puede ser un video
+										</Text> :
+										null
+								}
 
 								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
 									Crear curso
@@ -300,6 +393,5 @@ CrearCursoScreen.propTypes = {
 	navigation: PropTypes.shape({
 		navigate: PropTypes.func.isRequired,
 		goBack: PropTypes.func,
-	}).isRequired,
-	route: PropTypes.object
+	}).isRequired
 };
