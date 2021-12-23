@@ -7,7 +7,6 @@ import {
 	NativeBaseProvider,
 	Box,
 	Text,
-	Heading,
 	FormControl,
 	Button,
 	ScrollView,
@@ -32,6 +31,7 @@ export function HardLogout({ navigation }) {
 			// Do something when the screen is focused
 			showAlert(() => {
 				SecureStore.deleteItemAsync('secure_token').then(() => console.log('token deleted'));
+				SecureStore.deleteItemAsync('user_email').then(() => console.log('id deleted'));
 				navigation.navigate('LoginScreen');
 			}, navigation);
 			return () => {
@@ -60,6 +60,7 @@ function UsuarioHome({ navigation }) {
 	const [email, setEmail] = React.useState('');
 	const [loading, setLoading] = React.useState(true);
 	const [photo_url, setPhoto_url] = React.useState('');
+	const [walletID, setWalletID] = React.useState('');
 	const isFocused = useIsFocused();
 
 	useFocusEffect(
@@ -75,6 +76,7 @@ function UsuarioHome({ navigation }) {
 					setInetrests(json.interest);
 					setLocation(json.location);
 					setPhoto_url(json.photo_url);
+					setWalletID(json.wallet_id);
 				});
 			return () => {
 				// Do something when the screen is unfocused
@@ -87,97 +89,101 @@ function UsuarioHome({ navigation }) {
 	return (
 
 		<NativeBaseProvider>
-			<Center flex={1} px="7">
-				{
-					loading ?
-						<View style={spinnerStyles.spinnerStyle}>
-							<Spinner color="indigo.500" size="lg" />
-						</View> :
 
-						<Box>
-							<ScrollView
-								_contentContainerStyle={{
-									px: '20px',
-									mb: '4',
-								}}
-							>
-								<Stack p="4" space={4}>
-									<Box>
+			{
+				loading ?
+					<View style={spinnerStyles.spinnerStyle}>
+						<Spinner color="indigo.500" size="lg" />
+					</View> :
 
-										{console.log(photo_url)
-										}
-										{(photo_url === '' || photo_url === null || photo_url == 'undefined') ?
-											< Avatar
-												bg="indigo.600"
-												alignSelf="center"
-												size="2xl"
-											>
-												{firstName.charAt(0).toUpperCase()}
-											</Avatar>
-											:
-											<Avatar
-												alignSelf="center"
-												size="2xl"
-												source={{ uri: photo_url }}
-											>
-											</Avatar>
-										}
+					<ScrollView
+						_contentContainerStyle={{
+							px: '20px',
+							mb: '4',
+						}}
+					>
+						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }} mt="4" mb="4"
+							bg="white"
+							overflow="hidden"
+							borderColor="coolGray.200"
+							borderWidth="1"
+							rounded="md">
+							<Stack p="4" space={4}>
+								<Box>
+
+									{console.log(photo_url)
+									}
+									{(photo_url === '' || photo_url === null || photo_url == 'undefined') ?
+										< Avatar
+											bg="indigo.600"
+											alignSelf="center"
+											size="2xl"
+										>
+											{firstName.charAt(0).toUpperCase()}
+										</Avatar>
+										:
+										<Avatar
+											alignSelf="center"
+											size="2xl"
+											source={{ uri: photo_url }}
+										>
+										</Avatar>
+									}
 
 
-									</Box>
-									<Stack space={2}>
-										<Heading size="md" ml="-1">
-											Mis datos
-										</Heading>
-									</Stack>
-									<Stack alignItems="center" space={4} justifyContent="space-between">
+								</Box>
+								<Stack alignItems="center" space={4} justifyContent="space-between">
 
-										<FormControl>
-											<FormControl.Label
-												_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-												Email
-											</FormControl.Label>
-											<Text fontSize="sm" > {email} </Text>
-										</FormControl>
-										<FormControl>
-											<FormControl.Label
-												_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-												Nombre
-											</FormControl.Label>
-											<Text fontSize="sm"> {firstName} </Text>
-										</FormControl>
-										<FormControl>
-											<FormControl.Label
-												_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-												Apellido
-											</FormControl.Label>
-											<Text fontSize="sm" > {lastName} </Text>
-										</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
+											Email
+										</FormControl.Label>
+										<Text fontSize="sm" > {email} </Text>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
+											Nombre
+										</FormControl.Label>
+										<Text fontSize="sm"> {firstName} </Text>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
+											Apellido
+										</FormControl.Label>
+										<Text fontSize="sm" > {lastName} </Text>
+									</FormControl>
 
-										<FormControl>
-											<FormControl.Label
-												_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-												Ubicacion
-											</FormControl.Label>
-											<Text fontSize="sm" > {location} </Text>
-										</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
+											Ubicacion
+										</FormControl.Label>
+										<Text fontSize="sm" > {location} </Text>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
+											Wallet ID
+										</FormControl.Label>
+										<Text fontSize="sm" > {walletID} </Text>
+									</FormControl>
 
-										<FormControl>
-											<FormControl.Label
-												_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-												Tipo de curso de mayor interes
-											</FormControl.Label>
-											<Text fontSize="sm" > {interest} </Text>
-										</FormControl>
-									</Stack>
+									<FormControl>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
+											Tipo de curso de mayor interes
+										</FormControl.Label>
+										<Text fontSize="sm" > {interest} </Text>
+									</FormControl>
 								</Stack>
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => navigation.goBack()} >
-									Volver
-								</Button>
-							</ScrollView>
+							</Stack>
 						</Box>
-				}
-			</Center>
+					</ScrollView>
+			}
+
 		</NativeBaseProvider >
 	);
 }

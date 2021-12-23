@@ -4,7 +4,6 @@ import {
 	NativeBaseProvider,
 	Box,
 	Text,
-	Heading,
 	VStack,
 	FormControl,
 	Link,
@@ -118,29 +117,31 @@ function UpdateUsuarioScreen({ navigation, route }) {
 							mb: '4',
 						}}
 					>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="lg" color="coolGray.800" fontWeight="600">
-								Modificar mis datos
-							</Heading>
 
-							<VStack space={3} mt="5">
+						<Box safeArea flex={1} p="4" w="100%" mx="auto" py="8" style={{ justifyContent: 'center' }} mt="4" mb="4"
+							bg="white"
+							overflow="hidden"
+							borderColor="coolGray.200"
+							borderWidth="1"
+							rounded="md">
+							<VStack space={3} mt="3">
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Email
 									</FormControl.Label>
 									<Input onChangeText={(email) => setEmail(email)} value={email} />
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Nombre
 									</FormControl.Label>
 									<Input onChangeText={(firstName) => setFirstName(firstName)} value={firstName} />
 								</FormControl>
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Apellido
 									</FormControl.Label>
 									<Input onChangeText={(lastName) => setLastName(lastName)} value={lastName} />
@@ -148,24 +149,15 @@ function UpdateUsuarioScreen({ navigation, route }) {
 
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Ubicacion
 									</FormControl.Label>
-									<Input onChangeText={(location) => setLastName(location)} value={location} isDisabled />
-									<Link onPress={() => navigation.navigate('LocationUUScreen', vengoDeUU)}
-										_text={{
-											color: 'indigo.500',
-											fontWeight: 'medium',
-											fontSize: 'sm',
-										}}
-									>
-										Modificar mi ubicacion
-									</Link>
+									<Input onChangeText={(location) => setLocation(location)} value={location} />
 								</FormControl>
 
 								<FormControl>
 									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 'bold' }}>
 										Tipo de curso de mayor interes
 									</FormControl.Label>
 									<Input onChangeText={(interest) => setInterests(interest)} value={interest} />
@@ -177,7 +169,7 @@ function UpdateUsuarioScreen({ navigation, route }) {
 						</Box>
 					</ScrollView>
 			}
-		</NativeBaseProvider>
+		</NativeBaseProvider >
 	);
 }
 

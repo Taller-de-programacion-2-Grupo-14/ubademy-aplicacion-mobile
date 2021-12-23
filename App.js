@@ -8,7 +8,6 @@ import PasswordOlvidadoScreen from './screens/PasswordOlvidadoScreen';
 import RecuperoPasswordScreen from './screens/RecuperoPasswordScreen';
 import LocationScreen from './screens/LocationScreen';
 
-
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -19,8 +18,8 @@ function App() {
 				<Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="LocationScreen" component={LocationScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} />
-				<Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} />
+				<Stack.Screen name="PasswordOlvidadoScreen" component={PasswordOlvidadoScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="RecuperoPasswordScreen" component={RecuperoPasswordScreen} options={{ headerShown: false }} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
