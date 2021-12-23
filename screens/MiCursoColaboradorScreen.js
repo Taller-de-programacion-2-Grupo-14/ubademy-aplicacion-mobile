@@ -13,9 +13,12 @@ import {
 	Divider,
 	Heading,
 	Spinner,
-	//Link,
-	//FlatList,
-	//Flex
+	Link,
+	FlatList,
+	Flex,
+	SearchIcon,
+	FormControl,
+	Input
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -32,10 +35,12 @@ MiCursoColaboradorScreen.propTypes = {
 function MiCursoColaboradorScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [showModal, setShowModal] = React.useState(false);
+	const [showSearch, setShowSearch] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [miId, setMiId] = React.useState(0);
-	//const [examenes, setExamenes] = React.useState([]);
+	const [examenes, setExamenes] = React.useState([]);
+	const [nombreExamen, setNombreExamen] = React.useState('');
 
 	const baja = () =>
 		Alert.alert(
@@ -65,20 +70,20 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 			]
 		);
 
-	// const renderItem = ({ item }) => (
-	// 	<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('VerExamenScreen', item);} }>
-	// 		<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
-	// 			<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-	// 				{item.nombre}
-	// 			</Heading>
-	// 			<Flex>
-	// 				<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
-	// 					Ingresar
-	// 				</Text>
-	// 			</Flex>
-	// 		</Box>
-	// 	</Link>
-	// );
+	const renderItem = ({ item }) => (
+		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('VerExamenScreen', item);} }>
+			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
+					{item.title}
+				</Heading>
+				<Flex>
+					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800">
+						Ingresar
+					</Text>
+				</Flex>
+			</Box>
+		</Link>
+	);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -88,11 +93,11 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 				.then(json => {
 					setMiId(json.user_id);
 				});
-			obtenerExamenes(String(route.params.id))
+			obtenerExamenes(String(route.params.id), nombreExamen)
 				.then(data => data.json())
 				.then(json => {
 					console.log(json);
-					//setExamenes(json.message);
+					setExamenes(json.message);
 					setLoading(false);
 				});
 			return () => {
@@ -101,6 +106,16 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 			};
 		}, [])
 	);
+
+	this.onSubmit = () => {
+		obtenerExamenes(String(route.params.id), nombreExamen)
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json);
+				setExamenes(json.message);
+				setLoading(false);
+			});
+	};
 
 	return (
 
@@ -132,6 +147,40 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
+						<Modal isOpen={showSearch} onClose={() => setShowSearch(false)}>
+							<Modal.Content maxWidth="400px">
+								<Modal.CloseButton />
+								<Modal.Header>Búsqueda</Modal.Header>
+								<Modal.Body>
+									<FormControl>
+										<FormControl.Label>Nombre</FormControl.Label>
+										<Input onChangeText={(nombre) => setNombreExamen(nombre)} />
+									</FormControl>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button.Group space={2}>
+										<Button
+											variant="ghost"
+											colorScheme="blueGray"
+											onPress={() => {
+												setShowSearch(false);
+											}}
+										>
+											Cancelar
+										</Button>
+										<Button
+											onPress={() => {
+												this.onSubmit();
+												setShowSearch(false);
+												setNombreExamen('');
+											}}
+										>
+											Buscar
+										</Button>
+									</Button.Group>
+								</Modal.Footer>
+							</Modal.Content>
+						</Modal>
 						<Box style={{position: 'absolute', top: 20, right: 20}}>
 							<Menu
 								w="190"
@@ -143,6 +192,7 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 									);
 								}}
 							>
+								<Menu.Item onPress={() => { navigation.navigate('ExamenesScreen', route.params.id); }}>Corregir exámenes</Menu.Item>
 								<Menu.Item onPress={baja} >Darse de baja del curso</Menu.Item>
 								<Menu.Item onPress={() => {navigation.navigate('MisCursosScreen');}} >Salir del curso</Menu.Item>
 							</Menu>
@@ -152,16 +202,19 @@ function MiCursoColaboradorScreen({ navigation, route }) {
 								{ route.params.name }
 							</Heading>
 							<Divider my="5" />
-							<Heading size="xl" color="coolGray.800" fontWeight="600">
-								Exámenes
-							</Heading>
-							{
-								// <FlatList
-								// 	data={examenes}
-								// 	renderItem={renderItem}
-								// 	keyExtractor={item => String(item.id)}
-								// />
-							}
+							<HStack>
+								<Heading size="xl" color="coolGray.800" fontWeight="600">
+									Exámenes
+								</Heading>
+								<Link onPress={() => setShowSearch(true)} style={{ position: 'absolute', right: -15 }}>
+									<SearchIcon size="8" />
+								</Link>
+							</HStack>
+							<FlatList
+								data={examenes}
+								renderItem={renderItem}
+								keyExtractor={item => String(item.title)}
+							/>
 						</Box>
 					</>
 			}

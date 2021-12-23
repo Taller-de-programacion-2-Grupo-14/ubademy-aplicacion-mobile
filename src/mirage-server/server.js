@@ -362,7 +362,7 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.get(`${global.host}/courses/collaborations`, () => {
+			this.get(`${global.host}/courses/my_collaborations`, () => {
 				return {
 					'message': [
 						{
@@ -423,36 +423,24 @@ export function makeServer({ environment = 'test' } = {}) {
 				return {
 					'message': [
 						{
-							'id': 1,
-							'nombre': 'Parcial 1 - Termodinamica',
-							'id_questions': [
-								'q1e1',
-								'q2e1'
-							],
+							'id_exam': 1,
+							'exam_name': 'Parcial 1 - Termodinamica',
 							'questions': [
 								'¿Cual es el segundo principio de la termodinamica?',
 								'¿Tenet es horrible o solo muy mala?'
 							]
 						},
 						{
-							'id': 2,
-							'nombre': 'Parcial 2 - Electroquimica',
-							'id_questions': [
-								'q1e2',
-								'q2e2'
-							],
+							'id_exam': 2,
+							'exam_name': 'Parcial 2 - Electroquimica',
 							'questions': [
 								'¿Que gusto tiene la sal?',
 								'¿Cual es el sentido de la vida?'
 							]
 						},
 						{
-							'id': 3,
-							'nombre': 'Parcial 3 - Corrosion',
-							'id_questions': [
-								'q1e3',
-								'q2e3'
-							],
+							'id_exam': 3,
+							'exam_name': 'Parcial 3 - Corrosion',
 							'questions': [
 								'¿Quien descubrio america?',
 								'¿Cuanto es 2+2?'
@@ -466,12 +454,81 @@ export function makeServer({ environment = 'test' } = {}) {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/exams/view/:id`, () => {
+			this.post(`${global.host}/exams/resolve/:id`, () => {
 				return {
 					'status': 200
 				};
 			});
-			this.post(`${global.host}/exams/publicar/:id`, () => {
+			this.post(`${global.host}/exams/publish`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.get(`${global.host}/resolutions/:id`, () => {
+				return {
+					'message': [
+						{
+							'id_student': 1,
+							'exam_id': 1,
+							'nombre_alumno': 'German',
+							'exam_name': 'Parcial 1 - Termodinamica',
+							'questions': [
+								'¿Cual es el segundo principio de la termodinamica?',
+								'¿Tenet es horrible o solo muy mala?'
+							],
+							'answers': [
+								'La cantidad de entropía del universo tiende a incrementarse en el tiempo.',
+								'Es horrible'
+							],
+							'correction': 'Es el mejor exámen que he visto en mi vida.',
+							'status': 'Aprobado'
+						},
+						{
+							'id_student': 2,
+							'exam_id': 2,
+							'nombre_alumno': 'Luke',
+							'exam_name': 'Parcial 2 - Electroquimica',
+							'questions': [
+								'¿Que gusto tiene la sal?',
+								'¿Cual es el sentido de la vida?'
+							],
+							'answers': [
+								'Salada.',
+								'Mantenerte ocupado con tonterías insignificantes hasta que eventualmente estés muerto.'
+							],
+							'correction': 'Y, eeeeh, mas o menos.',
+							'status': 'Aprobado'
+						},
+						{
+							'id_student': 3,
+							'exam_id': 3,
+							'nombre_alumno': 'Marty',
+							'exam_name': 'Parcial 3 - Corrosion',
+							'questions': [
+								'¿Quien descubrio america?',
+								'¿Cuanto es 2+2?'
+							],
+							'answers': [
+								'Enrique Borja',
+								'5'
+							],
+							'correction': 'Es el peor exámen que he visto en mi vida.',
+							'status': 'Desaprobado'
+						}],
+					'status': 200
+				};
+			});
+			this.patch(`${global.host}/resolution/grade`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.put(`${global.host}/exams/edit`, () => {
+				return {
+					'status': 200
+				};
+			});
+			this.post(`${global.host}/courses/collaborators/send_request`, () => {
 				return {
 					'status': 200
 				};

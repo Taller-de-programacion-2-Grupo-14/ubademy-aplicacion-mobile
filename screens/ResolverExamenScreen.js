@@ -26,7 +26,6 @@ ResolverExamenScreen.propTypes = {
 function ResolverExamenScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
 	const [respuesta, setRespuesta] = React.useState('');
-	const [respuestas, setRespuestas] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
@@ -43,13 +42,12 @@ function ResolverExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		setRespuestas([respuesta]);
-		completarExamen(String(route.params.id), route.params.questions, respuestas, route.params.id_questions)
+		completarExamen(String(route.params.course_id), route.params.questions, [respuesta], route.params.title)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
 				if (json.status === 200) {
-					setMessage('¡Examen enviado correctamente!');
+					setMessage('¡Exámen enviado correctamente!');
 				} else {
 					setError(true);
 					setMessage('Error en el enviado del exámen');

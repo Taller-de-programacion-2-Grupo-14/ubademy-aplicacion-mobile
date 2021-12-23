@@ -1,6 +1,5 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import CrearCursoScreen from './CrearCursoScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InscribirmeScreen from './InscribirmeScreen';
 import FavoritosScreen from './FavoritosScreen';
@@ -19,6 +18,12 @@ import ABcolaboradorScreen from './ABcolaboradorScreen';
 import CrearExamenScreen from './CrearExamenScreen';
 import ResolverExamenScreen from './ResolverExamenScreen';
 import VerExamenScreen from './VerExamenScreen';
+import ExamenesScreen from './ExamenesScreen';
+import CorregirExamenScreen from './CorregirExamenScreen';
+import ResueltosScreen from './ResueltosScreen';
+import ExamenResueltoScreen from './ExamenResueltoScreen';
+import EditarExamenScreen from './EditarExamenScreen';
+import CCScreen from './CCScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
@@ -43,6 +48,11 @@ export function CursosScreen() {
 				<Stack.Screen name="CrearExamenScreen" component={CrearExamenScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="ResolverExamenScreen" component={ResolverExamenScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="VerExamenScreen" component={VerExamenScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="ExamenesScreen" component={ExamenesScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="CorregirExamenScreen" component={CorregirExamenScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="ResueltosScreen" component={ResueltosScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="ExamenResueltoScreen" component={ExamenResueltoScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="EditarExamenScreen" component={EditarExamenScreen} options={{ headerShown: false }} />
 			</Stack.Navigator>
 		</NativeBaseProvider>
 	);
@@ -55,7 +65,7 @@ export default function CursosApp() {
 		<Drawer.Navigator initialRouteName="CursosScreen">
 			<Drawer.Screen name="Mis cursos" component={CursosScreen} />
 			<Drawer.Screen name="Buscar un curso" component={InscribirmeScreen} />
-			<Drawer.Screen name="Crear un curso" component={CrearCursoScreen} />
+			<Drawer.Screen name="Crear un curso" component={CCScreen} />
 			<Drawer.Screen name="Histórico de cursos" component={HistoricoDeCursosScreen} />
 			<Drawer.Screen name="Cursos favoritos" component={FavoritosScreen} />
 		</Drawer.Navigator>

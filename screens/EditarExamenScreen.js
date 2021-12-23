@@ -4,37 +4,36 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
-	FormControl,
+	ScrollView,
+	Spinner,
+	Modal,
 	VStack,
 	HStack,
 	Text,
-	Modal,
 	Button,
-	Input,
-	ScrollView,
-	Spinner
+	FormControl,
+	Input
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import { editarExamen } from '../src/services/editarExamen';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { enviarSolicitudColaborador } from '../src/services/enviarSolicitudColaborador';
 
-ABcolaboradorScreen.propTypes = {
+EditarExamenScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
-	route: PropTypes.object.isRequired
+	route: PropTypes.object.isRequired,
 };
 
-function ABcolaboradorScreen({ navigation, route }) {
-//function ABcolaboradorScreen({ navigation }) {
+function EditarExamenScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
-	const [mail, setMail] = React.useState('');
-	const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [pregunta, setPregunta] = React.useState('');
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			setPregunta(route.params.questions[0]);
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -44,17 +43,17 @@ function ABcolaboradorScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		enviarSolicitudColaborador(String(route.params), mail)
+		editarExamen(String(route.params.id_course), route.params.title, [pregunta])
 			.then((response) => response.json())
 			.then((json) => {
-				console.log(json);
 				if (json.status === 200) {
-					setMessage('¡Solicitud enviada con éxito!');
+					setShowModal(true);
+					setMessage('¡Datos actualizados!');
 				} else {
 					setError(true);
-					setMessage('Error al enviar la solicitud');
+					setShowModal(true);
+					setMessage('Ha ocurrido un error');
 				}
-				setShowModal(true);
 			});
 	};
 
@@ -85,27 +84,34 @@ function ABcolaboradorScreen({ navigation, route }) {
 									<Button colorScheme="indigo"
 										flex="1"
 										onPress={() => {
-											error ? setShowModal(false) : navigation.goBack();
+											setShowModal(false);
+											if (!error) navigation.goBack();
 										}}
 									>
-										Continuar
+                    Continuar
 									</Button>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								Alta de un colaborador
+								Editar exámen
+							</Heading>
+							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
+								{route.params.title}
 							</Heading>
 							<VStack space={3} mt="5">
 								<FormControl>
-									<FormControl.Label>Ingrese el mail del usuario</FormControl.Label>
-									<Input onChangeText={(mail) => setMail(mail)} value={mail} />
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+										Pregunta
+									</FormControl.Label>
+									<Input onChangeText={(pregunta) => setPregunta(pregunta)} value={pregunta} multiline={true}/>
 								</FormControl>
+								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+									Confirmar
+								</Button>
 							</VStack>
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()}>
-                Enviar solicitud de alta
-							</Button>
 						</Box>
 					</ScrollView>
 			}
@@ -121,4 +127,4 @@ const spinnerStyles = StyleSheet.create({
 	},
 });
 
-export default ABcolaboradorScreen;
+export default EditarExamenScreen;

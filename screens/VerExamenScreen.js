@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -15,6 +16,7 @@ import {
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { publicarExamen } from '../src/services/publicarExamen';
+import { obtenerExamen } from '../src/services/obtenerExamen';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -30,6 +32,8 @@ function VerExamenScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const [mostrar, setMostrar] = useState(true);
+	const [publicado, setPublicado] = useState(false);
+	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
 		<>
@@ -44,20 +48,38 @@ function VerExamenScreen({ navigation, route }) {
 		React.useCallback(() => {
 			if (route.params.verComoCreador) {
 				setMostrar(true);
+				obtenerExamen(String(route.params.id_course), route.params.title)
+					.then((response) => response.json())
+					.then((json) => {
+						if (json.status === 200) {
+							setPreguntas(json.message.questions);
+						} else {
+							setError(true);
+							setShowModal(true);
+							setMessage('Ha ocurrido un error');
+						}
+					});
 			} else {
 				setMostrar(false);
+				setPreguntas(route.params.questions);
 			}
-			setPreguntas(route.params.questions);
+			if (route.params.status=='published'){
+				setPublicado(true);
+			} else {
+				setPublicado(false);
+			}
+
+
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
 			};
-		}, [])
+		}, [isFocused])
 	);
 
 	this.publicar = () => {
-		publicarExamen(String(route.params.id))
+		publicarExamen(route.params.id_course, route.params.title)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -103,7 +125,7 @@ function VerExamenScreen({ navigation, route }) {
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{route.params.nombre}
+								{route.params.title}
 							</Heading>
 							<Box safeArea flex={1} w="95%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
 								<FlatList
@@ -113,20 +135,23 @@ function VerExamenScreen({ navigation, route }) {
 								/>
 							</Box>
 							{mostrar ?
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} >
+								<Button mt="2" isDisabled={publicado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => { navigation.navigate('EditarExamenScreen', route.params); }}>
 									Editar exámen
 								</Button> :
 								null
 							}
 							{mostrar ?
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
+								<Button mt="2" isDisabled={publicado} colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.publicar()} >
 									Publicar
 								</Button> :
 								null
 							}
-							<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} >
-								Corregir
-							</Button>
+							{mostrar ?
+								<Text color={!publicado ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
+									El exámen ya ha sido publicado
+								</Text> :
+								null
+							}
 						</Box>
 					</>
 			}

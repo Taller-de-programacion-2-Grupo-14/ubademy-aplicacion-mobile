@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import UpdateUsuarioScreen from './UpdateUsuarioScreen';
+import ModificarUsuarioScreen from './ModificarUsuarioScreen';
 import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
@@ -198,7 +198,7 @@ export default function UsuarioApp() {
 	return (
 		<Drawer.Navigator initialRouteName="UsuarioHome">
 			<Drawer.Screen name="Mi perfil" component={UsuarioHome} />
-			<Drawer.Screen name="Modificar mi perfil" component={UpdateUsuarioScreen} />
+			<Drawer.Screen name="Modificar mi perfil" component={ModificarUsuarioScreen} />
 			<Drawer.Screen name="Salir" component={Logout} />
 			<Drawer.Screen name="Eliminar cuenta" component={HardLogout} />
 		</Drawer.Navigator>
