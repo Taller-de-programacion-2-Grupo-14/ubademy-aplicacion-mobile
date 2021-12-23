@@ -11,6 +11,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerMultimedia } from '../src/services/obtenerMultimedia';
 import PropTypes from 'prop-types';
+import { Video } from 'expo-av';
 
 VerMultimediaScreen.propTypes = {
 	route: PropTypes.object.isRequired,
@@ -25,7 +26,11 @@ function VerMultimediaScreen({ route }) {
 			<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
 				{item.title}
 			</Heading>
-			<Image source={{ uri: item.url }} style={{ width: 400, height: 300 }} alt="multimedia" />
+			{
+				(item.tag=='video') ?
+					<Video source={{ uri: item.url }} useNativeControls resizeMode="contain" isLooping /> :
+					<Image source={{ uri: item.url }} style={{ width: 400, height: 300 }} alt="multimedia" />
+			}
 		</>
 	);
 

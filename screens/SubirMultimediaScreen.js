@@ -37,6 +37,7 @@ function SubirMultimediaScreen({ navigation, route }) {
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
 	const d = new Date();
+	let tipoDeArchivo = '';
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
@@ -50,6 +51,12 @@ function SubirMultimediaScreen({ navigation, route }) {
 		if (!result.cancelled) {
 			setImage(result.uri);
 			setPickerResult(result);
+			if (result.type=='video') {
+				tipoDeArchivo = 'video';
+			} else {
+				tipoDeArchivo = 'image';
+			}
+			console.log(tipoDeArchivo);
 		}
 	};
 
@@ -65,9 +72,9 @@ function SubirMultimediaScreen({ navigation, route }) {
 			}
 		} catch (e) {
 			console.log(e);
-			Alert.alert('Error', 'No se ha podido subir la imagen');
+			Alert.alert('Error', 'No se ha podido subir el contenido multimedia');
 		} finally {
-			Alert.alert('Ok', '¡Imagen subida con éxito!');
+			Alert.alert('Ok', '¡Contenido multimedia subido con éxito!');
 		}
 	};
 
@@ -109,7 +116,8 @@ function SubirMultimediaScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		subirMultimedia(String(route.params.id), titulo, imagenSubida)
+		console.log(tipoDeArchivo);
+		subirMultimedia(String(route.params.id), titulo, imagenSubida, tipoDeArchivo)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
