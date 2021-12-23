@@ -36,8 +36,8 @@ function SubirMultimediaScreen({ navigation, route }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [tipoDeArchivo, setTipoDeArchivo] = React.useState('');
 	const d = new Date();
-	let tipoDeArchivo = '';
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
@@ -52,9 +52,9 @@ function SubirMultimediaScreen({ navigation, route }) {
 			setImage(result.uri);
 			setPickerResult(result);
 			if (result.type=='video') {
-				tipoDeArchivo = 'video';
+				setTipoDeArchivo('video');
 			} else {
-				tipoDeArchivo = 'image';
+				setTipoDeArchivo('image');
 			}
 			console.log(tipoDeArchivo);
 		}
