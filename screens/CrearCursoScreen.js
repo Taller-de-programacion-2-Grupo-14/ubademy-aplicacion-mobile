@@ -1,7 +1,7 @@
 import React from 'react';
 import { crearCurso } from '../src/services/crearCurso';
 import { useIsFocused } from '@react-navigation/native';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import {
 	NativeBaseProvider,
 	Box,
@@ -90,7 +90,9 @@ export default function CrearCursoScreen({ navigation, route }) {
 			}
 		} catch (e) {
 			console.log(e);
-			alert('Upload failed, sorry');
+			Alert.alert('Error', 'No se ha podido subir la imagen');
+		} finally {
+			Alert.alert('Ok', '¡Imagen subida con éxito!');
 		}
 	};
 
@@ -149,6 +151,9 @@ export default function CrearCursoScreen({ navigation, route }) {
 			suscripcion: { required: true },
 		});
 		if (isFormValid() == true) {
+			if (imagenSubida==null){
+				setImagenSubida('');
+			}
 			crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location, imagenSubida)
 				.then((response) => response.json())
 				.then((json) => {
@@ -352,9 +357,9 @@ export default function CrearCursoScreen({ navigation, route }) {
 									//style= {{marginTop: -10}}
 								/>
 
-								{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} alt="Logo" />}
+								{image && <Image source={{ uri: image }} key={image} style={{ width: 200, height: 200 }} alt="Logo" />}
 
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
+								<Button isDisabled={(image==null)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
 									Subir banner del curso
 								</Button>
 

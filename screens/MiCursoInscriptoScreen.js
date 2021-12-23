@@ -137,6 +137,7 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 									);
 								}}
 							>
+								<Menu.Item onPress={() => { navigation.navigate('VerMultimediaScreen', route.params); }} >Ver contenido multimedia</Menu.Item>
 								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={() => { navigation.navigate('ResueltosScreen', route.params.id); }} >Exámenes resueltos</Menu.Item>
 								<Menu.Item isDisabled={route.params.verComoCreador ? true : false} onPress={desinscribirse} >Desinscripción del curso</Menu.Item>
 								{route.params.verComoCreador ?
