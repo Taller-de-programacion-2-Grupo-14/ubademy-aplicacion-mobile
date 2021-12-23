@@ -4,7 +4,6 @@ import {
 	NativeBaseProvider,
 	Box,
 	Heading,
-	ScrollView,
 	Spinner,
 	VStack,
 	HStack,
@@ -12,7 +11,9 @@ import {
 	Input,
 	Button,
 	Modal,
-	Text
+	Text,
+	FlatList,
+	Divider
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { completarExamen } from '../src/services/completarExamen';
@@ -25,14 +26,40 @@ ResolverExamenScreen.propTypes = {
 
 function ResolverExamenScreen({ navigation, route }) {
 	const [loading, setLoading] = React.useState(true);
-	const [respuesta, setRespuesta] = React.useState('');
 	const [showModal, setShowModal] = React.useState(false);
 	const [message, setMessage] = React.useState('');
 	const [error, setError] = React.useState(false);
+	const [inputs, setInputs] = React.useState([{key: '', value: ''}]);
+	let respuestas = [];
+
+	const inputHandler = (text, key)=>{
+		const _inputs = [...inputs];
+		_inputs[key].value = text;
+		_inputs[key].key   = key;
+		setInputs(_inputs);
+	};
+
+	const renderItem = ({ item, index }) => (
+		<>
+			<Heading size="lg" color="coolGray.800" fontWeight="600" >
+				{item}
+			</Heading>
+			<FormControl>
+				<FormControl.Label>Respuesta:</FormControl.Label>
+				<Input onChangeText={(text)=>inputHandler(text,index)} multiline={true} />
+			</FormControl>
+			<Divider my="5" />
+		</>
+	);
 
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			const _inputs = [...inputs];
+			for (var i = 1; i < route.params.questions.length; i++) {
+				_inputs.push({key: '', value: ''});
+				setInputs(_inputs);
+			}
 			setLoading(false);
 			return () => {
 				// Do something when the screen is unfocused
@@ -42,7 +69,7 @@ function ResolverExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		completarExamen(String(route.params.course_id), route.params.questions, [respuesta], route.params.title)
+		completarExamen(String(route.params.course_id), route.params.questions, respuestas, route.params.title)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log(json);
@@ -64,12 +91,7 @@ function ResolverExamenScreen({ navigation, route }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
+					<>
 						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
@@ -92,23 +114,27 @@ function ResolverExamenScreen({ navigation, route }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<VStack space={3} mt="5">
-								<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-									Resolver Examen
-								</Heading>
-								<Heading size="lg" color="coolGray.800" fontWeight="600">
-									{route.params.questions[0]}
-								</Heading>
-								<FormControl>
-									<FormControl.Label>Respuesta:</FormControl.Label>
-									<Input onChangeText={(respuesta) => setRespuesta(respuesta)} value={respuesta} multiline={true} />
-								</FormControl>
-								<Button isDisabled={route.params.verComoCreador ? true : false} mt="2" colorScheme="indigo" _text={{ color: 'white' }}  onPress={() => this.onSubmit()}>
-                  Terminar examen
-								</Button>
-							</VStack>
+							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+								Resolver Examen
+							</Heading>
+							<Box safeArea flex={1} w="95%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+								<FlatList
+									data={route.params.questions}
+									renderItem={renderItem}
+									keyExtractor={(item, index) => index.toString()}
+								/>
+							</Box>
+							<Button isDisabled={route.params.verComoCreador ? true : false} mt="2" colorScheme="indigo" _text={{ color: 'white' }}
+								onPress={() => {
+									respuestas = inputs.map(function (obj) {
+										return obj.value;
+									});
+									this.onSubmit();
+								}}>
+								Terminar examen
+							</Button>
 						</Box>
-					</ScrollView>
+					</>
 			}
 		</NativeBaseProvider>
 	);

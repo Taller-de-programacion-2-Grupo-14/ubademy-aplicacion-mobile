@@ -24,6 +24,8 @@ import ResueltosScreen from './ResueltosScreen';
 import ExamenResueltoScreen from './ExamenResueltoScreen';
 import EditarExamenScreen from './EditarExamenScreen';
 import CCScreen from './CCScreen';
+import SubirMultimediaScreen from './SubirMultimediaScreen';
+import VerMultimediaScreen from './VerMultimediaScreen';
 import {
 	NativeBaseProvider
 } from 'native-base';
@@ -53,6 +55,8 @@ export function CursosScreen() {
 				<Stack.Screen name="ResueltosScreen" component={ResueltosScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="ExamenResueltoScreen" component={ExamenResueltoScreen} options={{ headerShown: false }} />
 				<Stack.Screen name="EditarExamenScreen" component={EditarExamenScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="SubirMultimediaScreen" component={SubirMultimediaScreen} options={{ headerShown: false }} />
+				<Stack.Screen name="VerMultimediaScreen" component={VerMultimediaScreen} options={{ headerShown: false }} />
 			</Stack.Navigator>
 		</NativeBaseProvider>
 	);

@@ -19,7 +19,10 @@ import {
 	Flex,
 	SearchIcon,
 	FormControl,
-	Input
+	Input,
+	Stack,
+	Image,
+	Center
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -45,6 +48,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 	const [nombreExamen, setNombreExamen] = React.useState('');
 	const [examenes, setExamenes] = React.useState([]);
 	const isFocused = useIsFocused();
+	const [puedeCrearExamen, setPuedeCrearExamen] = React.useState(true);
+	let parametro = route.params;
 
 	const cancelar = () =>
 		Alert.alert(
@@ -76,7 +81,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 		);
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = true; item['id_course'] = route.params.id; navigation.navigate('VerExamenScreen', item);} }>
+		<Link onPress={() => {item['verComoCreador'] = true; item['id_course'] = route.params.id; item['puedeCrearExamen'] = puedeCrearExamen; navigation.navigate('VerExamenScreen', item);} }>
 			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.title}
@@ -105,6 +110,11 @@ function MiCursoCreadoScreen({ navigation, route }) {
 							setEstado('Vigente');
 						} else {
 							setEstado('Cancelado');
+						}
+						if (json.message.can_create_exams){
+							setPuedeCrearExamen(true);
+						} else {
+							setPuedeCrearExamen(false);
 						}
 					}
 				});
@@ -214,23 +224,54 @@ function MiCursoCreadoScreen({ navigation, route }) {
 								<Menu.Item onPress={() => { navigation.navigate('EdicionCursoScreen', route.params); }} >Editar curso</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ListadoAlumnosScreen', route.params.id); }}>Listado de alumnos</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ListadoProfesoresScreen', route.params.id); }}>Listado de profesores</Menu.Item>
-								<Menu.Item onPress={() => { navigation.navigate('CrearExamenScreen', route.params); }}>Crear exámen</Menu.Item>
+								<Menu.Item onPress={() => { parametro['puedeCrearExamen'] = puedeCrearExamen; navigation.navigate('CrearExamenScreen', parametro); }}>Crear exámen</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ABcolaboradorScreen', route.params.id); }}>Alta de colaborador</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('ExamenesScreen', route.params.id); }}>Corregir exámenes</Menu.Item>
 								<Divider />
-								<Menu.Item onPress={() => { navigation.navigate('MiCursoInscriptoScreen', route.params); }} >Ver curso como estudiante</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('SubirMultimediaScreen', route.params); }} >Subir contenido multimedia</Menu.Item>
+								<Menu.Item onPress={() => { navigation.navigate('VerMultimediaScreen', route.params); }} >Ver contenido multimedia</Menu.Item>
 								<Divider />
+								<Menu.Item onPress={() => { navigation.navigate('MiCursoInscriptoScreen', route.params); }} >Ver curso como estudiante</Menu.Item>
 								<Menu.Item onPress={cancelar} >Cancelar curso</Menu.Item>
 								<Menu.Item onPress={() => { navigation.navigate('MisCursosScreen'); }} >Salir del curso</Menu.Item>
 							</Menu>
 						</Box>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="12" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								{nombre}
-							</Heading>
-							<Heading size="md" color="coolGray.800" fontWeight="600">
-								{'\n'}Estado: {estado}
-							</Heading>
+							<Stack
+								direction={['column', 'column', 'row']}
+								rounded="lg"
+								overflow="hidden"
+								w="90%"
+								shadow="1"
+								_light={{ backgroundColor: 'coolGray.50' }}
+								_dark={{ backgroundColor: 'gray.700' }}>
+								<Box>
+									<Image
+										w={['100%', '100%', '40']}
+										h="40"
+										source={{
+											uri:
+												(route.params.profile_pic_url=='') ? 'https://firebasestorage.googleapis.com/v0/b/uba-demy.appspot.com/o/imagenes%2Fbanners%2Fgenerica.jpeg?alt=media&token=a62d3455-4a3c-4ca3-ab19-4df2d63c2ce9' :
+													route.params.profile_pic_url,
+										}}
+										alt="image"
+									/>
+									<Center
+										bg="violet.500"
+										_text={{ color: 'white', fontWeight: '700', fontSize: 'xs' }}
+										position="absolute"
+										bottom="0"
+										px="3"
+										py="1.5">
+										Estado: {estado}
+									</Center>
+								</Box>
+								<Stack p="4" space={[3, 3, 1.5]}>
+									<Heading size="md" ml="-1">
+										{nombre}
+									</Heading>
+								</Stack>
+							</Stack>
 							<Divider my="5" />
 							<HStack>
 								<Heading size="xl" color="coolGray.800" fontWeight="600">
