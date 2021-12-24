@@ -29,19 +29,14 @@ export default function ChatScreen({ navigation, route }) {
 			SecureStore.getItemAsync('user_email').then((value) => {
 				setEmail(value);
 				chatIDpre.push(value);
-				console.log('en chat screen', email);
-				console.log('en chat screen2', value);
-				console.log('antes de create group', chatIDpre);
 				if (route.params?.email) {
 					console.log(route.params.email);
 					setChatForID(route.params.email);
 					chatIDpre.push(route.params.email);
-					console.log('en chat screen3', chatIDpre);
 				}
 				chatIDpre.sort();
 				const roomName = chatIDpre.join('_');
 				setRoomName(roomName);
-				console.log('room name esta seteado?', roomName);
 				firebase.firestore().collection('THREADS').where('name', '==', roomName).get().then(snapshot => {
 					console.log('snapshot', snapshot);
 					if (!snapshot.empty) {
@@ -84,7 +79,6 @@ export default function ChatScreen({ navigation, route }) {
 		}, [])
 	);
 	useLayoutEffect(() => {
-		console.log('en el use layout effect', docId);
 		if (docId) {
 			const messagesListener = firebase.firestore()
 				.collection('THREADS')

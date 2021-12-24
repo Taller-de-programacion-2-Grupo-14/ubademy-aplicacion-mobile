@@ -21,7 +21,7 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { List, Divider } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import Moment from 'moment';
 export default function MessagesScreen({ navigation }) {
 	const [loading, setLoading] = useState(true);
 	const [threads, setThreads] = useState([]);
@@ -141,7 +141,7 @@ export default function MessagesScreen({ navigation }) {
 													color="coolGray.800"
 													bold
 												>
-													{item.name}
+													{item.user1 === email ? item.user2 : item.user1}
 												</Text>
 												<Text
 													color="coolGray.600"
@@ -158,7 +158,7 @@ export default function MessagesScreen({ navigation }) {
 												color="coolGray.800"
 												alignSelf="flex-start"
 											>
-												11.45
+												{Moment(item.latestMessage.createdAt).format('d MMM YYYY')}
 											</Text>
 										</HStack>
 									</Box>
