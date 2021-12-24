@@ -16,6 +16,7 @@ import {
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { crearExamen } from '../src/services/crearExamen';
+import { useValidation } from 'react-native-form-validator';
 import PropTypes from 'prop-types';
 
 CrearExamenScreen.propTypes = {
@@ -31,6 +32,15 @@ function CrearExamenScreen({ navigation, route }) {
 	const [error, setError] = React.useState(false);
 	const [inputs, setInputs] = React.useState([{key: '', value: ''}]);
 	let preguntas = [];
+
+	const { validate, isFieldInError, getErrorsInField, isFormValid } =
+		useValidation({
+			state: { nombre },
+			deviceLocale: 'es',
+			labels: {
+				nombre: 'Nombre'
+			}
+		});
 
 	const addHandler = ()=>{
 		const _inputs = [...inputs];
@@ -63,18 +73,24 @@ function CrearExamenScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		crearExamen(String(route.params.id), nombre, preguntas)
-			.then((response) => response.json())
-			.then((json) => {
-				console.log(json);
-				if (json.status === 200) {
-					setMessage('¡Creación exitosa!');
-				} else {
-					setError(true);
-					setMessage('Error en la creación del exámen');
-				}
-				setShowModal(true);
-			});
+		validate({
+			nombre: { minlength: 3, required: true },
+		});
+
+		if (isFormValid() == true) {
+			crearExamen(String(route.params.id), nombre, preguntas)
+				.then((response) => response.json())
+				.then((json) => {
+					console.log(json);
+					if (json.status === 200) {
+						setMessage('¡Creación exitosa!');
+					} else {
+						setError(true);
+						setMessage('Error en la creación del exámen');
+					}
+					setShowModal(true);
+				});
+		}
 	};
 
 	return (
@@ -117,9 +133,14 @@ function CrearExamenScreen({ navigation, route }) {
 								<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 									Crear exámen
 								</Heading>
-								<FormControl>
+
+								<FormControl isRequired isInvalid={isFieldInError('nombre')}>
 									<FormControl.Label>Ingrese el nombre del exámen</FormControl.Label>
 									<Input size="md" onChangeText={(nombre) => setNombre(nombre)} value={nombre} multiline={true} />
+									{isFieldInError('nombre') &&
+										getErrorsInField('nombre').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
 								</FormControl>
 
 								{inputs.map((input, key)=>(
