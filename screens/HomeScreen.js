@@ -80,6 +80,7 @@ export default function HomeScreen({ navigation }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
+
 					<Box bg="#fff" p="2">
 						<StatusBar backgroundColor="#000" barStyle="light-content" />
 
@@ -113,16 +114,15 @@ export default function HomeScreen({ navigation }) {
 								Quiero cambiar mi suscripcion
 							</Link>
 						</Box>
-
 						<Heading p="3" size="lg">ULTIMOS CURSOS</Heading>
 						<Heading p="3" size="sm">Te mostramos los cursos mas recientes de Ubademy.</Heading>
+
 
 						<FlatList
 							data={ultimosCursos}
 							renderItem={({ item }) => (
 								<Center flex={1} px="3" m="3">
 									<Box
-										maxW="80"
 										rounded="lg"
 										overflow="hidden"
 										borderColor="coolGray.200"
@@ -140,7 +140,7 @@ export default function HomeScreen({ navigation }) {
 										}}
 									>
 										<Box>
-											<AspectRatio w="100%" ratio={16 / 9}>
+											<AspectRatio w="100%" ratio={16 / 6}>
 												<Image
 													source={{
 														uri: item.profile_pic_url,

@@ -183,201 +183,203 @@ export default function CrearCursoScreen({ navigation }) {
 	return (
 
 		<NativeBaseProvider>
-			{
-				loading ?
-					<View style={spinnerStyles.spinnerStyle}>
-						<Spinner color="indigo.500" size="lg" />
-					</View> :
-					<ScrollView
-						_contentContainerStyle={{
-							px: '20px',
-							mb: '4',
-						}}
-					>
-						<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
-							<Modal.Content maxWidth="350">
-								<Modal.Body>
-									<VStack space={3}>
-										<HStack alignItems="center" justifyContent="space-between">
-											<Text fontWeight="medium">{message}</Text>
-										</HStack>
-									</VStack>
-								</Modal.Body>
-								<Modal.Footer>
-									<Button colorScheme="indigo"
-										flex="1"
-										onPress={() => {
-											setShowModal(false);
-											if (!error) navigation.goBack();
-										}}
-									>
-										Continuar
-									</Button>
-								</Modal.Footer>
-							</Modal.Content>
-						</Modal>
-						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="sm" color="coolGray.800" fontWeight="600">
-								Complete los siguientes datos para crear un curso
-							</Heading>
-							<VStack space={3} mt="5">
-								<FormControl isRequired isInvalid={isFieldInError('titulo')}>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Título
-									</FormControl.Label>
-									<Input onChangeText={(titulo) => setTitulo(titulo)} value={titulo} />
-									{isFieldInError('titulo') &&
-										getErrorsInField('titulo').map(errorMessage => (
-											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
-										))}
-								</FormControl>
+			<Box flex={1} bg="white">
+				{
+					loading ?
+						<View style={spinnerStyles.spinnerStyle}>
+							<Spinner color="indigo.500" size="lg" />
+						</View> :
+						<ScrollView
+							_contentContainerStyle={{
+								px: '20px',
+								mb: '4',
+							}}
+						>
+							<Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+								<Modal.Content maxWidth="350">
+									<Modal.Body>
+										<VStack space={3}>
+											<HStack alignItems="center" justifyContent="space-between">
+												<Text fontWeight="medium">{message}</Text>
+											</HStack>
+										</VStack>
+									</Modal.Body>
+									<Modal.Footer>
+										<Button colorScheme="indigo"
+											flex="1"
+											onPress={() => {
+												setShowModal(false);
+												if (!error) navigation.goBack();
+											}}
+										>
+											Continuar
+										</Button>
+									</Modal.Footer>
+								</Modal.Content>
+							</Modal>
+							<Box safeArea bg="white" flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
+								<Heading size="sm" color="coolGray.800" fontWeight="600">
+									Complete los siguientes datos para crear un curso
+								</Heading>
+								<VStack space={3} mt="5">
+									<FormControl isRequired isInvalid={isFieldInError('titulo')}>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Título
+										</FormControl.Label>
+										<Input onChangeText={(titulo) => setTitulo(titulo)} value={titulo} />
+										{isFieldInError('titulo') &&
+											getErrorsInField('titulo').map(errorMessage => (
+												<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+											))}
+									</FormControl>
 
-								<FormControl isRequired isInvalid={isFieldInError('descripcion')}>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Descripción
-									</FormControl.Label>
-									<TextArea onChangeText={(descripcion) => setDescripcion(descripcion)} value={descripcion}
-										h={20}
-										placeholder="Descripción"
-										w={{
-											base: '100%',
-											md: '25%',
-										}}
+									<FormControl isRequired isInvalid={isFieldInError('descripcion')}>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Descripción
+										</FormControl.Label>
+										<TextArea onChangeText={(descripcion) => setDescripcion(descripcion)} value={descripcion}
+											h={20}
+											placeholder="Descripción"
+											w={{
+												base: '100%',
+												md: '25%',
+											}}
+										/>
+										{isFieldInError('descripcion') &&
+											getErrorsInField('descripcion').map(errorMessage => (
+												<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+											))}
+									</FormControl>
+
+									<FormControl isRequired isInvalid={isFieldInError('hashtags')}>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Hashtags asociados (ingrese las palabras separadas por una coma)
+										</FormControl.Label>
+										<Input onChangeText={(hashtags) => setHashtags(hashtags)} value={hashtags} />
+										{isFieldInError('hashtags') &&
+											getErrorsInField('hashtags').map(errorMessage => (
+												<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+											))}
+									</FormControl>
+
+									<FormControl isRequired isInvalid={isFieldInError('tipo')}>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Tipo de curso</FormControl.Label>
+										<Select
+											selectedValue={tipo}
+											minWidth="200"
+											accessibilityLabel="Elegir un tipo de curso"
+											placeholder="Elegir un tipo de curso"
+											_selectedItem={{
+												bg: 'teal.600',
+												endIcon: <CheckIcon size="5" />,
+											}}
+											mt={1}
+											onValueChange={(tipo) => setTipo(tipo)}
+										>
+											<Select.Item label="Matemática" value="Matematica" />
+											<Select.Item label="Programación" value="Programacion" />
+											<Select.Item label="Cocina" value="Cocina" />
+											<Select.Item label="Jardinería" value="Jardineria" />
+											<Select.Item label="Otro" value="Otro" />
+										</Select>
+										<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+											Seleccionar uno
+										</FormControl.ErrorMessage>
+										{isFieldInError('tipo') &&
+											getErrorsInField('tipo').map(errorMessage => (
+												<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+											))}
+									</FormControl>
+
+									<FormControl isRequired isInvalid={isFieldInError('examenes')}>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Cantidad de exámenes
+										</FormControl.Label>
+										<Input onChangeText={(examenes) => setExamenes(examenes)} value={examenes} />
+										{isFieldInError('examenes') &&
+											getErrorsInField('examenes').map(errorMessage => (
+												<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+											))}
+									</FormControl>
+
+									<FormControl isRequired isInvalid={isFieldInError('suscripcion')}>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Tipo de suscripción</FormControl.Label>
+										<Select
+											selectedValue={suscripcion}
+											minWidth="200"
+											accessibilityLabel="Elegir suscripción"
+											placeholder="Elegir suscripción"
+											_selectedItem={{
+												bg: 'teal.600',
+												endIcon: <CheckIcon size="5" />,
+											}}
+											mt={1}
+											onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
+										>
+											<Select.Item label="Básico" value="Basico" />
+											<Select.Item label="Estándar" value="Estandar" />
+											<Select.Item label="Premium" value="Premium" />
+										</Select>
+										{isFieldInError('suscripcion') &&
+											getErrorsInField('suscripcion').map(errorMessage => (
+												<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+											))}
+										<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+											Seleccionar uno
+										</FormControl.ErrorMessage>
+									</FormControl>
+
+									<FormControl isRequired isInvalid={isFieldInError('location')}>
+										<FormControl.Label
+											_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
+											Ubicación
+										</FormControl.Label>
+										<Input onChangeText={(location) => setLocation(location)} value={location} />
+										{isFieldInError('location') &&
+											getErrorsInField('location').map(errorMessage => (
+												<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+											))}
+									</FormControl>
+
+									<Icon
+										type="material-community"
+										name="camera-alt"
+										//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
+										size={50}
+										color="#7A7A7A"
+										onPress={pickImage}
+										style={{ alignSelf: 'center' }}
 									/>
-									{isFieldInError('descripcion') &&
-										getErrorsInField('descripcion').map(errorMessage => (
-											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
-										))}
-								</FormControl>
 
-								<FormControl isRequired isInvalid={isFieldInError('hashtags')}>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Hashtags asociados (ingrese las palabras separadas por una coma)
-									</FormControl.Label>
-									<Input onChangeText={(hashtags) => setHashtags(hashtags)} value={hashtags} />
-									{isFieldInError('hashtags') &&
-										getErrorsInField('hashtags').map(errorMessage => (
-											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
-										))}
-								</FormControl>
+									{image && <Image source={{ uri: image }} key={image} style={{ width: 300, height: 225, alignSelf: 'center' }} alt="Logo" />}
 
-								<FormControl isRequired isInvalid={isFieldInError('tipo')}>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Tipo de curso</FormControl.Label>
-									<Select
-										selectedValue={tipo}
-										minWidth="200"
-										accessibilityLabel="Elegir un tipo de curso"
-										placeholder="Elegir un tipo de curso"
-										_selectedItem={{
-											bg: 'teal.600',
-											endIcon: <CheckIcon size="5" />,
-										}}
-										mt={1}
-										onValueChange={(tipo) => setTipo(tipo)}
-									>
-										<Select.Item label="Matemática" value="Matematica" />
-										<Select.Item label="Programación" value="Programacion" />
-										<Select.Item label="Cocina" value="Cocina" />
-										<Select.Item label="Jardinería" value="Jardineria" />
-										<Select.Item label="Otro" value="Otro" />
-									</Select>
-									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-										Seleccionar uno
-									</FormControl.ErrorMessage>
-									{isFieldInError('tipo') &&
-										getErrorsInField('tipo').map(errorMessage => (
-											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
-										))}
-								</FormControl>
+									<Button isDisabled={(image == null) || (esUnVideo)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
+										Subir banner del curso
+									</Button>
+									{
+										esUnVideo ?
+											<Text color={!esUnVideo ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
+												El banner no puede ser un video
+											</Text> :
+											null
+									}
 
-								<FormControl isRequired isInvalid={isFieldInError('examenes')}>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Cantidad de exámenes
-									</FormControl.Label>
-									<Input onChangeText={(examenes) => setExamenes(examenes)} value={examenes} />
-									{isFieldInError('examenes') &&
-										getErrorsInField('examenes').map(errorMessage => (
-											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
-										))}
-								</FormControl>
-
-								<FormControl isRequired isInvalid={isFieldInError('suscripcion')}>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Tipo de suscripción</FormControl.Label>
-									<Select
-										selectedValue={suscripcion}
-										minWidth="200"
-										accessibilityLabel="Elegir suscripción"
-										placeholder="Elegir suscripción"
-										_selectedItem={{
-											bg: 'teal.600',
-											endIcon: <CheckIcon size="5" />,
-										}}
-										mt={1}
-										onValueChange={(suscripcion) => setSuscripcion(suscripcion)}
-									>
-										<Select.Item label="Básico" value="Basico" />
-										<Select.Item label="Estándar" value="Estandar" />
-										<Select.Item label="Premium" value="Premium" />
-									</Select>
-									{isFieldInError('suscripcion') &&
-										getErrorsInField('suscripcion').map(errorMessage => (
-											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
-										))}
-									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-										Seleccionar uno
-									</FormControl.ErrorMessage>
-								</FormControl>
-
-								<FormControl isRequired isInvalid={isFieldInError('location')}>
-									<FormControl.Label
-										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
-										Ubicación
-									</FormControl.Label>
-									<Input onChangeText={(location) => setLocation(location)} value={location} />
-									{isFieldInError('location') &&
-										getErrorsInField('location').map(errorMessage => (
-											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
-										))}
-								</FormControl>
-
-								<Icon
-									type="material-community"
-									name="camera-alt"
-									//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
-									size={50}
-									color="#7A7A7A"
-									onPress={pickImage}
-									style={{ alignSelf: 'center' }}
-								/>
-
-								{image && <Image source={{ uri: image }} key={image} style={{ width: 300, height: 225, alignSelf: 'center' }} alt="Logo" />}
-
-								<Button isDisabled={(image == null) || (esUnVideo)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
-									Subir banner del curso
-								</Button>
-								{
-									esUnVideo ?
-										<Text color={!esUnVideo ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
-											El banner no puede ser un video
-										</Text> :
-										null
-								}
-
-								<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-									Crear curso
-								</Button>
-							</VStack>
-						</Box>
-					</ScrollView>
-			}
+									<Button mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+										Crear curso
+									</Button>
+								</VStack>
+							</Box>
+						</ScrollView>
+				}
+			</Box>
 		</NativeBaseProvider>
 	);
 }

@@ -90,9 +90,8 @@ export default function HomeApp() {
 	useEffect(() => {
 		registerForPushNotificationsAsync().then(token => {
 			setExpoPushToken(token);
-			console.log('a ver si token es undefined', token);
 			if (token) {
-				console.log('no es undefined', token);
+				console.log(token);
 				setUserExpoToken(token)
 					.then((response) => response.json())
 					.then((json) => {
@@ -116,7 +115,6 @@ export default function HomeApp() {
 		});
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 			setNotification(notification);
-			console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', notification);
 			const notificationInfo = {
 				'date': notification.date,
 				'title': notification.request.content.title,
@@ -129,10 +127,8 @@ export default function HomeApp() {
 					.then(json => {
 						console.log(json);
 						setUserId(json.user_id);
-						console.log('en noti listener id usuario', userId);
 						saveNotification(notificationInfo, json.user_id);
 						console.log(notificationInfo);
-						console.log('lalalal222');
 					});
 			}
 		});
@@ -141,7 +137,6 @@ export default function HomeApp() {
 			console.log(response);
 			console.log(response.notification.request.content.data);
 			if (response.actionIdentifier === 'accept') {
-				console.log('le dio accept');
 				aceptarColaboracion(response.notification.request.content.data.id_course).then((response) => response.json())
 					.then((json) => {
 						console.log(json);
@@ -156,14 +151,6 @@ export default function HomeApp() {
 					});
 			}
 
-			//si es collabaration entonces chequeo el action identifier y si es aceptar , buscar el id de curso
-			// y llamar al endpoint
-			//si dio cancelar, que se cierre la notificacion y ya
-			// /courses/collaborators
-			//"data": Object {
-			//	"id_course": 1,
-			//  },
-			console.log('lalalal');
 		});
 
 		return () => {

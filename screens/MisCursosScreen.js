@@ -37,7 +37,7 @@ function MisCursosScreen({ navigation }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
-					<Center flex={1} px="3">
+					<Center flex={1} px="3" >
 						<VStack
 							w="100%"
 							space={2.5}

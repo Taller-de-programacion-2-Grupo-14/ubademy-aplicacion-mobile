@@ -10,11 +10,12 @@ import {
 	VStack,
 	Button,
 	Text,
-	Flex,
 	FlatList,
 	HStack,
-	Spacer,
-	Link
+	Link,
+	Stack,
+	AspectRatio,
+	Image
 } from 'native-base';
 import { misColaboraciones } from '../src/services/misColaboraciones';
 import { useFocusEffect } from '@react-navigation/native';
@@ -33,22 +34,59 @@ function MisColaboracionesScreen({ navigation }) {
 	const isFocused = useIsFocused();
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = false; navigation.navigate('MiCursoColaboradorScreen', item);} }>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
-				<HStack alignItems="flex-start">
-					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
-						{item.type}
+		<Link onPress={() => { item['verComoCreador'] = false; navigation.navigate('MiCursoColaboradorScreen', item); }}>
+			<Box
+				rounded="lg"
+				m="2"
+				overflow="hidden"
+				borderColor="coolGray.200"
+				borderWidth="1"
+				_dark={{
+					borderColor: 'coolGray.600',
+					backgroundColor: 'gray.700',
+				}}
+				_web={{
+					shadow: 2,
+					borderWidth: 0,
+				}}
+				_light={{
+					backgroundColor: 'gray.50',
+				}}
+			>
+				<Box>
+					<AspectRatio w="100%" ratio={16 / 6}>
+						<Image
+							source={{
+								uri: item.profile_pic_url,
+							}}
+							alt="image"
+						/>
+					</AspectRatio>
+				</Box>
+				<Stack p="4" space={3}>
+					<Stack space={2}>
+						<Heading size="md" ml="-1">
+							{item.name}
+						</Heading>
+						<Text
+							fontSize="xs"
+							_light={{
+								color: 'violet.500',
+							}}
+							_dark={{
+								color: 'violet.400',
+							}}
+							fontWeight="500"
+							ml="-0.5"
+							mt="-1"
+						>
+							{item.type}
+						</Text>
+					</Stack>
+					<Text fontWeight="400">
+						Ingresar
 					</Text>
-					<Spacer />
-				</HStack>
-				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.name}
-				</Heading>
-				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
-            Ingresar
-					</Text>
-				</Flex>
+				</Stack>
 			</Box>
 		</Link>
 	);
@@ -95,7 +133,7 @@ function MisColaboracionesScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<>
-						<Modal isOpen={showModal} onClose={() => {if (bloqueado) {navigation.navigate('LoginScreen');} setShowModal(false);}} size="lg">
+						<Modal isOpen={showModal} onClose={() => { if (bloqueado) { navigation.navigate('LoginScreen'); } setShowModal(false); }} size="lg">
 							<Modal.Content maxWidth="350">
 								<Modal.Body>
 									<VStack space={3}>

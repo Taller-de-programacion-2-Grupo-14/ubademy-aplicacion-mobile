@@ -31,7 +31,7 @@ export default function App() {
 			screenOptions={{
 				swipeEnabled: false
 			}} style={{ marginTop: Constants.statusBarHeight }}>
-			<Tab.Screen name="Messages" component={Messages} />
+			<Tab.Screen name="Mensajes" component={Messages} />
 			<Tab.Screen name="Contactos" component={Contacts} />
 			<Tab.Screen name="Avisos" component={Notifications} />
 		</Tab.Navigator>
