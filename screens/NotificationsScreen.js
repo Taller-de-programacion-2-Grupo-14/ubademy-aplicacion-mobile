@@ -31,12 +31,16 @@ export default function NotificationsScreen() {
 		onValue(reference, (snapshot) => {
 			const notification = snapshot.val();
 			console.log('notification', notification);
-			const b = notification; //cosito es lo que contiene el data que me pasaste
-			let data = [];
-			Object.entries(b).forEach(v => data.push(v[1].notification));
-			console.log(data);
-			setData(data);
-			setLoading(false);
+			if (notification) {
+				const b = notification; //cosito es lo que contiene el data que me pasaste
+				let data = [];
+				Object.entries(b).forEach(v => data.push(v[1].notification));
+				console.log(data);
+				setData(data);
+				setLoading(false);
+			} else {
+				setLoading(false);
+			}
 		});
 	}
 
@@ -122,6 +126,10 @@ function Basic(data) {
 		<FlatList
 			data={listData}
 			renderItem={renderItem}
+			ListHeaderComponent={() => (listData.length === 0 ?
+				<Box flex="1" bg="white"><Text>No tienes notificaciones</Text></Box>
+				: null)
+			}
 		/>
 
 	);
