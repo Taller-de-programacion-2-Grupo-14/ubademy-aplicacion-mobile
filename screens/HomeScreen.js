@@ -8,32 +8,27 @@ import {
 	Button,
 	VStack,
 	HStack,
-	IconButton,
-	Icon,
+	Stack,
 	Text,
 	Center,
 	Link,
 	StatusBar,
 	FlatList,
-	ScrollView
+	AspectRatio,
+	Image
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
+import { obtenerUltimosCursos } from '../src/services/obtenerCursos';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { useIsFocused } from '@react-navigation/native';
-import {
-	Avatar,
-	Card,
-	Title,
-	Paragraph,
-	List,
-	Headline,
-} from 'react-native-paper';
+import Moment from 'moment';
 
 export default function HomeScreen({ navigation }) {
 	const [firstName, setFirstName] = React.useState('');
+	const [ultimosCursos, setUltimosCursos] = React.useState([]);
 	const [loading, setLoading] = React.useState(true);
 	const [subscripcion, setSubscripcion] = React.useState('');
 	const isFocused = useIsFocused();
@@ -42,6 +37,7 @@ export default function HomeScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
+			Moment.locale('es');
 			console.log('en home screen');
 			obtenerUsuario()
 				.then(data => data.json())
@@ -61,6 +57,12 @@ export default function HomeScreen({ navigation }) {
 						setSubscripcion('PREMIUM');
 					}
 					SecureStore.setItemAsync('user_email', json.email);
+				});
+			obtenerUltimosCursos().then(data => data.json())
+				.then(json => {
+					console.log(json);
+					console.log(json.message);
+					setUltimosCursos(json.message);
 					setLoading(false);
 				});
 			return () => {
@@ -79,12 +81,12 @@ export default function HomeScreen({ navigation }) {
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
 					<Box bg="#fff" p="2">
-						<StatusBar backgroundColor="#fff" barStyle="light-content" />
+						<StatusBar backgroundColor="#000" barStyle="light-content" />
 
 						<Box safeAreaTop backgroundColor="indigo.500" />
 
 						<HStack bg="indigo.500" px="1" py="3" style={{ justifyContent: 'center' }} alignItems='center'>
-							<Text color="white" p="2" fontSize="20" fontWeight='bold'>HOLA {firstName}</Text>
+							<Text color="white" p="2" fontSize="20" fontWeight='bold'>Hola {firstName.toUpperCase()}</Text>
 						</HStack>
 						<Box
 							mt="7"
@@ -101,89 +103,111 @@ export default function HomeScreen({ navigation }) {
 							p="5"
 						>
 							<HStack >
-								<Text fontSize="md">Tu nivel de subscripcion es </Text>
+								<Text fontSize="md">Tu nivel de suscripcion es </Text>
 								<Text fontSize="md" bold >{subscripcion}</Text>
 							</HStack>
 							<Link onPress={() => navigation.navigate('Subscripcion')}
 								_text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
 								alignSelf="flex-start"
 								mt="1">
-								Quiero cambiar mi subscripcion
+								Quiero cambiar mi suscripcion
 							</Link>
 						</Box>
-						<Heading p="3" size="lg">Nuevos cursos </Heading>
-						<Card
-							style={{
-								shadowOffset: { width: 5, height: 5 },
-								width: '100%',
-								borderRadius: 12,
-								alignSelf: 'center',
-								marginBottom: 10,
-							}}>
-							<Card.Content>
-								<Title>Blog post</Title>
-								<Card.Cover
-									style={{
-										width: '100%',
-										height: 190,
-										alignSelf: 'center',
-									}}
-									source={{
-										uri:
-											'https://images.unsplash.com/photo-1573921470445-8d99c48c879f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-									}}
-								/>
-								<Paragraph>just a blog post</Paragraph>
-							</Card.Content>
-						</Card>
-						<Card
-							style={{
-								shadowOffset: { width: 5, height: 5 },
-								width: '100%',
-								borderRadius: 12,
-								alignSelf: 'center',
-								marginBottom: 10,
-							}}>
-							<Card.Content>
-								<Title>Blog post</Title>
-								<Card.Cover
-									style={{
-										width: '100%',
-										height: 190,
-										alignSelf: 'center',
-									}}
-									source={{
-										uri:
-											'https://images.unsplash.com/photo-1573921470445-8d99c48c879f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-									}}
-								/>
-								<Paragraph>just a blog post</Paragraph>
-							</Card.Content>
-						</Card>
-						<Card
-							style={{
-								shadowOffset: { width: 5, height: 5 },
-								width: '100%',
-								borderRadius: 12,
-								alignSelf: 'center',
-								marginBottom: 10,
-							}}>
-							<Card.Content>
-								<Title>Blog post</Title>
-								<Card.Cover
-									style={{
-										width: '100%',
-										height: 190,
-										alignSelf: 'center',
-									}}
-									source={{
-										uri:
-											'https://images.unsplash.com/photo-1573921470445-8d99c48c879f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-									}}
-								/>
-								<Paragraph>just a blog post</Paragraph>
-							</Card.Content>
-						</Card>
+
+						<Heading p="3" size="lg">ULTIMOS CURSOS</Heading>
+						<Heading p="3" size="sm">Te mostramos los cursos mas recientes de Ubademy.</Heading>
+
+						<FlatList
+							data={ultimosCursos}
+							renderItem={({ item }) => (
+								<Center flex={1} px="3" m="3">
+									<Box
+										maxW="80"
+										rounded="lg"
+										overflow="hidden"
+										borderColor="coolGray.200"
+										borderWidth="1"
+										_dark={{
+											borderColor: 'coolGray.600',
+											backgroundColor: 'gray.700',
+										}}
+										_web={{
+											shadow: 2,
+											borderWidth: 0,
+										}}
+										_light={{
+											backgroundColor: 'gray.50',
+										}}
+									>
+										<Box>
+											<AspectRatio w="100%" ratio={16 / 9}>
+												<Image
+													source={{
+														uri: item.profile_pic_url,
+													}}
+													alt="image"
+												/>
+											</AspectRatio>
+											<Center
+												bg="violet.500"
+												_dark={{
+													bg: 'violet.400',
+												}}
+												_text={{
+													color: 'warmGray.50',
+													fontWeight: '700',
+													fontSize: 'xs',
+												}}
+												position="absolute"
+												bottom="0"
+												px="3"
+												py="1.5"
+											>
+												{item.subscription.toUpperCase()}
+											</Center>
+										</Box>
+										<Stack p="4" space={3}>
+											<Stack space={2}>
+												<Heading size="md" ml="-1">
+													{item.name}
+												</Heading>
+												<Text
+													fontSize="xs"
+													_light={{
+														color: 'violet.500',
+													}}
+													_dark={{
+														color: 'violet.400',
+													}}
+													fontWeight="500"
+													ml="-0.5"
+													mt="-1"
+												>
+													Dictado por {item.creator_first_name} {item.creator_last_name}
+												</Text>
+											</Stack>
+											<Text isTruncated fontWeight="400">
+												{item.description}
+											</Text>
+											<HStack alignItems="center" space={4} justifyContent="space-between">
+												<HStack alignItems="center">
+													<Text
+														color="coolGray.600"
+														_dark={{
+															color: 'warmGray.200',
+														}}
+														fontWeight="400"
+													>
+														{Moment(Moment(item.created_at).format('YYYYMMDD'), 'YYYYMMDD').fromNow()}
+													</Text>
+												</HStack>
+											</HStack>
+										</Stack>
+									</Box>
+								</Center>
+							)}
+							keyExtractor={(item, index) => index.toString()}
+						/>
 					</Box>
 			}
 		</NativeBaseProvider >

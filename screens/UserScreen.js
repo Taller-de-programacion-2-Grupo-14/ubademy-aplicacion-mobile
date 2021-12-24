@@ -69,6 +69,7 @@ function UsuarioHome({ navigation }) {
 			obtenerUsuario()
 				.then(data => data.json())
 				.then(json => {
+					console.log('a verr el usuarioooooooo', json);
 					setLoading(false);
 					setFirstName(json.first_name);
 					setLastName(json.last_name);

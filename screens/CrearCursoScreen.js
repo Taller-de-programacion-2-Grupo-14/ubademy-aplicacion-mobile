@@ -42,7 +42,7 @@ export default function CrearCursoScreen({ navigation }) {
 	const [showModal, setShowModal] = React.useState(false);
 	const isFocused = useIsFocused();
 	const [image, setImage] = React.useState(null);
-	const [imagenSubida, setImagenSubida] = React.useState('');
+	const [imagenSubida, setImagenSubida] = React.useState('https://firebasestorage.googleapis.com/v0/b/uba-demy.appspot.com/o/imagenes%2Fbanners%2Fgenerica.jpeg?alt=media&token=a62d3455-4a3c-4ca3-ab19-4df2d63c2ce9');
 	const [pickerResult, setPickerResult] = React.useState(null);
 	const [esUnVideo, setEsUnVideo] = React.useState(false);
 	const d = new Date();
@@ -74,7 +74,7 @@ export default function CrearCursoScreen({ navigation }) {
 		if (!result.cancelled) {
 			setImage(result.uri);
 			setPickerResult(result);
-			if (result.type=='video') {
+			if (result.type == 'video') {
 				setEsUnVideo(true);
 			} else {
 				setEsUnVideo(false);
@@ -117,7 +117,7 @@ export default function CrearCursoScreen({ navigation }) {
 			xhr.send(null);
 		});
 
-		const fileRef = ref(getStorage(), `imagenes/banners/${String(d.getFullYear())+String(d.getMonth())+String(d.getFullYear())+String(d.getMonth())+String(d.getFullYear())+String(d.getMonth())+String(d.getMilliseconds())}`);
+		const fileRef = ref(getStorage(), `imagenes/banners/${String(d.getFullYear()) + String(d.getMonth()) + String(d.getFullYear()) + String(d.getMonth()) + String(d.getFullYear()) + String(d.getMonth()) + String(d.getMilliseconds())}`);
 		const result = await uploadBytes(fileRef, blob);
 		console.log(result);
 
@@ -137,7 +137,7 @@ export default function CrearCursoScreen({ navigation }) {
 			setSuscripcion('');
 			setLocation('');
 			setImage(null);
-			setImagenSubida('');
+			setImagenSubida('https://firebasestorage.googleapis.com/v0/b/uba-demy.appspot.com/o/imagenes%2Fbanners%2Fgenerica.jpeg?alt=media&token=a62d3455-4a3c-4ca3-ab19-4df2d63c2ce9');
 			setPickerResult(null);
 			setLoading(false);
 			return () => {
@@ -159,8 +159,8 @@ export default function CrearCursoScreen({ navigation }) {
 		});
 		if (isFormValid() == true) {
 			console.log(imagenSubida);
-			if (imagenSubida===null){
-				setImagenSubida('');
+			if (imagenSubida === null) {
+				setImagenSubida('https://firebasestorage.googleapis.com/v0/b/uba-demy.appspot.com/o/imagenes%2Fbanners%2Fgenerica.jpeg?alt=media&token=a62d3455-4a3c-4ca3-ab19-4df2d63c2ce9');
 			}
 			console.log(imagenSubida);
 			crearCurso(titulo, descripcion, hashtags, tipo, examenes, suscripcion, location, imagenSubida)
@@ -284,6 +284,7 @@ export default function CrearCursoScreen({ navigation }) {
 										<Select.Item label="Programación" value="Programacion" />
 										<Select.Item label="Cocina" value="Cocina" />
 										<Select.Item label="Jardinería" value="Jardineria" />
+										<Select.Item label="Otro" value="Otro" />
 									</Select>
 									<FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
 										Seleccionar uno
@@ -353,19 +354,19 @@ export default function CrearCursoScreen({ navigation }) {
 									//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
 									size={50}
 									color="#7A7A7A"
-									onPress= {pickImage}
-									style= {{ alignSelf: 'center' }}
+									onPress={pickImage}
+									style={{ alignSelf: 'center' }}
 								/>
 
 								{image && <Image source={{ uri: image }} key={image} style={{ width: 300, height: 225, alignSelf: 'center' }} alt="Logo" />}
 
-								<Button isDisabled={(image==null) || (esUnVideo)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
+								<Button isDisabled={(image == null) || (esUnVideo)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
 									Subir banner del curso
 								</Button>
 								{
 									esUnVideo ?
 										<Text color={!esUnVideo ? 'transparent' : '#EB0202'} style={{ textAlign: 'center' }}>
-										El banner no puede ser un video
+											El banner no puede ser un video
 										</Text> :
 										null
 								}

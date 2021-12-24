@@ -10,29 +10,84 @@ import {
 	Avatar,
 	VStack,
 	Spacer,
-	Button
+	Button,
+	Center,
+	Spinner
 } from 'native-base';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import * as Notifications from 'expo-notifications';
 import { useFocusEffect } from '@react-navigation/native';
+import firebase from '../src/utils/firebase';
+import * as SecureStore from 'expo-secure-store';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { List, Divider } from 'react-native-paper';
+import PropTypes from 'prop-types';
+import { MaterialIcons } from '@expo/vector-icons';
 
-async function schedulePushNotification() {
-	await Notifications.scheduleNotificationAsync({
-		content: {
-			title: 'Has recibido una invitación',
-			body: 'Te han invitado a ser colaborador de un curso, deseas colaborar?',
-			data: { data: 'goes here' },
-			categoryIdentifier: 'collaborations',
-		},
-		trigger: { seconds: 2 },
-	});
-}
+export default function MessagesScreen({ navigation }) {
+	const [loading, setLoading] = useState(true);
+	const [threads, setThreads] = useState([]);
+	const [email, setEmail] = useState([]);
 
-export default function MessagesScreen() {
 
 	useFocusEffect(
 		React.useCallback(() => {
+			SecureStore.getItemAsync('user_email').then((email) => {
+				setEmail(email);
+				let threadList1 = [];
+				let threadList2 = [];
+				firebase.firestore().collection('THREADS').where('user1', '==', email).orderBy('latestMessage.createdAt', 'desc').get().then(snapshot => {
+					if (!snapshot.empty) {
+						const threads1 = snapshot.docs.map(documentSnapshot => {
+							return {
+								_id: documentSnapshot.id,
+								// give defaults
+								name: '',
+
+								latestMessage: {
+									text: ''
+								},
+								...documentSnapshot.data()
+							};
+						});
+						console.log('snapshot', threads1);
+						threadList1 = threadList1.concat(threads1);
+						console.log('threadList', threadList1);
+						console.log('matching documents.');
+					}
+
+				}).then(() => {
+					firebase.firestore().collection('THREADS').where('user2', '==', email).orderBy('latestMessage.createdAt', 'desc').get().then(snapshot => {
+						if (!snapshot.empty) {
+							const threads2 = snapshot.docs.map(documentSnapshot => {
+								return {
+									_id: documentSnapshot.id,
+									// give defaults
+									name: '',
+
+									latestMessage: {
+										text: ''
+									},
+									...documentSnapshot.data()
+								};
+							});
+							threadList2 = threadList1.concat(threads2);
+							console.log('snapshot2', threads2);
+							console.log('threadList', threadList2);
+							console.log('matching documents.');
+							setThreads(threadList2);
+							return;
+						} else {
+							console.log('no hay chats');
+						}
+					});
+
+					setLoading(false);
+
+					setThreads(threadList1.concat(threadList2));
+					console.log('thread1', threadList1);
+					console.log('threads2', threadList2);
+					console.log('threads', threads);
+				});
+			});
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
@@ -40,165 +95,86 @@ export default function MessagesScreen() {
 			};
 		}, [])
 	);
+	this.goToChat = (item) => {
+		if (item.user1 === email) {
+			navigation.navigate('Chat', { email: item.user2 });
+		} else {
+			navigation.navigate('Chat', { email: item.user1 });
+		}
+	};
 
 	return (
 		<NativeBaseProvider>
-			<Box bg="white" flex="1" safeAreaTop>
-				<Heading p="4" pb="3" size="lg">
-					Inbox
-				</Heading>
-				<Button
-					title="Press to schedule a notification"
-					onPress={async () => {
-						await schedulePushNotification();
-					}}
-				/>
-				<Basic />
-			</Box>
+			{
+				loading ? <View style={spinnerStyles.spinnerStyle}>
+					<Spinner color="indigo.500" size="lg" />
+				</View> :
+					<Center flex={1} >
+						<Box bg="white">
+							<Heading p="4" pb="3" size="lg">
+								Inbox
+							</Heading>
+
+							<FlatList
+								data={threads}
+								keyExtractor={item => item._id}
+								renderItem={({ item }) => (
+
+									<TouchableOpacity
+										onPress={() => this.goToChat(item)}
+									>
+										<Box
+											borderBottomWidth="1"
+											borderColor="coolGray.200"
+											pl="4"
+											pr="5"
+											py="2"
+										>
+											<HStack space={3} justifyContent="space-between">
+												<Icon as={<MaterialIcons name="chat" />} color="gray" size="sm" />
+												<VStack>
+													<Text
+														color="coolGray.800"
+														bold
+													>
+														{item.name}
+													</Text>
+													<Text
+														color="coolGray.600"
+													>
+														{item.latestMessage.text}
+													</Text>
+												</VStack>
+												<Spacer />
+												<Text
+													fontSize="xs"
+													color="coolGray.800"
+													alignSelf="flex-start"
+												>
+													12:47 PM
+												</Text>
+											</HStack>
+										</Box>
+									</TouchableOpacity>
+								)}
+							/>
+						</Box>
+					</Center>
+			}
 		</NativeBaseProvider>
 	);
 }
 
-function Basic() {
-	const data = [
-		{
-			id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-			fullName: 'Afreen Khan',
-			timeStamp: '12:47 PM',
-			recentText: 'Good Day!',
-			avatarUrl:
-				'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-		},
-		{
-			id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-			fullName: 'Sujita Mathur',
-			timeStamp: '11:11 PM',
-			recentText: 'Cheer up, there!',
-			avatarUrl:
-				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU',
-		},
-		{
-			id: '58694a0f-3da1-471f-bd96-145571e29d72',
-			fullName: 'Anci Barroco',
-			timeStamp: '6:22 PM',
-			recentText: 'Good Day!',
-			avatarUrl: 'https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg',
-		},
-		{
-			id: '68694a0f-3da1-431f-bd56-142371e29d72',
-			fullName: 'Aniket Kumar',
-			timeStamp: '8:56 PM',
-			recentText: 'All the best',
-			avatarUrl:
-				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU',
-		},
-		{
-			id: '28694a0f-3da1-471f-bd96-142456e29d72',
-			fullName: 'Kiara',
-			timeStamp: '12:47 PM',
-			recentText: 'I will call today.',
-			avatarUrl:
-				'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU',
-		},
-	];
-
-	const [listData, setListData] = useState(data);
-
-	const closeRow = (rowMap, rowKey) => {
-		if (rowMap[rowKey]) {
-			rowMap[rowKey].closeRow();
-		}
-	};
-
-	const deleteRow = (rowMap, rowKey) => {
-		closeRow(rowMap, rowKey);
-		const newData = [...listData];
-		const prevIndex = listData.findIndex((item) => item.key === rowKey);
-		newData.splice(prevIndex, 1);
-		setListData(newData);
-	};
-
-	const onRowDidOpen = (rowKey) => {
-		console.log('This row opened', rowKey);
-	};
-
-	const renderItem = ({ item }) => (
-		<Box>
-			<Pressable onPress={() => console.log('You touched me')} bg="white">
-				<Box
-					pl="4"
-					pr="5"
-					py="2"
-				>
-					<HStack alignItems="center" space={3}>
-						<Avatar size="48px" source={{ uri: item.avatarUrl }} />
-						<VStack>
-							<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
-								{item.fullName}
-							</Text>
-							<Text color="coolGray.600" _dark={{ color: 'warmGray.200' }}>{item.recentText}</Text>
-						</VStack>
-						<Spacer />
-						<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-							{item.timeStamp}
-						</Text>
-					</HStack>
-				</Box>
-			</Pressable>
-		</Box>
-	);
-
-	const renderHiddenItem = (data, rowMap) => (
-		<HStack flex="1" pl="2">
-			<Pressable
-				w="70"
-				ml="auto"
-				bg="coolGray.200"
-				justifyContent="center"
-				onPress={() => closeRow(rowMap, data.item.key)}
-				_pressed={{
-					opacity: 0.5,
-				}}>
-				<VStack alignItems="center" space={2}>
-					<Icon
-						as={<Entypo name="dots-three-horizontal" />}
-						size="xs"
-						color="coolGray.800"
-					/>
-					<Text fontSize="xs" fontWeight="medium" color="coolGray.800">
-						More
-					</Text>
-				</VStack>
-			</Pressable>
-			<Pressable
-				w="70"
-				bg="red.500"
-				justifyContent="center"
-				onPress={() => deleteRow(rowMap, data.item.key)}
-				_pressed={{
-					opacity: 0.5,
-				}}>
-				<VStack alignItems="center" space={2}>
-					<Icon as={<MaterialIcons name="delete" />} color="white" size="xs" />
-					<Text color="white" fontSize="xs" fontWeight="medium">
-						Delete
-					</Text>
-				</VStack>
-			</Pressable>
-		</HStack>
-	);
-	return (
-		<Box bg="white" safeArea flex="1">
-			<SwipeListView
-				data={listData}
-				renderItem={renderItem}
-				renderHiddenItem={renderHiddenItem}
-				rightOpenValue={-130}
-				previewRowKey={'0'}
-				previewOpenValue={-40}
-				previewOpenDelay={3000}
-				onRowDidOpen={onRowDidOpen}
-			/>
-		</Box>
-	);
-}
+MessagesScreen.propTypes = {
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}).isRequired,
+	route: PropTypes.object
+};
+const spinnerStyles = StyleSheet.create({
+	spinnerStyle: {
+		flex: 7,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+});

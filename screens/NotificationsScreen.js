@@ -10,16 +10,18 @@ import {
 	VStack,
 	Spacer,
 	FlatList,
+	Spinner
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
+import { View, StyleSheet } from 'react-native';
 import Moment from 'moment';
 
 export default function NotificationsScreen() {
-
+	const [loading, setLoading] = useState(true);
 	const [data, setData] = React.useState([]);
 	Moment.locale('es');
 	function getNotifications(userId) {
@@ -34,6 +36,7 @@ export default function NotificationsScreen() {
 			Object.entries(b).forEach(v => data.push(v[1].notification));
 			console.log(data);
 			setData(data);
+			setLoading(false);
 		});
 	}
 
@@ -55,11 +58,22 @@ export default function NotificationsScreen() {
 
 	return (
 		<NativeBaseProvider>
-			<Box bg="white" flex="1" safeAreaTop>
+			<Box
+				w={{
+					base: '100%',
+					md: '25%',
+				}}
+				bg="white"
+			>
 				<Heading p="4" pb="3" size="lg">
 					Notificaciones
 				</Heading>
-				<Basic data={data} />
+				{
+					loading ? <View style={spinnerStyles.spinnerStyle}>
+						<Spinner color="indigo.500" size="lg" />
+					</View> :
+						<Basic data={data} />
+				}
 			</Box>
 		</NativeBaseProvider>
 	);
@@ -82,30 +96,12 @@ function Basic(data) {
 		}, [listData, data])
 	);
 
-	const closeRow = (rowMap, rowKey) => {
-		if (rowMap[rowKey]) {
-			rowMap[rowKey].closeRow();
-		}
-	};
-
-	const deleteRow = (rowMap, rowKey) => {
-		closeRow(rowMap, rowKey);
-		const newData = [...listData];
-		const prevIndex = listData.findIndex((item) => item.key === rowKey);
-		newData.splice(prevIndex, 1);
-		setListData(newData);
-	};
-
-	const onRowDidOpen = (rowKey) => {
-		console.log('This row opened', rowKey);
-	};
-
 	const renderItem = ({ item }) => (
 		<Box borderBottomWidth="1" borderColor="coolGray.200"
 			pl="4"
 			pr="5"
 			py="2">
-			<HStack alignItems="center" space={3}>
+			<HStack alignItems="center" space={3} p="2">
 				<Icon as={<MaterialIcons name="email" />} color="black" size="xs" />
 				<VStack>
 					<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
@@ -121,53 +117,20 @@ function Basic(data) {
 		</Box>
 	);
 
-	const renderHiddenItem = (data, rowMap) => (
-		<HStack flex="1" pl="2">
-			<Pressable
-				w="70"
-				ml="auto"
-				bg="coolGray.200"
-				justifyContent="center"
-				onPress={() => closeRow(rowMap, data.item.key)}
-				_pressed={{
-					opacity: 0.5,
-				}}>
-				<VStack alignItems="center" space={2}>
-					<Icon
-						as={<Entypo name="dots-three-horizontal" />}
-						size="xs"
-						color="coolGray.800"
-					/>
-					<Text fontSize="xs" fontWeight="medium" color="coolGray.800">
-						More
-					</Text>
-				</VStack>
-			</Pressable>
-			<Pressable
-				w="70"
-				bg="red.500"
-				justifyContent="center"
-				onPress={() => deleteRow(rowMap, data.item.key)}
-				_pressed={{
-					opacity: 0.5,
-				}}>
-				<VStack alignItems="center" space={2}>
-					<Icon as={<MaterialIcons name="delete" />} color="white" size="xs" />
-					<Text color="white" fontSize="xs" fontWeight="medium">
-						Delete
-					</Text>
-				</VStack>
-			</Pressable>
-		</HStack>
-	);
-
 	return (
-		<Box bg="white" safeArea flex="1">
-			<FlatList
-				data={listData}
-				renderItem={renderItem}
-			/>
-		</Box>
+
+		<FlatList
+			data={listData}
+			renderItem={renderItem}
+		/>
+
 	);
 }
 
+const spinnerStyles = StyleSheet.create({
+	spinnerStyle: {
+		flex: 7,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+});

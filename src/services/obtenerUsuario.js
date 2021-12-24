@@ -28,10 +28,25 @@ export async function obtenerUsuarios(blocked, email) {
 }
 
 export async function obtenerUsuarioConEmail(email) {
+	console.log('en obtener usuario con email', email);
 	return fetch(`${global.host}/users?email=${email}`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json'
+		},
+	});
+}
+
+export async function obtenerUsuariosPorEmail(email) {
+	console.log('en obtener usuarios', email);
+	const token = await SecureStore.getItemAsync('secure_token');
+	console.log('en obtener usuarios service');
+	//cambiar la url por la de heroku cuando el mirage este desactivado
+	return fetch(`${global.host}/users/all?blocked=false&limit=10&email=${email}`, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+			'x-access-token': token
 		},
 	});
 }
