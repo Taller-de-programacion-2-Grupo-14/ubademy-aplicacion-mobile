@@ -176,7 +176,9 @@ function MiCursoInscriptoScreen({ navigation, route }) {
 										bottom="0"
 										px="3"
 										py="1.5">
-										Suscripción: {route.params.subscription}
+										Suscripción: {(route.params.subscription=='basico' || route.params.subscription=='básico' || route.params.subscription=='Basico') ? 'Básico' :
+											((route.params.subscription=='estandar' || route.params.subscription=='estándar' || route.params.subscription=='Estandar') ? 'Estándar' : 'Premium')
+										}
 									</Center>
 								</Box>
 								<Stack p="4" space={[3, 3, 1.5]}>

@@ -35,7 +35,9 @@ function ElegirCursoScreen({ navigation, route }) {
 			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
 				<HStack alignItems="flex-start">
 					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
-						{item.subscription}
+						{(item.subscription=='basico' || item.subscription=='básico' || item.subscription=='Basico') ? 'Básico' :
+							((item.subscription=='estandar' || item.subscription=='estándar' || item.subscription=='Estandar') ? 'Estándar' : 'Premium')
+						}
 					</Text>
 					<Spacer />
 				</HStack>
