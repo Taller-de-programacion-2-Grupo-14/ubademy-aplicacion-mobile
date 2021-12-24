@@ -1,11 +1,13 @@
-# App Mobile
+# UBADEMY - App mobile
+Repositorio del front end de la aplicación mobile creada con Expo.
 
 ## Instalación
-En el directorio root donde se descargó el proyecto
+La aplicación está desarrollada en React Native con Expo, por lo que se requiere contar Expo, node.js y npm instalados para poder correr el proyecto.
+En el directorio root donde se descargó:
 1. npm install
 2. expo start
 
-Se requiere tener la última versión de expo installada
+Se requiere tener la versión de expo 3.13 installada y node.js v14.17 o superior.
 
 ## Troubleshooting
 
