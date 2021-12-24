@@ -81,8 +81,8 @@ function MiCursoCreadoScreen({ navigation, route }) {
 		);
 
 	const renderItem = ({ item }) => (
-		<Link onPress={() => {item['verComoCreador'] = true; item['id_course'] = route.params.id; item['puedeCrearExamen'] = puedeCrearExamen; navigation.navigate('VerExamenScreen', item);} }>
-			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25}}>
+		<Link onPress={() => { item['verComoCreador'] = true; item['id_course'] = route.params.id; item['puedeCrearExamen'] = puedeCrearExamen; navigation.navigate('VerExamenScreen', item); }}>
+			<Box bg="#0BC86C" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
 				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
 					{item.title}
 				</Heading>
@@ -111,7 +111,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 						} else {
 							setEstado('Cancelado');
 						}
-						if (json.message.can_create_exams){
+						if (json.message.can_create_exams) {
 							setPuedeCrearExamen(true);
 						} else {
 							setPuedeCrearExamen(false);
@@ -251,7 +251,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 										h="40"
 										source={{
 											uri:
-												(route.params.profile_pic_url=='') ? 'https://firebasestorage.googleapis.com/v0/b/uba-demy.appspot.com/o/imagenes%2Fbanners%2Fgenerica.jpeg?alt=media&token=a62d3455-4a3c-4ca3-ab19-4df2d63c2ce9' :
+												(route.params.profile_pic_url == '') ? 'https://firebasestorage.googleapis.com/v0/b/uba-demy.appspot.com/o/imagenes%2Fbanners%2Fgenerica.jpeg?alt=media&token=a62d3455-4a3c-4ca3-ab19-4df2d63c2ce9' :
 													route.params.profile_pic_url,
 										}}
 										alt="image"
@@ -263,7 +263,7 @@ function MiCursoCreadoScreen({ navigation, route }) {
 										bottom="0"
 										px="3"
 										py="1.5">
-										Estado: {estado}
+										{estado}
 									</Center>
 								</Box>
 								<Stack p="4" space={[3, 3, 1.5]}>

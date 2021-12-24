@@ -14,6 +14,9 @@ import {
 	FlatList,
 	HStack,
 	Spacer,
+	AspectRatio,
+	Image,
+	Stack,
 	Link
 } from 'native-base';
 import { misCursosCreados } from '../src/services/misCursosCreados';
@@ -34,21 +37,60 @@ function MisCursosCreadosScreen({ navigation }) {
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => { item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item); }}>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
-				<HStack alignItems="flex-start">
-					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
-						{item.type}
-					</Text>
-					<Spacer />
-				</HStack>
-				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.name}
-				</Heading>
-				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
+
+			<Box
+				maxW="80"
+				rounded="lg"
+				m="2"
+				overflow="hidden"
+				borderColor="coolGray.200"
+				borderWidth="1"
+				_dark={{
+					borderColor: 'coolGray.600',
+					backgroundColor: 'gray.700',
+				}}
+				_web={{
+					shadow: 2,
+					borderWidth: 0,
+				}}
+				_light={{
+					backgroundColor: 'gray.50',
+				}}
+			>
+				<Box>
+					<AspectRatio w="100%" ratio={16 / 9}>
+						<Image
+							source={{
+								uri: item.profile_pic_url,
+							}}
+							alt="image"
+						/>
+					</AspectRatio>
+				</Box>
+				<Stack p="4" space={3}>
+					<Stack space={2}>
+						<Heading size="md" ml="-1">
+							{item.name}
+						</Heading>
+						<Text
+							fontSize="xs"
+							_light={{
+								color: 'violet.500',
+							}}
+							_dark={{
+								color: 'violet.400',
+							}}
+							fontWeight="500"
+							ml="-0.5"
+							mt="-1"
+						>
+							{item.type}
+						</Text>
+					</Stack>
+					<Text fontWeight="400">
 						Ingresar
 					</Text>
-				</Flex>
+				</Stack>
 			</Box>
 		</Link>
 	);
@@ -61,21 +103,21 @@ function MisCursosCreadosScreen({ navigation }) {
 				.then((json) => {
 					console.log(json);
 					switch (json.status) {
-					case 503:
-						setMessage('courses service is currently unavailable, please try later');
-						setShowModal(true);
-						break;
-					case 403:
-						setMessage('Usuario bloqueado');
-						setBloqueado(true);
-						setShowModal(true);
-						break;
-					case 401:
-						setMessage('Token expirado');
-						setShowModal(true);
-						break;
-					default:
-						setCursos(json.message);
+						case 503:
+							setMessage('courses service is currently unavailable, please try later');
+							setShowModal(true);
+							break;
+						case 403:
+							setMessage('Usuario bloqueado');
+							setBloqueado(true);
+							setShowModal(true);
+							break;
+						case 401:
+							setMessage('Token expirado');
+							setShowModal(true);
+							break;
+						default:
+							setCursos(json.message);
 					}
 					setLoading(false);
 				});
