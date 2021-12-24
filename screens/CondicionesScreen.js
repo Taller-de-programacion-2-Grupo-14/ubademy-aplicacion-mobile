@@ -177,7 +177,9 @@ function CondicionesScreen({ navigation, route }) {
 										_text={{ color: 'muted.700', fontSize: 'xs', fontWeight: 500 }}>
 										Tipo de suscripción:
 									</FormControl.Label>
-									<Text fontSize="sm" > {route.params.subscription} </Text>
+									<Text fontSize="sm" > {(route.params.subscription=='basico' || route.params.subscription=='básico' || route.params.subscription=='Basico') ? 'Básico' :
+										((route.params.subscription=='estandar' || route.params.subscription=='estándar' || route.params.subscription=='Estandar') ? 'Estándar' : 'Premium')
+									} </Text>
 								</FormControl>
 								<FormControl>
 									<FormControl.Label

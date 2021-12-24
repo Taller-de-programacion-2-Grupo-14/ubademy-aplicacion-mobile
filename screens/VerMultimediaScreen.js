@@ -6,6 +6,7 @@ import {
 	Heading,
 	Spinner,
 	FlatList,
+	Divider,
 	Image
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
@@ -37,8 +38,9 @@ function VerMultimediaScreen({ route }) {
 						resizeMode="contain"
 						isLooping
 					/> :
-					<Image source={{ uri: item.url }} style={{ width: 400, height: 300 }} alt="multimedia" />
+					<Image source={{ uri: item.url }} style={{ width: 400, height: 300, alignSelf: 'center' }} alt="multimedia" />
 			}
+			<Divider my="4" />
 		</>
 	);
 
@@ -72,6 +74,7 @@ function VerMultimediaScreen({ route }) {
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								Contenido multimedia
 							</Heading>
+							<Divider my="4" />
 							<FlatList
 								data={multimedia}
 								renderItem={renderItem}

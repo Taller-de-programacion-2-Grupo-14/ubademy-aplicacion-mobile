@@ -355,10 +355,10 @@ export default function CrearCursoScreen({ navigation }) {
 									size={50}
 									color="#7A7A7A"
 									onPress={pickImage}
-								//style= {{marginTop: -10}}
+									style={{ alignSelf: 'center' }}
 								/>
 
-								{image && <Image source={{ uri: image }} key={image} style={{ width: 200, height: 200 }} alt="Logo" />}
+								{image && <Image source={{ uri: image }} key={image} style={{ width: 300, height: 225, alignSelf: 'center' }} alt="Logo" />}
 
 								<Button isDisabled={(image == null) || (esUnVideo)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
 									Subir banner del curso
