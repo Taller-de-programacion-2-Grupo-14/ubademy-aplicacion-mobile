@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { subirMultimedia } from '../src/services/subirMultimedia';
+import { useValidation } from 'react-native-form-validator';
 
 SubirMultimediaScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -38,6 +39,15 @@ function SubirMultimediaScreen({ navigation, route }) {
 	const [error, setError] = React.useState(false);
 	const [tipoDeArchivo, setTipoDeArchivo] = React.useState('');
 	const d = new Date();
+
+	const { validate, isFieldInError, getErrorsInField, isFormValid } =
+		useValidation({
+			state: { titulo },
+			deviceLocale: 'es',
+			labels: {
+				titulo: 'Titulo'
+			}
+		});
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
@@ -116,19 +126,25 @@ function SubirMultimediaScreen({ navigation, route }) {
 	);
 
 	this.onSubmit = () => {
-		console.log(tipoDeArchivo);
-		subirMultimedia(String(route.params.id), titulo, imagenSubida, tipoDeArchivo)
-			.then((response) => response.json())
-			.then((json) => {
-				console.log(json);
-				if (json.status === 200) {
-					setMessage('¡Guardado exitoso!');
-				} else {
-					setError(true);
-					setMessage('Error en el guardado del contenido');
-				}
-				setShowModal(true);
-			});
+		validate({
+			titulo: { minlength: 3, required: true },
+		});
+
+		if (isFormValid() == true) {
+			console.log(tipoDeArchivo);
+			subirMultimedia(String(route.params.id), titulo, imagenSubida, tipoDeArchivo)
+				.then((response) => response.json())
+				.then((json) => {
+					console.log(json);
+					if (json.status === 200) {
+						setMessage('¡Guardado exitoso!');
+					} else {
+						setError(true);
+						setMessage('Error en el guardado del contenido');
+					}
+					setShowModal(true);
+				});
+		}
 	};
 
 	return (
@@ -167,34 +183,39 @@ function SubirMultimediaScreen({ navigation, route }) {
 							</Modal.Content>
 						</Modal>
 						<Box safeArea flex={1} p="2" w="90%" mx="auto" py="8" style={{ justifyContent: 'center' }}>
-							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
-								Subir contenido multimedia
-							</Heading>
-							<FormControl isRequired >
-								<FormControl.Label
-									_text={{ color: 'muted.700', fontSize: 'lg', fontWeight: 500 }}>
-                  Ingrese el título del contenido
-								</FormControl.Label>
-								<Input onChangeText={(titulo) => setTitulo(titulo)} />
-							</FormControl>
-							<Icon
-								type="material-community"
-								name="camera-alt"
-								//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
-								size={50}
-								color="#7A7A7A"
-								onPress= {pickImage}
-								//style= {{marginTop: -10}}
-							/>
-							{image && <Image source={{ uri: image }} key={image} style={{ width: 200, height: 200 }} alt="Logo" />}
-							<Button isDisabled={(image==null)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
-                Subir contenido
-							</Button>
+							<VStack space={3}>
+								<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
+									Subir contenido multimedia
+								</Heading>
+								<FormControl isRequired isInvalid={isFieldInError('titulo')} >
+									<FormControl.Label
+										_text={{ color: 'muted.700', fontSize: 'lg', fontWeight: 500 }}>
+										Ingrese el título del contenido
+									</FormControl.Label>
+									<Input onChangeText={(titulo) => setTitulo(titulo)} />
+									{isFieldInError('titulo') &&
+										getErrorsInField('titulo').map(errorMessage => (
+											<FormControl.ErrorMessage _text={{ fontSize: 'xs' }} key={errorMessage}>{errorMessage}</FormControl.ErrorMessage>
+										))}
+								</FormControl>
+								<Icon
+									type="material-community"
+									name="camera-alt"
+									//containerStyle={{alignItems: 'center', justifyContent: 'center', marginRight: 10, height: 70, width: 70, backgroundColor: '#E25542'}}
+									size={50}
+									color="#7A7A7A"
+									onPress= {pickImage}
+									style= {{ alignSelf: 'center' }}
+								/>
+								{image && <Image source={{ uri: image }} key={image} style={{ width: 300, height: 225, alignSelf: 'center' }} alt="Logo" />}
+								<Button isDisabled={(image==null)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={subirFoto} >
+									Subir contenido
+								</Button>
 
-							<Button isDisabled={(imagenSubida==null)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
-                Guardar
-							</Button>
-
+								<Button isDisabled={(imagenSubida==null)} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={() => this.onSubmit()} >
+									Guardar
+								</Button>
+							</VStack>
 						</Box>
 					</ScrollView>
 			}
