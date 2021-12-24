@@ -10,10 +10,8 @@ import {
 	VStack,
 	Button,
 	Text,
-	Flex,
 	FlatList,
 	HStack,
-	Spacer,
 	AspectRatio,
 	Image,
 	Stack,
@@ -40,7 +38,6 @@ function MisCursosCreadosScreen({ navigation }) {
 		<Link onPress={() => { item['verComoCreador'] = true; navigation.navigate('MiCursoCreadoScreen', item); }}>
 
 			<Box
-				maxW="80"
 				rounded="lg"
 				m="2"
 				overflow="hidden"
@@ -59,7 +56,7 @@ function MisCursosCreadosScreen({ navigation }) {
 				}}
 			>
 				<Box>
-					<AspectRatio w="100%" ratio={16 / 9}>
+					<AspectRatio w="100%" ratio={16 / 6}>
 						<Image
 							source={{
 								uri: item.profile_pic_url,
@@ -104,21 +101,21 @@ function MisCursosCreadosScreen({ navigation }) {
 				.then((json) => {
 					console.log(json);
 					switch (json.status) {
-						case 503:
-							setMessage('courses service is currently unavailable, please try later');
-							setShowModal(true);
-							break;
-						case 403:
-							setMessage('Usuario bloqueado');
-							setBloqueado(true);
-							setShowModal(true);
-							break;
-						case 401:
-							setMessage('Token expirado');
-							setShowModal(true);
-							break;
-						default:
-							setCursos(json.message);
+					case 503:
+						setMessage('courses service is currently unavailable, please try later');
+						setShowModal(true);
+						break;
+					case 403:
+						setMessage('Usuario bloqueado');
+						setBloqueado(true);
+						setShowModal(true);
+						break;
+					case 401:
+						setMessage('Token expirado');
+						setShowModal(true);
+						break;
+					default:
+						setCursos(json.message);
 					}
 					setLoading(false);
 				});

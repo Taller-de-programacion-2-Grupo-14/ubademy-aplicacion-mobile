@@ -15,11 +15,10 @@ import {
 	Button,
 	Spinner,
 	Link,
-	Spacer,
-	Flex,
 	Stack,
 	AspectRatio,
-	Image
+	Image,
+	Center
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -42,7 +41,6 @@ function HistoricoDeCursosScreen({ navigation }) {
 	const renderItem = ({ item }) => (
 		<Link onPress={() => { item['verComoCreador'] = false; navigation.navigate('MiCursoInscriptoScreen', item); }}>
 			<Box
-				maxW="80"
 				rounded="lg"
 				m="2"
 				overflow="hidden"
@@ -61,7 +59,7 @@ function HistoricoDeCursosScreen({ navigation }) {
 				}}
 			>
 				<Box>
-					<AspectRatio w="100%" ratio={16 / 9}>
+					<AspectRatio w="100%" ratio={16 / 6}>
 						<Image
 							source={{
 								uri: item.profile_pic_url,
@@ -69,6 +67,23 @@ function HistoricoDeCursosScreen({ navigation }) {
 							alt="image"
 						/>
 					</AspectRatio>
+					<Center
+						bg="violet.500"
+						_dark={{
+							bg: 'violet.400',
+						}}
+						_text={{
+							color: 'warmGray.50',
+							fontWeight: '700',
+							fontSize: 'xs',
+						}}
+						position="absolute"
+						bottom="0"
+						px="3"
+						py="1.5"
+					>
+						{(item.status=='on course') ? 'En curso' : ((item.status=='failed') ? 'Desaprobado' : 'Aprobado')}
+					</Center>
 				</Box>
 				<Stack p="4" space={3}>
 					<Stack space={2}>
@@ -91,10 +106,11 @@ function HistoricoDeCursosScreen({ navigation }) {
 						</Text>
 					</Stack>
 					<Text fontWeight="400">
-						Ingresar
+						Ver condiciones
 					</Text>
 				</Stack>
 			</Box>
+
 		</Link>
 	);
 

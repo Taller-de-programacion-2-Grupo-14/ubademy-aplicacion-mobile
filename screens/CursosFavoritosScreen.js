@@ -14,8 +14,6 @@ import {
 	VStack,
 	Button,
 	HStack,
-	Spacer,
-	Flex,
 	Heading,
 	Spinner,
 	Stack,
@@ -42,7 +40,6 @@ function CursosFavoritosScreen({ navigation }) {
 	const renderItem = ({ item }) => (
 		<Link onPress={() => navigation.navigate('MiCursoFavoritoScreen', item)}>
 			<Box
-				maxW="80"
 				rounded="lg"
 				m="2"
 				overflow="hidden"
@@ -61,7 +58,7 @@ function CursosFavoritosScreen({ navigation }) {
 				}}
 			>
 				<Box>
-					<AspectRatio w="100%" ratio={16 / 9}>
+					<AspectRatio w="100%" ratio={16 / 6}>
 						<Image
 							source={{
 								uri: item.profile_pic_url,
@@ -72,12 +69,12 @@ function CursosFavoritosScreen({ navigation }) {
 					<Center
 						bg="violet.500"
 						_dark={{
-							bg: "violet.400",
+							bg: 'violet.400',
 						}}
 						_text={{
-							color: "warmGray.50",
-							fontWeight: "700",
-							fontSize: "xs",
+							color: 'warmGray.50',
+							fontWeight: '700',
+							fontSize: 'xs',
 						}}
 						position="absolute"
 						bottom="0"

@@ -11,10 +11,12 @@ import {
 	VStack,
 	Button,
 	HStack,
-	Spacer,
-	Flex,
 	Heading,
-	Spinner
+	Spinner,
+	AspectRatio,
+	Image,
+	Center,
+	Stack
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -32,24 +34,79 @@ function ElegirCursoScreen({ navigation, route }) {
 
 	const renderItem = ({ item }) => (
 		<Link onPress={() => navigation.navigate('CondicionesScreen', item)}>
-			<Box bg="#109bd6" p="5" rounded="8" style={{ width: 350, marginVertical: 25 }}>
-				<HStack alignItems="flex-start">
-					<Text fontSize="xs" color="cyan.50" fontWeight="medium" bold>
-						{(item.subscription=='basico' || item.subscription=='básico' || item.subscription=='Basico') ? 'Básico' :
-							((item.subscription=='estandar' || item.subscription=='estándar' || item.subscription=='Estandar') ? 'Estándar' : 'Premium')
+			<Box
+				rounded="lg"
+				m="2"
+				overflow="hidden"
+				borderColor="coolGray.200"
+				borderWidth="1"
+				_dark={{
+					borderColor: 'coolGray.600',
+					backgroundColor: 'gray.700',
+				}}
+				_web={{
+					shadow: 2,
+					borderWidth: 0,
+				}}
+				_light={{
+					backgroundColor: 'gray.50',
+				}}
+			>
+				<Box>
+					<AspectRatio w="100%" ratio={16 / 6}>
+						<Image
+							source={{
+								uri: item.profile_pic_url,
+							}}
+							alt="image"
+						/>
+					</AspectRatio>
+					<Center
+						bg="violet.500"
+						_dark={{
+							bg: 'violet.400',
+						}}
+						_text={{
+							color: 'warmGray.50',
+							fontWeight: '700',
+							fontSize: 'xs',
+						}}
+						position="absolute"
+						bottom="0"
+						px="3"
+						py="1.5"
+					>
+						{(item.subscription == 'basico' || item.subscription == 'básico' || item.subscription == 'Basico') ? 'Básico' :
+							((item.subscription == 'estandar' || item.subscription == 'estándar' || item.subscription == 'Estandar') ? 'Estándar' : 'Premium')
 						}
-					</Text>
-					<Spacer />
-				</HStack>
-				<Heading color="cyan.50" mt="2" fontWeight="medium" fontSize="lg" bold>
-					{item.name}
-				</Heading>
-				<Flex>
-					<Text mt="2" fontSize="xs" fontWeight="medium" color="cyan.800" bold>
+					</Center>
+				</Box>
+				<Stack p="4" space={3}>
+					<Stack space={2}>
+						<Heading size="md" ml="-1">
+							{item.name}
+						</Heading>
+						<Text
+							fontSize="xs"
+							_light={{
+								color: 'violet.500',
+							}}
+							_dark={{
+								color: 'violet.400',
+							}}
+							fontWeight="500"
+							ml="-0.5"
+							mt="-1"
+						>
+							{item.type}
+						</Text>
+					</Stack>
+					<Text fontWeight="400">
 						Ver condiciones
 					</Text>
-				</Flex>
+				</Stack>
 			</Box>
+
 		</Link>
 	);
 

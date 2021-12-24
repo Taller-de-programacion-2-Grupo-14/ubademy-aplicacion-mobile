@@ -123,7 +123,6 @@ export default function HomeScreen({ navigation }) {
 							renderItem={({ item }) => (
 								<Center flex={1} px="3" m="3">
 									<Box
-										maxW="80"
 										rounded="lg"
 										overflow="hidden"
 										borderColor="coolGray.200"
@@ -141,7 +140,7 @@ export default function HomeScreen({ navigation }) {
 										}}
 									>
 										<Box>
-											<AspectRatio w="100%" ratio={16 / 9}>
+											<AspectRatio w="100%" ratio={16 / 6}>
 												<Image
 													source={{
 														uri: item.profile_pic_url,

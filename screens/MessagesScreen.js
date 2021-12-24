@@ -153,7 +153,7 @@ export default function MessagesScreen({ navigation }) {
 											<Text
 												fontSize="xs"
 												_dark={{
-													color: "warmGray.50",
+													color: 'warmGray.50',
 												}}
 												color="coolGray.800"
 												alignSelf="flex-start"
