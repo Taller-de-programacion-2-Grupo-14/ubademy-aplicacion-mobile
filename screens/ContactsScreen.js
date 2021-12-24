@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { obtenerUsuarios } from '../src/services/obtenerUsuario';
-import { obtenerUsuarioConEmail } from '../src/services/obtenerUsuario';
+import { obtenerUsuariosPorEmail } from '../src/services/obtenerUsuario';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import {
@@ -65,11 +65,11 @@ export default function Contactscreen({ navigation }) {
 		console.log(nombre);
 		console.log(apellido);
 		console.log(emailBusqueda);
-		obtenerUsuarioConEmail(emailBusqueda)
+		obtenerUsuariosPorEmail(emailBusqueda)
 			.then((response) => response.json())
 			.then((json) => {
 				console.log('dspues de buscar por email', json);
-				setUsers([json]);
+				setUsers(json.users);
 				setLoading(false);
 			});
 	};

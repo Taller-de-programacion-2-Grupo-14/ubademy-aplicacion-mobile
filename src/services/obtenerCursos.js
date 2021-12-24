@@ -19,17 +19,9 @@ export async function obtenerCursos(tipo, suscripcion, textoLibre) {
 	});
 }
 
-export async function obtenerUltimosCursos(tipo, suscripcion, textoLibre) {
+export async function obtenerUltimosCursos() {
 	const token = await SecureStore.getItemAsync('secure_token');
-	var aEnviar = '';
-
-	if (suscripcion == '') {
-		aEnviar = `${global.host}/courses?type=${tipo}&free_text=${textoLibre}`;
-	} else {
-		aEnviar = `${global.host}/courses?type=${tipo}&subscription=${suscripcion}&free_text=${textoLibre}`;
-	}
-
-	return fetch(`${aEnviar}`, {
+	return fetch(`${global.host}/courses?last_created=true&limit=10`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

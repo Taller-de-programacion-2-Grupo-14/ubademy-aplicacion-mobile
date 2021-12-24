@@ -5,7 +5,6 @@ import {
 	Box,
 	Heading,
 	Spinner,
-	Badge,
 	Button,
 	PresenceTransition,
 	Modal,
