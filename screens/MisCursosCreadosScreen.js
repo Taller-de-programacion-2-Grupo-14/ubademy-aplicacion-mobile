@@ -17,7 +17,8 @@ import {
 	AspectRatio,
 	Image,
 	Stack,
-	Link
+	Link,
+	Center
 } from 'native-base';
 import { misCursosCreados } from '../src/services/misCursosCreados';
 import { useFocusEffect } from '@react-navigation/native';
@@ -163,11 +164,13 @@ function MisCursosCreadosScreen({ navigation }) {
 							<Heading size="lg" color="coolGray.800" fontWeight="600" bold>
 								Cursos creados por mi
 							</Heading>
-							<FlatList
-								data={cursos}
-								renderItem={renderItem}
-								keyExtractor={item => String(item.id)}
-							/>
+							<Center flex={1} px="3">
+								<FlatList
+									data={cursos}
+									renderItem={renderItem}
+									keyExtractor={item => String(item.id)}
+								/>
+							</Center>
 						</Box>
 					</>
 			}

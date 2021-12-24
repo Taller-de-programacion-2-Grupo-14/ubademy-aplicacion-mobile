@@ -80,6 +80,7 @@ export default function HomeScreen({ navigation }) {
 					<View style={spinnerStyles.spinnerStyle}>
 						<Spinner color="indigo.500" size="lg" />
 					</View> :
+
 					<Box bg="#fff" p="2">
 						<StatusBar backgroundColor="#000" barStyle="light-content" />
 
@@ -113,9 +114,9 @@ export default function HomeScreen({ navigation }) {
 								Quiero cambiar mi suscripcion
 							</Link>
 						</Box>
-
 						<Heading p="3" size="lg">ULTIMOS CURSOS</Heading>
 						<Heading p="3" size="sm">Te mostramos los cursos mas recientes de Ubademy.</Heading>
+
 
 						<FlatList
 							data={ultimosCursos}

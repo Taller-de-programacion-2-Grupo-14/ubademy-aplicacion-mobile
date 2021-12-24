@@ -109,57 +109,63 @@ export default function MessagesScreen({ navigation }) {
 				loading ? <View style={spinnerStyles.spinnerStyle}>
 					<Spinner color="indigo.500" size="lg" />
 				</View> :
-					<Center flex={1} >
-						<Box bg="white">
-							<Heading p="4" pb="3" size="lg">
-								Inbox
-							</Heading>
+					<Box bg="white" flex="1">
 
-							<FlatList
-								data={threads}
-								keyExtractor={item => item._id}
-								renderItem={({ item }) => (
+						<Heading p="4" pb="3" size="lg">
+							Inbox
+						</Heading>
 
-									<TouchableOpacity
-										onPress={() => this.goToChat(item)}
+						<FlatList
+							data={threads}
+							keyExtractor={item => item._id}
+							ListHeaderComponent={() => (threads.length === 0 ?
+								<Box flex="1" bg="white"><Text>No tienes mensajes</Text></Box>
+								: null)
+							}
+							renderItem={({ item }) => (
+
+								<TouchableOpacity
+									onPress={() => this.goToChat(item)}
+								>
+									<Box
+										borderBottomWidth="1"
+										borderColor="coolGray.200"
+										pl="4"
+										pr="5"
+										py="2"
 									>
-										<Box
-											borderBottomWidth="1"
-											borderColor="coolGray.200"
-											pl="4"
-											pr="5"
-											py="2"
-										>
-											<HStack space={3} justifyContent="space-between">
-												<Icon as={<MaterialIcons name="chat" />} color="gray" size="sm" />
-												<VStack>
-													<Text
-														color="coolGray.800"
-														bold
-													>
-														{item.name}
-													</Text>
-													<Text
-														color="coolGray.600"
-													>
-														{item.latestMessage.text}
-													</Text>
-												</VStack>
-												<Spacer />
+										<HStack space={3} justifyContent="space-between">
+											<Icon as={<MaterialIcons name="chat" />} color="gray" size="sm" />
+											<VStack>
 												<Text
-													fontSize="xs"
 													color="coolGray.800"
-													alignSelf="flex-start"
+													bold
 												>
-													12:47 PM
+													{item.name}
 												</Text>
-											</HStack>
-										</Box>
-									</TouchableOpacity>
-								)}
-							/>
-						</Box>
-					</Center>
+												<Text
+													color="coolGray.600"
+												>
+													{item.latestMessage.text}
+												</Text>
+											</VStack>
+											<Spacer />
+											<Text
+												fontSize="xs"
+												_dark={{
+													color: "warmGray.50",
+												}}
+												color="coolGray.800"
+												alignSelf="flex-start"
+											>
+												11.45
+											</Text>
+										</HStack>
+									</Box>
+								</TouchableOpacity>
+							)}
+						/>
+					</Box>
 			}
 		</NativeBaseProvider>
 	);
