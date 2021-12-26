@@ -26,7 +26,6 @@ import {
 } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import Moment from 'moment';
 import * as SecureStore from 'expo-secure-store';
 
 export default function Contactscreen({ navigation }) {
@@ -39,7 +38,6 @@ export default function Contactscreen({ navigation }) {
 	const [nombre, setNombre] = React.useState('');
 	const [apellido, setApellido] = React.useState('');
 
-	Moment.locale('es');
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
@@ -170,14 +168,6 @@ function Basic({ listData, navigation }) {
 							</Text>
 						</VStack>
 						<Spacer />
-						<VStack>
-							<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} >
-								Se registro el
-							</Text>
-							<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-								{Moment(item.created_at).format('d MMM YYYY')}
-							</Text>
-						</VStack>
 					</HStack>
 				</Box>
 			</Pressable>
@@ -266,6 +256,3 @@ const spinnerStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 });
-
-
-

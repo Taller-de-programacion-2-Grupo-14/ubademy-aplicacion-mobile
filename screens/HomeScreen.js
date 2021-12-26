@@ -24,7 +24,6 @@ import { obtenerUltimosCursos } from '../src/services/obtenerCursos';
 import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { useIsFocused } from '@react-navigation/native';
-import Moment from 'moment';
 
 export default function HomeScreen({ navigation }) {
 	const [firstName, setFirstName] = React.useState('');
@@ -37,8 +36,6 @@ export default function HomeScreen({ navigation }) {
 	useFocusEffect(
 		React.useCallback(() => {
 			// Do something when the screen is focused
-			Moment.locale('es');
-			console.log('en home screen');
 			obtenerUsuario()
 				.then(data => data.json())
 				.then(json => {
@@ -189,19 +186,6 @@ export default function HomeScreen({ navigation }) {
 											<Text isTruncated fontWeight="400">
 												{item.description}
 											</Text>
-											<HStack alignItems="center" space={4} justifyContent="space-between">
-												<HStack alignItems="center">
-													<Text
-														color="coolGray.600"
-														_dark={{
-															color: 'warmGray.200',
-														}}
-														fontWeight="400"
-													>
-														{Moment(Moment(item.created_at).format('YYYYMMDD'), 'YYYYMMDD').fromNow()}
-													</Text>
-												</HStack>
-											</HStack>
 										</Stack>
 									</Box>
 								</Center>

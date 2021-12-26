@@ -21,7 +21,7 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { List, Divider } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
-import Moment from 'moment';
+
 export default function MessagesScreen({ navigation }) {
 	const [loading, setLoading] = useState(true);
 	const [threads, setThreads] = useState([]);
@@ -150,16 +150,6 @@ export default function MessagesScreen({ navigation }) {
 												</Text>
 											</VStack>
 											<Spacer />
-											<Text
-												fontSize="xs"
-												_dark={{
-													color: 'warmGray.50',
-												}}
-												color="coolGray.800"
-												alignSelf="flex-start"
-											>
-												{Moment(item.latestMessage.createdAt).format('d MMM YYYY')}
-											</Text>
 										</HStack>
 									</Box>
 								</TouchableOpacity>

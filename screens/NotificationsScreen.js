@@ -18,12 +18,10 @@ import { getDatabase, ref, onValue } from 'firebase/database';
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerUsuario } from '../src/services/obtenerUsuario';
 import { View, StyleSheet } from 'react-native';
-import Moment from 'moment';
 
 export default function NotificationsScreen() {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = React.useState([]);
-	Moment.locale('es');
 	function getNotifications(userId) {
 		const db = getDatabase();
 		const reference = ref(db, 'notifications/' + userId);
@@ -114,9 +112,6 @@ function Basic(data) {
 					<Text color="coolGray.600" _dark={{ color: 'warmGray.200' }}> {item.content}</Text>
 				</VStack>
 				<Spacer />
-				<Text fontSize="xs" color="coolGray.800" _dark={{ color: 'warmGray.50' }} alignSelf="flex-start">
-					{Moment(item.date).format('d MMM YYYY')}
-				</Text>
 			</HStack>
 		</Box>
 	);

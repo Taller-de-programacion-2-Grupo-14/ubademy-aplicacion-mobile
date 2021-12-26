@@ -4,7 +4,7 @@ export default {
 	'expo': {
 		'name': 'Ubademy',
 		'slug': 'ubademyTest',
-		'version': '2.3.3',
+		'version': '2.5.3',
 		'icon': './images/icono.png',
 		'assetBundlePatterns': [
 			'**/*'
