@@ -4,24 +4,27 @@ import { useIsFocused } from '@react-navigation/native';
 import {
 	NativeBaseProvider,
 	Box,
-	FlatList,
 	Modal,
 	FormControl,
 	Input,
 	VStack,
 	HStack,
 	Button,
-	Divider,
 	Link,
 	Text,
 	SearchIcon,
 	Heading,
-	Spinner
+	Spinner,
+	Pressable,
+	Avatar,
+	Spacer,
+	Divider
 } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import { obtenerAlumnos } from '../src/services/obtenerAlumnos';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 ListadoAlumnosScreen.propTypes = {
 	navigation: PropTypes.object.isRequired,
@@ -38,15 +41,6 @@ function ListadoAlumnosScreen({ navigation, route }) {
 	const [bloqueado, setBloqueado] = React.useState(false);
 	const [showModalError, setShowModalError] = React.useState(false);
 	const isFocused = useIsFocused();
-
-	const renderItem = ({ item }) => (
-		<>
-			<Text bold fontSize="md">
-				{item.last_name}, {item.first_name}
-			</Text>
-			<Divider my="1" />
-		</>
-	);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -170,17 +164,70 @@ function ListadoAlumnosScreen({ navigation, route }) {
 							<Heading size="xl" color="coolGray.800" fontWeight="600" bold>
 								Listado de alumnos{'\n'}
 							</Heading>
-							<FlatList
-								data={alumnos}
-								renderItem={renderItem}
-								keyExtractor={item => String(item.user_id)}
-							/>
+							{
+								loading ?
+									<View style={spinnerStyles.spinnerStyle}>
+										<Spinner color="indigo.500" size="lg" />
+									</View> :
+									<Basic listData={alumnos} />
+							}
 						</Box>
 					</>
 			}
 		</NativeBaseProvider>
 	);
 }
+
+function Basic({ listData }) {
+
+	const onRowDidOpen = (rowKey) => {
+		console.log('This row opened', rowKey);
+	};
+
+	const renderItem = ({ item }) => (
+
+		< Box >
+			<Pressable onPress={() => console.log('You touched me')} >
+				<Box
+					pl="4"
+					pr="5"
+					py="2"
+				>
+					<HStack alignItems="center" space={3}>
+						{(item.photo_url == '' || item.photo_url == null || item.photo_url == 'undefined') ? (<Avatar bg="indigo.500" size="48px" >{item.first_name.charAt(0).toUpperCase()}</Avatar>) :
+							<Avatar size="48px" source={{ uri: item.photo_url }} />
+						}
+						<Text color="coolGray.800" _dark={{ color: 'warmGray.50' }} bold>
+							{item.first_name} {item.last_name}
+						</Text>
+						<Spacer />
+					</HStack>
+				</Box>
+			</Pressable>
+			<Divider my="1" />
+		</Box >
+
+	);
+
+	return (
+		<Box safeArea flex="1">
+			<SwipeListView
+				data={listData}
+				renderItem={renderItem}
+				rightOpenValue={-130}
+				previewRowKey={'0'}
+				previewOpenValue={-40}
+				previewOpenDelay={3000}
+				onRowDidOpen={onRowDidOpen}
+				keyExtractor={(item, index) => index.toString()}
+			/>
+		</Box>
+	);
+}
+
+Basic.propTypes = {
+	listData: PropTypes.array
+};
 
 const spinnerStyles = StyleSheet.create({
 	spinnerStyle: {

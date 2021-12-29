@@ -150,10 +150,10 @@ function CrearExamenScreen({ navigation, route }) {
 									</FormControl>
 								))}
 
-								<Button isDisabled={!route.params.can_create_exams} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={addHandler} >
+								<Button isDisabled={!route.params.puedeCrearExamen} mt="2" colorScheme="indigo" _text={{ color: 'white' }} onPress={addHandler} >
                   Agregar pregunta
 								</Button>
-								<Button isDisabled={!route.params.can_create_exams} mt="2" colorScheme="indigo" _text={{ color: 'white' }}
+								<Button isDisabled={!route.params.puedeCrearExamen} mt="2" colorScheme="indigo" _text={{ color: 'white' }}
 									onPress={() => {
 										preguntas = inputs.map(function (obj) {
 											return obj.value;
@@ -162,7 +162,7 @@ function CrearExamenScreen({ navigation, route }) {
 									}} >
                   Crear
 								</Button>
-								<Text color={route.params.can_create_exams ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
+								<Text color={route.params.puedeCrearExamen ? 'transparent' : '#EB0202'} style={{textAlign: 'center'}}>
 									Ha alcanzado el número máximo de exámenes para este curso
 								</Text>
 							</VStack>
